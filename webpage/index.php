@@ -79,7 +79,7 @@
 
    <h2>
     <a href="#news"></a>News &nbsp; 
-    <a href="https://developer.berlios.de/export/rss20_bsnews.php?group_id=4806" type="application/rss+xml"><img 
+    <a href="http://developer.berlios.de/export/rss20_bsnews.php?group_id=4806" type="application/rss+xml"><img 
     src="images/xml.png" width="36" height="14" alt="XML"/></a>
    </h2>
    <div class="wikitext">
@@ -100,13 +100,12 @@
                     );
 
           require_once('magpierss/rss_fetch.inc');
-          $url = 'http://developer.berlios.de/export/rss_bsnewreleases.php?group_id=4806';
+          $url = 'http://developer.berlios.de/export/rss20_bsnews.php?group_id=4806';
 
           $rss = fetch_rss($url);
 
           if ( $rss and !$rss->ERROR) {
 
-	    $news = 0;
 	    $num_items = 10;
 	    $items = array_slice($rss->items, 0, $num_items);
 	    echo "<ul>\n";
@@ -115,15 +114,12 @@
 	      $news++;
 	      $title = $item[title];
 	      $link  = $item[link];
-	      $description  = $item[link];
-	      $pubDate  = $item[pubDate];
-	      $date = str_replace(" ", $pubDate);
+	      $description  = $item[description];
+	      $pubDate  = $item[pubdate];
+	      $date = explode(" ", $pubDate);
 	      echo "      <li>[" . $date[1] . "-" . $months[$date[2]] . "-" . $date[3] . "]\n";
               echo " <a href=\"" . $link . "\">" . $title . "</a>: " . $description . "</li>\n";
 	    }
-
-	    if ($news == 0)
-	      echo "      <li> There aren't news until the moment.</li>\n";
 
 	    echo "    </ul>\n\n";
 
