@@ -10,7 +10,7 @@
     <doap:created>2005-09-24</doap:created>
     <doap:description>SWAML is a research project around the semantic web tecnologies to publish the mailing lists's archive into an RDF format.</doap:description>
     <doap:wiki rdf:resource="http://swaml.berlios.de/wiki"/>
-    <doap:mailing-list rdf:resource="https://developer.berlios.de/bugs/?group_id=4806"/>
+    <doap:bug-database rdf:resource="https://developer.berlios.de/bugs/?group_id=4806"/>
     <doap:programming-language>python</doap:programming-language>
     <doap:license rdf:resource="http://usefulinc.com/doap/licenses/gpl"/>
     <doap:download-page rdf:resource="http://swaml.berlios.de/#files"/>
