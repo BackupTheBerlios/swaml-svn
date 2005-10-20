@@ -57,7 +57,7 @@
   <div id="content">
    <p>
      <acronym title="Semantic Web Archive of Mailing Lists">SWAML</acronym> is  a research 
-     project around the semantic web tecnologies to publish the mailing lists&acute;s archive into 
+     project around the semantic web technologies to publish the mailing lists&acute;s archive into 
      an <acronym title="Resource Description Framework">RDF</acronym> format, developed 
      at <a href="http://www.euitio.uniovi.es/">University of Oviedo</a> (Spain). You can
      visit the <a href="http://developer.berlios.de/projects/swaml/">project page at BerliOS</a>
@@ -124,13 +124,13 @@
 
    <h2><a href="#files"></a>Files</h2>
    <div class="wikitext">
-    <p>There aren not files until the moment. While you can visit the <a href="/files">files section</a> 
+    <p>There are not files until the moment. While you can visit the <a href="/files">files section</a> 
     or <a href="/wsvn">subversion repository web interface</a>.</p>
    </div>
 
    <h2><a href="#contact"></a>Contact</h2>
    <div class="wikitext">
-    <p>You can contact to any <a href="/members-list"> members of project</a>. Also you have a several 
+    <p>You can contact any <a href="/members-list"> members of project</a>. Also you have a several 
     <a href="/lists">mailing lists</a>:</p>
     <ul>
      <li><a href="/lists/devel">Developers mailing list</a></li>
