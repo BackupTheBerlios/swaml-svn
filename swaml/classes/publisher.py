@@ -49,8 +49,8 @@ class Publisher:
         else:
             index += 'unkown-date'
 
-        if not (os.path.exists(self.config.getDir()+index)):
-            os.mkdir(self.config.getDir()+index)
+        if not (os.path.exists(self.config.get('dir')+index)):
+            os.mkdir(self.config.get('dir')+index)
                         
         index += '/message' + str(n)
 
@@ -63,7 +63,7 @@ class Publisher:
         self.tpl = self.tpl.replace('{TITLE}', 'FIXME')
         today = datetime.date(1,2,3)
         self.tpl = self.tpl.replace('{DATE}', str(today.day)+'/'+str(today.month)+'/'+str(today.year))
-        rdf_file = open(self.config.getDir() + 'index.rdf', 'w+')
+        rdf_file = open(self.config.get('dir') + 'index.rdf', 'w+')
         rdf_file.write(self.template.get('xml_head'))
         rdf_file.write(self.template.get('rdf_head'))
         rdf_file.write(self.tpl)
@@ -84,12 +84,12 @@ class Publisher:
                 self.tpl = self.tpl.replace('{TO}', self.msg['Delivered-To'])
             self.tpl = self.tpl.replace('{SUBJECT}', self.msg['Subject'])
             self.tpl = self.tpl.replace('{MESSAGE_ID}', self.msg['Message-Id'])
-            self.tpl = self.tpl.replace('{RDF_URL}', self.config.getUrl() + self.config.getDir() + self.getIndexName(self.msg, n) + '.rdf')
+            self.tpl = self.tpl.replace('{RDF_URL}', self.config.get('url') + self.config.get('dir') + self.getIndexName(self.msg, n) + '.rdf')
         except KeyError, detail:
             print 'Error proccesing messages: ' + str(detail)
             self.tpl = '';
                                         
-        rdf_file = open(self.config.getDir() + 'index.rdf', 'a')
+        rdf_file = open(self.config.get('dir') + 'index.rdf', 'a')
         rdf_file.write(self.tpl)
         rdf_file.flush()
         rdf_file.close()                                        
@@ -98,7 +98,7 @@ class Publisher:
     def closeIndex(self):
         self.template = Template()
         self.tpl = self.template.get('rdf_index_foot')
-        rdf_file = open(self.config.getDir() + 'index.rdf', 'a')
+        rdf_file = open(self.config.get('dir') + 'index.rdf', 'a')
         rdf_file.write(self.tpl)
         rdf_file.write(self.template.get('rdf_foot'))        
         rdf_file.flush()
@@ -110,7 +110,7 @@ class Publisher:
         self.template = Template()
         self.tpl = self.template.get('rdf_message')
 
-        rdf_file = open(self.config.getDir() + self.getIndexName(self.msg, n) + '.rdf', 'w+')
+        rdf_file = open(self.config.get('dir') + self.getIndexName(self.msg, n) + '.rdf', 'w+')
         rdf_file.write(self.template.get('xml_head'))
         rdf_file.write(self.template.get('rdf_head'))
         rdf_file.flush()
@@ -148,11 +148,11 @@ class Publisher:
     
 
     def publish(self):
-        mbox = Mbox(self.config.getFile())
+        mbox = Mbox(self.config.get('file'))
         messages = 0
 
-        if not (os.path.exists(self.config.getDir())):
-            os.mkdir(self.config.getDir())
+        if not (os.path.exists(self.config.get('dir'))):
+            os.mkdir(self.config.get('dir'))
                         
         self.beginIndex()
 

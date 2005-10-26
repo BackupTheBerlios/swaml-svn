@@ -20,30 +20,29 @@ import string
 class Configuration:
 
     def __init__(self):
-        self.dir_path = "archive/"
-        self.url_base = "http://localhost/"
-        self.file_path = "mbox"
-                
-    def setDir(self, text):
-        self.dir_path = text
+        self.config = {
+            'dir' : 'archive/',
+            'url' : 'http://localhost/',
+            'file' : 'mbox'
+            }
 
-    def setUrl(self, text):
-        self.url_base = text
-        
-    def setFile(self, text):
-        self.file_path = text
-                                
-    def getDir(self):
-        return self.dir_path
 
-    def getUrl(self):
-        return self.url_base
+    def get(self, var):
+        if (var in self.config.keys()):
+            return self.config[var]
 
-    def getFile(self):
-        return self.file_path
+
+    def set(self, var, value):
+        if (var in self.config.keys()):
+            self.config[var] = value
+            return True
+        else:
+            return False
+
 
     def show(self):
-        print 'Dir:  ' + self.getDir()
-        print 'URL:  ' + self.getUrl()
-        print 'File: ' + self.getFile()
-    
+        for var in self.config.keys():
+            print var + ': ' + self.config[var]
+
+
+
