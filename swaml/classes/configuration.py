@@ -34,6 +34,8 @@ class Configuration:
 
     def set(self, var, value):
         if (var in self.config.keys()):
+            if ((var=='dir' or var=='url') and value[-1] != '/'):
+                value += '/'
             self.config[var] = value
             return True
         else:
