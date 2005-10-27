@@ -32,7 +32,7 @@ class Swaml:
         self.config = config
 
         try:
-            opts, args = getopt.getopt(argv, "dufh:", ["dir=","url=","file=","help"])
+            opts, args = getopt.getopt(argv, "d:u:f:h", ["dir=","url=","file=","help"])
         except:
             self.usage()
 
@@ -40,8 +40,12 @@ class Swaml:
             if opt in ("-h", "--help"):
                 self.usage()
             elif opt in ("-d", "--dir=") and arg:
+                if (arg[-1] != '/'):
+                    arg += '/'
                 self.config.set("dir", arg)
             elif opt in ("-u", "--url=") and arg:
+                if (arg[-1] != '/'):
+                    arg += '/'                                        
                 self.config.set("url", arg)
             elif opt in ("-f", "--file=") and arg:
                 self.config.set("file", arg)
