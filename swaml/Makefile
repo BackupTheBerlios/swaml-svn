@@ -10,6 +10,6 @@ uninstall:
 	echo unavailable
 
 clean:
-	rm -r archive/
-	rm -r *~
-	rm -r *.pyc
+	rm -rf archive/
+	rm -f *~
+	rm -f classes/*.pyc
