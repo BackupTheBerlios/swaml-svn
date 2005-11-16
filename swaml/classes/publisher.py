@@ -18,6 +18,7 @@
 import sys, os, mailbox, rfc822, string, email, email.Errors, datetime
 from mbox import Mbox
 from template import Template
+from subscribers import Subscribers
 
 class Publisher:
 
@@ -53,7 +54,6 @@ class Publisher:
             os.mkdir(self.config.get('dir')+index)
                         
         index += '/message' + str(n)
-
             
         return index
 
@@ -103,6 +103,21 @@ class Publisher:
         rdf_file.write(self.template.get('rdf_foot'))        
         rdf_file.flush()
         rdf_file.close()
+
+
+    def addSuscriber(self, from_text):
+        name = ''
+        mail = ''
+        from_parted = from_text.split('<')
+        if (len(from_parted)==1):
+            name = 'unknow'
+            mail = from_text
+        else:
+            name = from_parted[0]
+            from_parted = from_parted[1].split('>')
+            mail = from_parted[0]
+            
+        self.subscribers.add(name, mail)
                                                                 
 
     def intoRDF(self, message, n):
@@ -137,6 +152,8 @@ class Publisher:
             print 'Error proccesing messages: ' + str(detail)
             self.tpl = '';
 
+        self.addSuscriber(self.msg['From'])
+
         rdf_file.write(self.tpl)
         rdf_file.write(self.template.get('rdf_foot'))
         rdf_file.flush()
@@ -166,8 +183,11 @@ class Publisher:
             
         self.closeIndex()
 
+        self.subscribers.intoRDF()
+
         return messages
     
 
     def __init__(self, config):
         self.config = config
+        self.subscribers = Subscribers(config)
