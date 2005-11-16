@@ -144,7 +144,7 @@
    <br/><br/><br/>
 
    <div id="revision">
-    <p class="editdate">Last update on Wed 12 October 2005</p>
+    <p class="editdate">Last update on Wed 16 November 2005</p>
    </div>
   </div>
 
