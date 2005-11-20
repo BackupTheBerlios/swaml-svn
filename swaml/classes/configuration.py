@@ -25,7 +25,10 @@ class Configuration:
             'url' : 'http://localhost/',
             'file' : 'mbox'
             }
+        self.antispam = ' AT '
 
+    def getAntiSpam(self):
+        return self.antispam;
 
     def get(self, var):
         if (var in self.config.keys()):

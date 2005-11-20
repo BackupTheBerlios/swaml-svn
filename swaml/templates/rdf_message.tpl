@@ -1,5 +1,10 @@
    <rdf:msg>
-    <msg:From>{FROM}</msg:From>
+    <msg:From>
+     <foaf:Person>
+      <foaf:fullname>{FROM_NAME}</foaf:fullname>
+      <foaf:mbox_sha1sum>{FROM_MBOX}</foaf:mbox_sha1sum>
+     </foaf:Person>
+    </msg:From>
     <msg:To>{TO}</msg:To>
     <msg:Subject>{SUBJECT}</msg:Subject>
     <msg:Date>{DATE}</msg:Date>
@@ -7,5 +12,7 @@
     <msg:RdfURL>{RDF_URL}</msg:RdfURL>
     <msg:HtmlURL>{HTML_URL}</msg:HtmlURL>
     <msg:InReplyTo>{IN_REPLY_TO}</msg:InReplyTo>
-    <msg:Body>{BODY}</msg:Body>
-   <rdf:msg>
+    <msg:Body>
+     {BODY}
+    </msg:Body>
+   </rdf:msg>

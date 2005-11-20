@@ -15,7 +15,7 @@
 # or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 # for more details.
 
-import sys, os, mailbox, rfc822, string, email, email.Errors, datetime
+import sys, os, mailbox, rfc822, string, email, email.Errors, datetime, sha
 from mbox import Mbox
 from template import Template
 from subscribers import Subscribers
@@ -28,26 +28,32 @@ class Publisher:
         #two date formats:
         #  Case 1: May 2005 23:13:26 +0900
         #  Case 2: Fri, 16 Sep 2005 00:15:12 +0200
+        #          Wed,  6 Jul 2005 16:54:29 +0200
         #  Case 3: Fri, 06 May 05 10:25:23 Hora oficial do Brasil
         
         self.msg = message
-        date = self.msg['Date'].split(',')
+        date_text = self.msg['Date'].split(',')
         index = ''
-        if (len(date) == 1):
+        if (len(date_text) == 1):
             #case 1
-            date = date[0].split(' ')
+            date = date_text[0].split(' ')
             index += str(date[2]) + '-' + str(date[1])
-        elif (len(date) == 2):
+        elif (len(date_text) == 2):
             #case 2 or 3
-            date = date[1].split(' ')
-            #case 3
-            if (len(date[3])<4):
-                if (date[3][1]=='9'):
-                    date[3] = '19' + date[3]
+            date = date_text[1]
+            while(date[0]==' '):
+                date = date[1:]
+            date = date.split(' ')
+            
+            if (len(date[2])<4):
+                #case 3
+                if (date[2][0]=='9'):
+                    date[2] = '19' + date[2]
                 else:
-                    date[3] = '20' + date[3]                
-            index += str(date[3]) + '-' + str(date[2])
+                    date[2] = '20' + date[2]                
+            index += str(date[2]) + '-' + str(date[1])
         else:
+            #unknow case
             index += 'unkown-date'
 
         if not (os.path.exists(self.config.get('dir')+index)):
@@ -56,6 +62,28 @@ class Publisher:
         index += '/message' + str(n)
             
         return index
+
+
+    def parseFrom(self, from_text):
+        name = ''
+        mail = ''
+        from_parted = from_text.split('<')
+        if (len(from_parted)==1):
+            name = from_text.replace('@', self.config.getAntiSpam())
+            mail = from_text
+        else:
+            name = from_parted[0][:-1]
+            from_parted = from_parted[1].split('>')
+            mail = from_parted[0]
+
+        return [name, mail]
+            
+            
+    def getId(self, id, date, n):
+        parted_id = id.split('.')
+        msg_id = parted_id[len(parted_id)-1] + '-' + date + '-swaml-' + str(n)
+        return sha.new(msg_id).hexdigest()
+
 
     def beginIndex(self):
         self.template = Template()
@@ -77,14 +105,26 @@ class Publisher:
         self.tpl = self.template.get('rdf_index_item')
 
         try:
-            self.tpl = self.tpl.replace('{FROM}', self.msg['From'])
+            from_name, from_mail = self.parseFrom(self.msg['From'])
+            self.tpl = self.tpl.replace('{FROM_NAME}', from_name)
+            self.tpl = self.tpl.replace('{FROM_MBOX}', sha.new('mailto:'+from_mail).hexdigest())
+            
             if (self.msg.get('To')):
-                self.tpl = self.tpl.replace('{TO}', self.msg['To'])
+                to_tmp =  self.msg['To']
             else:
-                self.tpl = self.tpl.replace('{TO}', self.msg['Delivered-To'])
+                to_tmp = self.msg['Delivered-To']
+            to_tmp = to_tmp.replace('@', self.config.getAntiSpam())
+            to_tmp = to_tmp.replace('<', '&lt;')
+            to_tmp = to_tmp.replace('>', '&gt;')
+            self.tpl = self.tpl.replace('{TO}', to_tmp)
+                            
             self.tpl = self.tpl.replace('{SUBJECT}', self.msg['Subject'])
-            self.tpl = self.tpl.replace('{MESSAGE_ID}', self.msg['Message-Id'])
+
+            #self.tpl = self.tpl.replace('{MESSAGE_ID}', self.msg['Message-Id'])
+            self.tpl = self.tpl.replace('{MESSAGE_ID}', self.getId(self.msg['Message-Id'], self.msg['Date'], n))
+
             self.tpl = self.tpl.replace('{RDF_URL}', self.config.get('url') + self.config.get('dir') + self.getIndexName(self.msg, n) + '.rdf')
+            
         except KeyError, detail:
             print 'Error proccesing messages: ' + str(detail)
             self.tpl = '';
@@ -106,17 +146,7 @@ class Publisher:
 
 
     def addSuscriber(self, from_text):
-        name = ''
-        mail = ''
-        from_parted = from_text.split('<')
-        if (len(from_parted)==1):
-            name = 'unknow'
-            mail = from_text
-        else:
-            name = from_parted[0]
-            from_parted = from_parted[1].split('>')
-            mail = from_parted[0]
-            
+        name, mail = self.parseFrom(from_text)
         self.subscribers.add(name, mail)
                                                                 
 
@@ -131,23 +161,40 @@ class Publisher:
         rdf_file.flush()
                                                                 
         try:
-            self.tpl = self.tpl.replace('{FROM}', self.msg['From'])
+            from_name, from_mail = self.parseFrom(self.msg['From'])
+            self.tpl = self.tpl.replace('{FROM_NAME}', from_name)
+            self.tpl = self.tpl.replace('{FROM_MBOX}', sha.new('mailto:'+from_mail).hexdigest())
+            
             if (self.msg.get('To')):
-                self.tpl = self.tpl.replace('{TO}', self.msg['To'])
+                to_tmp =  self.msg['To']
             else:
-                self.tpl = self.tpl.replace('{TO}', self.msg['Delivered-To'])
+                to_tmp = self.msg['Delivered-To']
+            to_tmp = to_tmp.replace('@', self.config.getAntiSpam())
+            to_tmp = to_tmp.replace('<', '&lt;')
+            to_tmp = to_tmp.replace('>', '&gt;')
+            self.tpl = self.tpl.replace('{TO}', to_tmp)
+                                                                                                    
             self.tpl = self.tpl.replace('{SUBJECT}', self.msg['Subject'])
+
             self.tpl = self.tpl.replace('{DATE}', self.msg['Date'])
-            self.tpl = self.tpl.replace('{MESSAGE_ID}', self.msg['Message-Id'])
+
+            #self.tpl = self.tpl.replace('{MESSAGE_ID}', self.msg['Message-Id'])
+            self.tpl = self.tpl.replace('{MESSAGE_ID}', self.getId(self.msg['Message-Id'], self.msg['Date'], n))
+
             self.tpl = self.tpl.replace('{RDF_URL}', 'FIXME')
             self.tpl = self.tpl.replace('{HTML_URL}', 'FIXME')
-            if (self.msg.get('In-Reply-To')):
-                self.tpl = self.tpl.replace('{IN_REPLY_TO}', self.msg['In-Reply-To'])
-            elif (self.msg.get('References')):
-                self.tpl = self.tpl.replace('{IN_REPLY_TO}', self.msg['References'])
-            else:
-                self.tpl = self.tpl.replace('{IN_REPLY_TO}', 'none')
+
+            #pending to link indexes
+            self.tpl = self.tpl.replace('{IN_REPLY_TO}', 'FIXME')
+            #if (self.msg.get('In-Reply-To')):
+            #    self.tpl = self.tpl.replace('{IN_REPLY_TO}', self.msg['In-Reply-To'])
+            #elif (self.msg.get('References')):
+            #    self.tpl = self.tpl.replace('{IN_REPLY_TO}', self.msg['References'])
+            #else:
+            #    self.tpl = self.tpl.replace('{IN_REPLY_TO}', 'none')
+                
             self.tpl = self.tpl.replace('{BODY}',self.msg.fp.read())
+            
         except KeyError, detail:
             print 'Error proccesing messages: ' + str(detail)
             self.tpl = '';

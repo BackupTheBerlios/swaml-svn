@@ -57,7 +57,7 @@ class Swaml:
 Options:
    -d DIR, --dir=DIR    : use DIR to publish, \'archive/\' by default
    -u URL, --url=URL    : base URL
-   -f FILE, --file=FILE : open mbox FILE, by default uses \'mbox'\ file
+   -f FILE, --file=FILE : open mbox FILE, by default uses \'mbox\' file
    -h, --help           : show this help message and exit
 
 Report bugs to: <http://swaml.berlios.de/bugs>
