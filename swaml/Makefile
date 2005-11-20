@@ -1,5 +1,4 @@
-#	Makefile de Xtrasgu Temperatura
-#	¡Los espacios son tabuladores!
+# SWAML Makefile
 
 DESTDIR =
 
