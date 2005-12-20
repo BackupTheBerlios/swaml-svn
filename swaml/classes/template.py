@@ -21,7 +21,7 @@ class Template:
 
     def get(self, template):
         try:
-            fich = open('templates/' + template + '.tpl','r')
+            fich = open('includes/templates/' + template + '.tpl','r')
             head = fich.read()
             fich.close()
             return head
