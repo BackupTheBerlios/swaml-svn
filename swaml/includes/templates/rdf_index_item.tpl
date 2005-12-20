@@ -1,0 +1,11 @@
+   <msg:item>
+    <msg:From>
+     <foaf:Person>
+      <foaf:fullname>{FROM_NAME}</foaf:fullname>
+      <foaf:mbox_sha1sum>{FROM_MBOX}</foaf:mbox_sha1sum>
+     </foaf:Person>
+    </msg:From>
+    <msg:Subject>{SUBJECT}</msg:Subject>
+    <msg:MessageId>{MESSAGE_ID}</msg:MessageId>
+    <msg:RdfURL>{RDF_URL}</msg:RdfURL>
+   </msg:item>
