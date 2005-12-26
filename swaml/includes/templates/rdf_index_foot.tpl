@@ -1,1 +1,1 @@
-  </msg:items>
+  </swaml:index>

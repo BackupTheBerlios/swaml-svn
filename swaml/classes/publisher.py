@@ -23,21 +23,29 @@ from subscribers import Subscribers
 class Publisher:
 
     def getIndexName(self, message, n):
-        #to do: feature 1355 (allow to personalize url format)
         
-        #two date formats:
+        #format permited vars (feature 1355)
+        message_month = 'unknow'
+        message_year = 'unknow'
+        message_id = str(n)
+
+        self.msg = message
+        date_text = self.msg['Date'].split(',')                
+
+        #possible date formats:
         #  Case 1: May 2005 23:13:26 +0900
         #  Case 2: Fri, 16 Sep 2005 00:15:12 +0200
         #          Wed,  6 Jul 2005 16:54:29 +0200
         #  Case 3: Fri, 06 May 05 10:25:23 Hora oficial do Brasil
+        #
+        #to do: locate an standar function to parse date
         
-        self.msg = message
-        date_text = self.msg['Date'].split(',')
-        index = ''
         if (len(date_text) == 1):
             #case 1
             date = date_text[0].split(' ')
-            index += str(date[2]) + '-' + str(date[1])
+            message_month = date[1]
+            message_year = date[2]
+
         elif (len(date_text) == 2):
             #case 2 or 3
             date = date_text[1]
@@ -51,15 +59,22 @@ class Publisher:
                     date[2] = '19' + date[2]
                 else:
                     date[2] = '20' + date[2]                
-            index += str(date[2]) + '-' + str(date[1])
-        else:
-            #unknow case
-            index += 'unkown-date'
 
-        if not (os.path.exists(self.config.get('dir')+index)):
-            os.mkdir(self.config.get('dir')+index)
-                        
-        index += '/message' + str(n)
+            message_month = date[1]
+            message_year = date[2]
+
+
+        index = self.config.get('format')
+        index = index.replace('MM', message_month)
+        index = index.replace('YY', message_year)
+        index = index.replace('ID', message_id)
+
+        dirs = index.split('/')[:-1]
+        index_dir = ''
+        for one_dir in dirs:
+            index_dir += one_dir + '/'
+            if not (os.path.exists(self.config.get('dir')+index_dir)):
+                os.mkdir(self.config.get('dir')+index_dir)
             
         return index
 
@@ -155,7 +170,7 @@ class Publisher:
         self.template = Template()
         self.tpl = self.template.get('rdf_message')
 
-        rdf_file = open(self.config.get('dir') + self.getIndexName(self.msg, n) + '.rdf', 'w+')
+        rdf_file = open(self.config.get('dir') + self.getIndexName(self.msg, n), 'w+')
         rdf_file.write(self.template.get('xml_head'))
         rdf_file.write(self.template.get('rdf_head'))
         rdf_file.flush()
@@ -212,7 +227,7 @@ class Publisher:
     
 
     def publish(self):
-        mbox = Mbox(self.config.get('file'))
+        mbox = Mbox(self.config.get('mbox'))
         messages = 0
 
         if not (os.path.exists(self.config.get('dir'))):

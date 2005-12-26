@@ -34,6 +34,7 @@ class Subscribers:
         rdf_file = open(self.config.get('dir') + 'subscribers.rdf', 'w+')
         rdf_file.write(self.template.get('xml_head'))
         rdf_file.write(self.template.get('rdf_head'))
+        rdf_file.write(self.template.get('rdf_subscribers_head'))
         rdf_file.flush()
 
         for name, mail in self.subscribers.items():
@@ -44,6 +45,7 @@ class Subscribers:
             rdf_file.write(self.tpl)
             rdf_file.flush()
 
+        rdf_file.write(self.template.get('rdf_subscribers_foot'))
         rdf_file.write(self.template.get('rdf_foot'))
         rdf_file.flush()
         rdf_file.close()

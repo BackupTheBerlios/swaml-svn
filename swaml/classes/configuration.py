@@ -21,14 +21,18 @@ class Configuration:
 
     def __init__(self):
         self.config = {
+            #default values
             'dir' : 'archive/',
             'url' : 'http://localhost/',
-            'file' : 'mbox'
-            }
+            'mbox' : 'mbox',
+            'format' : 'MM-YY/messageID.rdf'
+            }        
         self.antispam = ' AT '
+
 
     def getAntiSpam(self):
         return self.antispam;
+
 
     def get(self, var):
         if (var in self.config.keys()):
@@ -37,8 +41,13 @@ class Configuration:
 
     def set(self, var, value):
         if (var in self.config.keys()):
-            if ((var=='dir' or var=='url') and value[-1] != '/'):
+            
+            #two litle exceptions in var format
+            if ((var=='dir' or var=='url') and value[-1]!='/'):
                 value += '/'
+            if (var=='format' and value[-4:]!='.rdf'):
+                value += '.rdf'
+                
             self.config[var] = value
             return True
         else:

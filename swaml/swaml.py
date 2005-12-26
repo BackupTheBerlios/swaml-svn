@@ -32,7 +32,7 @@ class Swaml:
         self.config = config
 
         try:
-            opts, args = getopt.getopt(argv, "d:u:f:h", ["dir=","url=","file=","help"])
+            opts, args = getopt.getopt(argv, "d:u:m:f:h", ["dir=","url=","mbox=","format=","help"])
         except:
             self.usage()
 
@@ -43,25 +43,35 @@ class Swaml:
                 self.config.set("dir", arg)
             elif opt in ("-u", "--url=") and arg:
                 self.config.set("url", arg)
-            elif opt in ("-f", "--file=") and arg:
-                self.config.set("file", arg)
+            elif opt in ("-m", "--mbox=") and arg:
+                self.config.set("mbox", arg)
+            elif opt in ("-f", "--format=") and arg:
+                self.config.set("format", arg)                                
             else:
                 self.usage()
 
 
     def usage(self):
-        print """Usage: python swaml.py [OPTION...]
+        print """
+Usage: python swaml.py [OPTION...]
         
-'swaml' publish a mbox file into semantic web
+'swaml' publish the files of a mailing list into the semantic web.
 
 Options:
-   -d DIR, --dir=DIR    : use DIR to publish, \'archive/\' by default
-   -u URL, --url=URL    : base URL
-   -f FILE, --file=FILE : open mbox FILE, by default uses \'mbox\' file
-   -h, --help           : show this help message and exit
+   -d DIR, --dir=DIR          : use DIR to publish, 'archive/' by default.
+   -u URL, --url=URL          : base URL.
+   -m MBOX, --mbox=MBOX       : open MBOX file, by default uses 'mbox'.
+   -f FORMAT, --format=FORMAT : path FORMAT to publish messages, the string 'MM-YY/messageID.rdf' uses by default.
+                                Some variables you could use:
+                                   'MM': month that message sent
+                                   'YY'': year that message sent
+                                   'ID': message id
+   -h, --help                 : print this help message and exit.
 
 Report bugs to: <http://swaml.berlios.de/bugs>
-""" 
+"""
+        #to do: locate better name for format vars
+
         sys.exit()
         
 

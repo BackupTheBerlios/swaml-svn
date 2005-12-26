@@ -8,4 +8,4 @@
    <dcterms:isRequiredBy rdf:resource="http://purl.org/dc/terms/"/>
    <dcterms:isReferencedBy rdf:resource="http://purl.org/dc/dcmitype/"/>
   </rdf:Description>
-  <msg:items>
+  <swaml:index>

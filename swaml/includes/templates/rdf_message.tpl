@@ -1,18 +1,18 @@
-   <rdf:msg>
-    <msg:From>
+   <rdf:swaml>
+    <swaml:From>
      <foaf:Person>
       <foaf:fullname>{FROM_NAME}</foaf:fullname>
       <foaf:mbox_sha1sum>{FROM_MBOX}</foaf:mbox_sha1sum>
      </foaf:Person>
-    </msg:From>
-    <msg:To>{TO}</msg:To>
-    <msg:Subject>{SUBJECT}</msg:Subject>
-    <msg:Date>{DATE}</msg:Date>
-    <msg:MessageId>{MESSAGE_ID}</msg:MessageId>
-    <msg:RdfURL>{RDF_URL}</msg:RdfURL>
-    <msg:HtmlURL>{HTML_URL}</msg:HtmlURL>
-    <msg:InReplyTo>{IN_REPLY_TO}</msg:InReplyTo>
-    <msg:Body>
+    </swaml:From>
+    <swaml:To>{TO}</swaml:To>
+    <swaml:Subject>{SUBJECT}</swaml:Subject>
+    <swaml:Date>{DATE}</swaml:Date>
+    <swaml:MessageId>{MESSAGE_ID}</swaml:MessageId>
+    <swaml:RdfURL>{RDF_URL}</swaml:RdfURL>
+    <swaml:HtmlURL>{HTML_URL}</swaml:HtmlURL>
+    <swaml:InReplyTo>{IN_REPLY_TO}</swaml:InReplyTo>
+    <swaml:Body>
      {BODY}
-    </msg:Body>
-   </rdf:msg>
+    </swaml:Body>
+   </rdf:swaml>
