@@ -123,14 +123,12 @@ class Publisher:
             from_name, from_mail = self.parseFrom(self.msg['From'])
             self.tpl = self.tpl.replace('{FROM_NAME}', from_name)
             self.tpl = self.tpl.replace('{FROM_MBOX}', sha.new('mailto:'+from_mail).hexdigest())
+
             
-            if (self.msg.get('To')):
-                to_tmp =  self.msg['To']
-            else:
-                to_tmp = self.msg['Delivered-To']
-            to_tmp = to_tmp.replace('@', self.config.getAntiSpam())
-            to_tmp = to_tmp.replace('<', '&lt;')
-            to_tmp = to_tmp.replace('>', '&gt;')
+            to_tmp =  self.msg['To']
+            #to_tmp = to_tmp.replace('@', self.config.getAntiSpam())
+            #to_tmp = to_tmp.replace('<', '&lt;')
+            #to_tmp = to_tmp.replace('>', '&gt;')
             self.tpl = self.tpl.replace('{TO}', to_tmp)
                             
             self.tpl = self.tpl.replace('{SUBJECT}', self.msg['Subject'])
@@ -141,8 +139,8 @@ class Publisher:
             self.tpl = self.tpl.replace('{RDF_URL}', self.config.get('url') + self.config.get('dir') + self.getIndexName(self.msg, n) + '.rdf')
             
         except KeyError, detail:
-            print 'Error proccesing messages: ' + str(detail)
-            self.tpl = '';
+            print '(index) Error proccesing messages: ' + str(detail)
+            self.tpl = ''
                                         
         rdf_file = open(self.config.get('dir') + 'index.rdf', 'a')
         rdf_file.write(self.tpl)
@@ -180,13 +178,10 @@ class Publisher:
             self.tpl = self.tpl.replace('{FROM_NAME}', from_name)
             self.tpl = self.tpl.replace('{FROM_MBOX}', sha.new('mailto:'+from_mail).hexdigest())
             
-            if (self.msg.get('To')):
-                to_tmp =  self.msg['To']
-            else:
-                to_tmp = self.msg['Delivered-To']
-            to_tmp = to_tmp.replace('@', self.config.getAntiSpam())
-            to_tmp = to_tmp.replace('<', '&lt;')
-            to_tmp = to_tmp.replace('>', '&gt;')
+            to_tmp =  self.msg.getaddr('To')[1]
+            #to_tmp = to_tmp.replace('@', self.config.getAntiSpam())
+            #to_tmp = to_tmp.replace('<', '&lt;')
+            #to_tmp = to_tmp.replace('>', '&gt;')
             self.tpl = self.tpl.replace('{TO}', to_tmp)
                                                                                                     
             self.tpl = self.tpl.replace('{SUBJECT}', self.msg['Subject'])
@@ -211,7 +206,7 @@ class Publisher:
             self.tpl = self.tpl.replace('{BODY}',self.msg.fp.read())
             
         except KeyError, detail:
-            print 'Error proccesing messages: ' + str(detail)
+            print '(intoRDF) Error proccesing messages: ' + str(detail)
             self.tpl = '';
 
         self.addSuscriber(self.msg['From'])
