@@ -64,6 +64,10 @@
      for more details.
    </p>
 
+   <p style="border: medium solid red;">
+     This project still is on phase of planning , not to be used without careful considerations.
+   </p>
+
    <h2>
     <a href="#news"></a>News &nbsp; 
     <a href="/rss/news" type="application/rss+xml"><img src="images/xml.png" width="36" height="14" alt="XML"/></a>
@@ -144,7 +148,7 @@
    <br/><br/><br/>
 
    <div id="revision">
-    <p class="editdate">Last update on Wed 16 November 2005</p>
+    <p class="editdate">Last update on Mon April 2006</p>
    </div>
   </div>
 
