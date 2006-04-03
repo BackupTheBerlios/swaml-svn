@@ -64,7 +64,7 @@
      for more details.
    </p>
 
-   <p style="border: medium solid red;">
+   <p style="border: medium solid red; padding: 10px;">
      This project still is on phase of planning , not to be used without careful considerations.
    </p>
 
