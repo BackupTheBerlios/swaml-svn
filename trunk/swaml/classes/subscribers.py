@@ -19,13 +19,18 @@ import sys, os, string, sha
 from template import Template
 
 class Subscribers:
+    """Class to abstract the subscriber management"""
 
     def add(self, name, mail):
+        """Add a new subscriber"""
+        
         if (not name in self.subscribers):
             self.subscribers[name] = mail
 
 
     def intoRDF(self):
+        """Dump to RDF file all subscribers"""
+        
         if not (os.path.exists(self.config.get('dir'))):
             os.mkdir(self.config.get('dir'))
 
@@ -52,6 +57,8 @@ class Subscribers:
                                 
 
     def __init__(self, config):
+        """Constructor method"""
+        
         self.config = config
         self.subscribers = {}
 

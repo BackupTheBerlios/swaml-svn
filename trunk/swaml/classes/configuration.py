@@ -18,10 +18,13 @@
 import string
 
 class Configuration:
+    """Class to encapsulate SWAML's configuration"""
 
     def __init__(self):
-        self.config = {
-            #default values
+        """Constructor method"""
+        
+        #default values
+        self.config = {            
             'dir' : 'archive/',
             'url' : 'http://localhost/',
             'mbox' : 'mbox',
@@ -31,15 +34,21 @@ class Configuration:
 
 
     def getAntiSpam(self):
+        """String to fight against the SPAM"""
+        
         return self.antispam;
 
 
     def get(self, var):
+        """Method to get a configuration property"""
+        
         if (var in self.config.keys()):
             return self.config[var]
 
 
     def set(self, var, value):
+        """Method to set a configuration property"""
+        
         if (var in self.config.keys()):
             
             #two litle exceptions in var format
@@ -55,6 +64,8 @@ class Configuration:
 
 
     def show(self):
+        """[Deprecated] Show al configure options"""
+        
         for var in self.config.keys():
             print var + ': ' + self.config[var]
 

@@ -19,12 +19,17 @@ import os, string, mailbox
 
 
 class Mbox:
+    """mbox abstraction class"""
 
     def __init__(self, path):
+        """Constructor method"""
+        
         self.path = path
         self.mbox_file = mailbox.UnixMailbox(open(self.path))
 
     def nextMessage(self):
+        """Return next message of mbox file"""
+        
         return self.mbox_file.next()
         
 

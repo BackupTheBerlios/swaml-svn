@@ -25,9 +25,10 @@ from classes.configuration import Configuration
 from classes.publisher import Publisher
 
 class Swaml:
+    """Main class of SWAML project"""
 
     def args(self, argv, config):
-        "Getting params"
+        "Getting params of default input"
 
         self.config = config
 
@@ -52,6 +53,8 @@ class Swaml:
 
 
     def usage(self):
+        """Print help to use SWAML"""
+        
         print """
 Usage: python swaml.py [OPTION...]
         
@@ -76,6 +79,8 @@ Report bugs to: <http://swaml.berlios.de/bugs>
         
 
     def __init__(self, argv):
+        """main method"""
+        
         self.config = Configuration()
         args_ret = self.args(argv, self.config)
         self.pub = Publisher(self.config)

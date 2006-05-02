@@ -21,8 +21,10 @@ from template import Template
 from subscribers import Subscribers
 
 class Publisher:
+    """Class to coordinate all publication task"""
 
     def getIndexName(self, message, n):
+        """Return the message's index name"""
         
         #format permited vars (feature 1355)
         message_month = 'unknow'
@@ -80,6 +82,8 @@ class Publisher:
 
 
     def parseFrom(self, from_text):
+        """Method to parse from field"""
+        
         name = ''
         mail = ''
         from_parted = from_text.split('<')
@@ -95,12 +99,16 @@ class Publisher:
             
             
     def getId(self, id, date, n):
+        """Return a message's unique id"""
+        
         parted_id = id.split('.')
         msg_id = parted_id[len(parted_id)-1] + '-' + date + '-swaml-' + str(n)
         return sha.new(msg_id).hexdigest()
 
 
     def beginIndex(self):
+        """Begin file with mail list's index"""
+        
         self.template = Template()
         self.tpl = self.template.get('rdf_index_head')
         self.tpl = self.tpl.replace('{TITLE}', 'FIXME')
@@ -115,6 +123,8 @@ class Publisher:
 
 
     def addIndex(self, message, n):
+        """Add an item to index file"""
+        
         self.msg = message
         self.template = Template()
         self.tpl = self.template.get('rdf_index_item')
@@ -157,6 +167,8 @@ class Publisher:
                                     
 
     def closeIndex(self):
+        """Close index file"""
+        
         self.template = Template()
         self.tpl = self.template.get('rdf_index_foot')
         rdf_file = open(self.config.get('dir') + 'index.rdf', 'a')
@@ -166,12 +178,16 @@ class Publisher:
         rdf_file.close()
 
 
-    def addSuscriber(self, from_text):
+    def addSubscriber(self, from_text):
+        """Add a new subscriber"""
+        
         name, mail = self.parseFrom(from_text)
         self.subscribers.add(name, mail)
                                                                 
 
     def intoRDF(self, message, n):
+        """Print a message into RDF in XML format"""
+        
         self.msg = message
         self.template = Template()
         self.tpl = self.template.get('rdf_message')
@@ -226,7 +242,7 @@ class Publisher:
             print 'Error proccesing messages: ' + str(detail)
             self.tpl = '';
 
-        self.addSuscriber(self.msg['From'])
+        self.addSubscriber(self.msg['From'])
 
         rdf_file.write(self.tpl)
         rdf_file.write(self.template.get('rdf_foot'))
@@ -235,10 +251,14 @@ class Publisher:
 
 
     def intoHTML(self, message):
+        """Print a message into HTML format"""
+        
         pass
     
 
     def publish(self):
+        """Publish a mbox"""
+        
         mbox = Mbox(self.config.get('mbox'))
         messages = 0
         self.default_to = ''
@@ -264,5 +284,7 @@ class Publisher:
     
 
     def __init__(self, config):
+        """Constructor method"""
+        
         self.config = config
         self.subscribers = Subscribers(config)

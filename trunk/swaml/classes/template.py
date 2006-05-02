@@ -18,8 +18,11 @@
 import sys, string, email
 
 class Template:
+    """Templates management"""
 
     def get(self, template):
+        """Get a template"""
+        
         try:
             fich = open('includes/templates/' + template + '.tpl','r')
             head = fich.read()
