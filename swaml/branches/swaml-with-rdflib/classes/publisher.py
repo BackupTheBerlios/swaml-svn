@@ -193,21 +193,14 @@ class Publisher:
         try:
             from_name = ''
             from_mail = ''
-            print ''
-            print '-----------------------------------------'
-            print 'original: ' + str(msg['From'])
             if(msg['From'].find('<')!= -1):
                 #mail similar than: Name Surmane <name@domain.com>
-                print '1'
                 from_name = str(msg.getaddr('From')[0])
                 from_mail = str(msg.getaddr('From')[1])
             else:
                 #something like: Name Surmane name@domain.com
                 from_name, from_mail = self.parseFrom(msg['From'])
-                print '2'
 
-            print 'name: ' + from_name
-            print 'mail: ' + from_mail
             tpl = tpl.replace('{FROM_NAME}', from_name)
             tpl = tpl.replace('{FROM_MBOX}', sha.new('mailto:'+from_mail).hexdigest())
             
