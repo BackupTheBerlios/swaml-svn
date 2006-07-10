@@ -15,17 +15,22 @@
 # or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 # for more details.
 
-import os, string, mailbox
-
+import os, sys,string, mailbox
 
 class Mbox:
     """mbox abstraction class"""
 
     def __init__(self, path):
         """Constructor method"""
-        
+
         self.path = path
-        self.mbox_file = mailbox.UnixMailbox(open(self.path))
+
+        try:
+            self.mbox_file = mailbox.UnixMailbox(open(self.path))
+        except IOError:
+            print "mbox file does not exist, exiting gracefully"
+            sys.exit()
+    
 
     def nextMessage(self):
         """Return next message of mbox file"""

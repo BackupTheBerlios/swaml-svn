@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python2.4
 #
 # SWAML <http://swaml.berlios.de/>
 # Semantic Web Archive of Mailing Lists
@@ -25,7 +25,12 @@ from classes.configuration import Configuration
 from classes.publisher import Publisher
 
 class Swaml:
-    """Main class of SWAML project"""
+    """
+    Main class of SWAML project
+    
+    @autor: Sergio Fdez
+    @license: GPL
+    """
 
     def args(self, argv, config):
         "Getting params of default input"
@@ -53,10 +58,14 @@ class Swaml:
 
 
     def usage(self):
-        """Print help to use SWAML"""
+        """
+        Print help to use SWAML
+        
+        @todo: locate better name for format vars
+        """
         
         print """
-Usage: python swaml.py [OPTION...]
+Usage: swaml.py [OPTION...]
         
 'swaml' publish the files of a mailing list into the semantic web.
 
@@ -73,13 +82,14 @@ Options:
 
 Report bugs to: <http://swaml.berlios.de/bugs>
 """
-        #to do: locate better name for format vars
-
         sys.exit()
         
 
     def __init__(self, argv):
-        """main method"""
+        """
+        main method
+        @param argv: values of inline arguments
+        """
         
         self.config = Configuration()
         args_ret = self.args(argv, self.config)

@@ -278,7 +278,7 @@ class Publisher:
             
         self.closeIndex()
 
-        self.subscribers.intoRDF()
+        self.subscribers.toRDF()
 
         return messages
     

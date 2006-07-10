@@ -16,7 +16,7 @@ Development happens on BerliOS Forge:
 REQUIREMENTS:
 ^^^^^^^^^^^^^
 
-    - python >= 2.3
+    - python >= 2.4
 
 
 FEATURES:
