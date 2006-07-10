@@ -31,10 +31,9 @@ class Subscriber:
     def __init__(self, name, mail):
         """Subscriber constructor"""
         self.__class__.id += 1
-        self.name = name
-        self.mail = mail
-        service = Services()
-        self.foaf = service.getFoaf(mail)
+        self.setName(name)
+        self.setMail(mail)
+        self.setFoaf(Services().getFoaf(mail))
         
     def getName(self):
         """Get subscriber's name"""
@@ -54,7 +53,10 @@ class Subscriber:
     
     def setName(self, name):
         """Set subscriber's name"""
-        self.name = name
+        if (len(name)>1 and name[0]=='"' and name[-1]=='"'):
+            self.name = name[1:-1]
+        else:
+            self.name = name
     
     def setMail(self, mail):
         """Set subscriber's mail address"""
@@ -95,6 +97,10 @@ class Subscribers:
         store.bind('foaf', foafNS)
         FOAF = Namespace(foafNS)
         
+        rdfsNS = 'http://www.w3.org/2000/01/rdf-schema#'
+        store.bind('rdfs', rdfsNS)
+        RDFS = Namespace(rdfsNS)
+        
         #subscribers = URIRef("subscribers.html")
         subscribers = BNode()
         store.add((subscribers, RDF.type, SWAML["subscribers"]))
@@ -105,13 +111,15 @@ class Subscribers:
         #a BNode for each subcriber
         for mail, subscriber in self.subscribers.items():
             subscriberNode = BNode()
-            store.add((subscribers, SWAML["subscriber"], subscriberNode))
             person = BNode()
-            store.add(( subscriberNode, FOAF["Person"], person ))
+            store.add((subscribers, SWAML["subscriber"], person))
+            store.add((person, RDF.type, FOAF["Person"]))
             try:
-                store.add(( person, FOAF["name"], Literal(subscriber.getName()) ))            
+                store.add((person, FOAF["name"], Literal(subscriber.getName()) ))            
                 store.add((person, FOAF["mbox_sha1sum"], Literal(subscriber.getShaMail())))
-                #store.add(( person, FOAF["name"], Literal(subscriber.getFoaf()) ))
+                foafResource = subscriber.getFoaf()
+                if (foafResource != None):
+                    store.add((person, RDFS["seeAlso"], URIRef(foafResource)))
             except UnicodeDecodeError, detail:
                 print 'Error proccesing subscriber ' + subscriber.getName() + ': ' + str(detail)
 

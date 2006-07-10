@@ -51,7 +51,7 @@ class Services:
         if (mail_sha1sum in foafs):
             return foafs[mail_sha1sum]
         else:
-            return ""
+            return None
 
 
 

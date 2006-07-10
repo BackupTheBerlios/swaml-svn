@@ -185,27 +185,27 @@ class Publisher:
         self.subscribers.add(name, mail)
                                                                 
 
-    def intoRDF(self, message, n):
+    def toRDF(self, message, n):
         """Print a message into RDF in XML format"""
         
-        self.msg = message
-        self.template = Template()
-        self.tpl = self.template.get('rdf_message')
+        msg = message
+        template = Template()
+        tpl = template.get('rdf_message')
 
-        rdf_file = open(self.config.get('dir') + self.getIndexName(self.msg, n), 'w+')
-        rdf_file.write(self.template.get('xml_head'))
-        rdf_file.write(self.template.get('rdf_head'))
+        rdf_file = open(self.config.get('dir') + self.getIndexName(msg, n), 'w+')
+        rdf_file.write(template.get('xml_head'))
+        rdf_file.write(template.get('rdf_head'))
         rdf_file.flush()
                                                                 
         try:
-            from_name, from_mail = self.parseFrom(self.msg['From'])
-            self.tpl = self.tpl.replace('{FROM_NAME}', from_name)
-            self.tpl = self.tpl.replace('{FROM_MBOX}', sha.new('mailto:'+from_mail).hexdigest())
+            from_name, from_mail = self.parseFrom(msg['From'])
+            tpl = tpl.replace('{FROM_NAME}', from_name)
+            tpl = tpl.replace('{FROM_MBOX}', sha.new('mailto:'+from_mail).hexdigest())
             
             #some mails have not a 'to' field
             tmp_to = ' '
             try:                
-                tmp_to = self.msg['To']
+                tmp_to = msg['To']
                 if (self.default_to == ''):
                     self.default_to = tmp_to
             except:
@@ -215,20 +215,20 @@ class Publisher:
             tmp_to = tmp_to.replace('@', self.config.getAntiSpam())
             tmp_to = tmp_to.replace('<', '&lt;')
             tmp_to = tmp_to.replace('>', '&gt;')                                     
-            self.tpl = self.tpl.replace('{TO}', tmp_to)              
+            tpl = tpl.replace('{TO}', tmp_to)              
                                                                                                     
-            self.tpl = self.tpl.replace('{SUBJECT}', self.msg['Subject'])
+            tpl = tpl.replace('{SUBJECT}', msg['Subject'])
 
-            self.tpl = self.tpl.replace('{DATE}', self.msg['Date'])
+            tpl = tpl.replace('{DATE}', msg['Date'])
 
             #self.tpl = self.tpl.replace('{MESSAGE_ID}', self.msg['Message-Id'])
-            self.tpl = self.tpl.replace('{MESSAGE_ID}', self.getId(self.msg['Message-Id'], self.msg['Date'], n))
+            tpl = tpl.replace('{MESSAGE_ID}', self.getId(msg['Message-Id'], msg['Date'], n))
 
-            self.tpl = self.tpl.replace('{RDF_URL}', 'FIXME')
-            self.tpl = self.tpl.replace('{HTML_URL}', 'FIXME')
+            tpl = tpl.replace('{RDF_URL}', 'FIXME')
+            tpl = tpl.replace('{HTML_URL}', 'FIXME')
 
             #pending to link indexes
-            self.tpl = self.tpl.replace('{IN_REPLY_TO}', 'FIXME')
+            tpl = tpl.replace('{IN_REPLY_TO}', 'FIXME')
             #if (self.msg.get('In-Reply-To')):
             #    self.tpl = self.tpl.replace('{IN_REPLY_TO}', self.msg['In-Reply-To'])
             #elif (self.msg.get('References')):
@@ -236,21 +236,21 @@ class Publisher:
             #else:
             #    self.tpl = self.tpl.replace('{IN_REPLY_TO}', 'none')
                 
-            self.tpl = self.tpl.replace('{BODY}',self.msg.fp.read())
+            tpl = tpl.replace('{BODY}', msg.fp.read())
             
         except KeyError, detail:
             print 'Error proccesing messages: ' + str(detail)
-            self.tpl = '';
+            tpl = '';
 
-        self.addSubscriber(self.msg['From'])
+        self.addSubscriber(msg['From'])
 
-        rdf_file.write(self.tpl)
-        rdf_file.write(self.template.get('rdf_foot'))
+        rdf_file.write(tpl)
+        rdf_file.write(template.get('rdf_foot'))
         rdf_file.flush()
         rdf_file.close()
 
 
-    def intoHTML(self, message):
+    def toHTML(self, message):
         """Print a message into HTML format"""
         
         pass
@@ -272,9 +272,10 @@ class Publisher:
         while(msg!= None):
             messages += 1
             self.addIndex(msg, messages)
-            message = Message(self.config, msg, messages)
-            message.toRdf()
-            #self.intoHTML(msg, messages)
+            self.toRDF(msg, messages)
+            #message = Message(self.config, msg, messages)
+            #message.toRdf()
+            #self.toHTML(msg, messages)
             msg = mbox.nextMessage()
             
         self.closeIndex()
