@@ -89,15 +89,15 @@ class Subscribers:
         store = Graph()
         
         #namespaces
-        swamlNS = 'http://swaml.berlios.de/ns/0.1/'
+        swamlNS = u'http://swaml.berlios.de/ns/0.1/'
         store.bind('swaml', swamlNS)
         SWAML = Namespace(swamlNS)
         
-        foafNS = 'http://xmlns.com/foaf/0.1/'
+        foafNS = u'http://xmlns.com/foaf/0.1/'
         store.bind('foaf', foafNS)
         FOAF = Namespace(foafNS)
         
-        rdfsNS = 'http://www.w3.org/2000/01/rdf-schema#'
+        rdfsNS = u'http://www.w3.org/2000/01/rdf-schema#'
         store.bind('rdfs', rdfsNS)
         RDFS = Namespace(rdfsNS)
         
