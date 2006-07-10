@@ -84,16 +84,9 @@ class Publisher:
     def parseFrom(self, from_text):
         """Method to parse from field"""
         
-        name = ''
-        mail = ''
-        from_parted = from_text.split('<')
-        if (len(from_parted)==1):
-            name = from_text.replace('@', self.config.getAntiSpam())
-            mail = from_text
-        else:
-            name = from_parted[0][:-1]
-            from_parted = from_parted[1].split('>')
-            mail = from_parted[0]
+        from_parted = from_text.split(' ')
+        name = ' '.join(from_parted[:-1])
+        mail = from_parted[-1]
 
         return [name, mail]
             
@@ -198,7 +191,23 @@ class Publisher:
         rdf_file.flush()
                                                                 
         try:
-            from_name, from_mail = self.parseFrom(msg['From'])
+            from_name = ''
+            from_mail = ''
+            print ''
+            print '-----------------------------------------'
+            print 'original: ' + str(msg['From'])
+            if(msg['From'].find('<')!= -1):
+                #mail similar than: Name Surmane <name@domain.com>
+                print '1'
+                from_name = str(msg.getaddr('From')[0])
+                from_mail = str(msg.getaddr('From')[1])
+            else:
+                #something like: Name Surmane name@domain.com
+                from_name, from_mail = self.parseFrom(msg['From'])
+                print '2'
+
+            print 'name: ' + from_name
+            print 'mail: ' + from_mail
             tpl = tpl.replace('{FROM_NAME}', from_name)
             tpl = tpl.replace('{FROM_MBOX}', sha.new('mailto:'+from_mail).hexdigest())
             
