@@ -272,7 +272,8 @@ class Publisher:
         while(msg!= None):
             messages += 1
             self.addIndex(msg, messages)
-            self.intoRDF(msg, messages)
+            message = Message(self.config, msg, messages)
+            message.toRdf()
             #self.intoHTML(msg, messages)
             msg = mbox.nextMessage()
             

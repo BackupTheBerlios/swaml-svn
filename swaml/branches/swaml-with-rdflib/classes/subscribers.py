@@ -105,7 +105,7 @@ class Subscribers:
         #a BNode for each subcriber
         for mail, subscriber in self.subscribers.items():
             subscriberNode = BNode()
-            store.add((subscribers, SWAML["susbcriber"], subscriberNode))
+            store.add((subscribers, SWAML["subscriber"], subscriberNode))
             person = BNode()
             store.add(( subscriberNode, FOAF["Person"], person ))
             try:
