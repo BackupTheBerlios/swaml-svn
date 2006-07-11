@@ -113,7 +113,7 @@ class Subscribers:
         
         #subscribers = URIRef("subscribers.html")
         subscribers = BNode()
-        store.add((subscribers, RDF.type, SWAML["subscribers"]))
+        store.add((subscribers, RDF.type, SWAML["Subscribers"]))
         
         #changing default encoding?
         #sys.setdefaultencoding('latin-1')
@@ -125,7 +125,9 @@ class Subscribers:
             store.add((subscribers, SWAML["subscriber"], person))
             store.add((person, RDF.type, FOAF["Person"]))
             try:
-                store.add((person, FOAF["name"], Literal(subscriber.getName()) ))            
+                name = subscriber.getName()
+                if (len(name) > 0):
+                    store.add((person, FOAF["name"], Literal(name) ))            
                 store.add((person, FOAF["mbox_sha1sum"], Literal(subscriber.getShaMail())))
                 foafResource = subscriber.getFoaf()
                 if (foafResource != None):
@@ -142,11 +144,11 @@ class Subscribers:
                 for id in sentMails:
                     one = BNode()
                     store.add((mails, RDF.li, one))
-                    store.add((one, RDF.type, SWAML["mail"]))
+                    store.add((one, RDF.type, SWAML["Mail"]))
+                    #TODO: include rdfs:seeAlso and rdf:about as arguments
                     store.add((one, RDFS["seeAlso"], URIRef("foo/bar.rdf#"+id)))
                     store.add((one, RDF.about, URIRef("foo/bar.rdf#"+id)))
                     
-
         #and dump to disk
         rdf_file = open(self.config.get('dir') + 'subscribers.rdf', 'w+')
         rdf_file.write(store.serialize(format="pretty-xml"))
