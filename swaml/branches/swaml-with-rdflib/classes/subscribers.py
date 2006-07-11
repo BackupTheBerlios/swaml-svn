@@ -34,6 +34,7 @@ class Subscriber:
         self.setName(name)
         self.setMail(mail)
         self.setFoaf(Services().getFoaf(mail))
+        self.mails = []
         
     def getName(self):
         """Get subscriber's name"""
@@ -51,6 +52,10 @@ class Subscriber:
         """Get subscriber's FOAF"""
         return self.foaf    
     
+    def getSentMails(self):
+        """Get the array with subscriber sent mails ids"""
+        return self.mails
+    
     def setName(self, name):
         """Set subscriber's name"""
         if (len(name)>1 and name[0]=='"' and name[-1]=='"'):
@@ -64,19 +69,24 @@ class Subscriber:
         
     def setFoaf(self, foaf):
         """Set subscriber's FOAF"""
-        self.foaf = foaf      
+        self.foaf = foaf     
+        
+    def addMail(self, new):
+        """Add new sent mail"""
+        self.mails.append(new) 
                 
         
 
 class Subscribers:
     """Class to abstract the subscriber management"""
 
-    def add(self, name, mail):
+    def add(self, name, mail, msg):
         """Add a new subscriber"""
         
-        #TODO: clean names like "Roberto C. Riesgo" or "Fernando Toyos Diaz"
         if (not mail in self.subscribers):
             self.subscribers[mail] = Subscriber(name, mail)
+            
+        self.subscribers[mail].addMail(msg)
 
 
     def toRDF(self):
@@ -110,7 +120,7 @@ class Subscribers:
 
         #a BNode for each subcriber
         for mail, subscriber in self.subscribers.items():
-            subscriberNode = BNode()
+            #subscriberNode = BNode()
             person = BNode()
             store.add((subscribers, SWAML["subscriber"], person))
             store.add((person, RDF.type, FOAF["Person"]))
@@ -122,6 +132,20 @@ class Subscribers:
                     store.add((person, RDFS["seeAlso"], URIRef(foafResource)))
             except UnicodeDecodeError, detail:
                 print 'Error proccesing subscriber ' + subscriber.getName() + ': ' + str(detail)
+            
+            sentMails = subscriber.getSentMails()
+            if (len(sentMails)>0):
+                #build rdf:Bag
+                mails = BNode()
+                store.add((person, SWAML["sentMails"], mails))
+                store.add((mails, RDF.type, RDF.Bag))
+                for id in sentMails:
+                    one = BNode()
+                    store.add((mails, RDF.li, one))
+                    store.add((one, RDF.type, SWAML["mail"]))
+                    store.add((one, RDFS["seeAlso"], URIRef("foo/bar.rdf#"+id)))
+                    store.add((one, RDF.about, URIRef("foo/bar.rdf#"+id)))
+                    
 
         #and dump to disk
         rdf_file = open(self.config.get('dir') + 'subscribers.rdf', 'w+')

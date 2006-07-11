@@ -169,13 +169,6 @@ class Publisher:
         rdf_file.write(self.template.get('rdf_foot'))        
         rdf_file.flush()
         rdf_file.close()
-
-
-    def addSubscriber(self, from_text):
-        """Add a new subscriber"""
-        
-        name, mail = self.parseFrom(from_text)
-        self.subscribers.add(name, mail)
                                                                 
 
     def toRDF(self, message, n):
@@ -189,10 +182,12 @@ class Publisher:
         rdf_file.write(template.get('xml_head'))
         rdf_file.write(template.get('rdf_head'))
         rdf_file.flush()
+            
+        from_name = ''
+        from_mail = ''
+        id = ''
                                                                 
         try:
-            from_name = ''
-            from_mail = ''
             if(msg['From'].find('<')!= -1):
                 #mail similar than: Name Surmane <name@domain.com>
                 from_name = str(msg.getaddr('From')[0])
@@ -223,8 +218,9 @@ class Publisher:
 
             tpl = tpl.replace('{DATE}', msg['Date'])
 
-            #self.tpl = self.tpl.replace('{MESSAGE_ID}', self.msg['Message-Id'])
-            tpl = tpl.replace('{MESSAGE_ID}', self.getId(msg['Message-Id'], msg['Date'], n))
+            #tpl = tpl.replace('{MESSAGE_ID}', self.msg['Message-Id'])
+            id = self.getId(msg['Message-Id'], msg['Date'], n)
+            tpl = tpl.replace('{MESSAGE_ID}', id)
 
             tpl = tpl.replace('{RDF_URL}', 'FIXME')
             tpl = tpl.replace('{HTML_URL}', 'FIXME')
@@ -244,7 +240,7 @@ class Publisher:
             print 'Error proccesing messages: ' + str(detail)
             tpl = '';
 
-        self.addSubscriber(msg['From'])
+        self.subscribers.add(from_name, from_mail, id)
 
         rdf_file.write(tpl)
         rdf_file.write(template.get('rdf_foot'))
