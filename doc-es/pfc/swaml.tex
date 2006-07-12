@@ -1,0 +1,165 @@
+\documentclass[spanish,12pt]{report}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{paralist,graphicx,url,times,babel}
+
+\pagestyle{headings}
+
+\title{%
+	SWAML, Semantic Web Archive of Mailing Lists}
+\author{Sergio Fern\'andez L\'opez,
+	Diego Berrueta Mu\'noz,
+	José Emilio Labra Gayo}
+\date{Julio de 2006}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\chapter{Memoria}
+
+\section{Introducción}
+
+Los archivos de las listas de correo (es decir, los mensajes antiguos) son
+frecuentemente publicados en la web e indexados por los buscadores convencional
+es. La base de conocimientos que introducen en la web es enorme.
+
+Sin embargo, una gran cantidad de información se pierde durante la publicación,
+con el resultado de que los archivos publicados son incómodos de consultar
+y poco funcionales.
+
+Este artículo describe la aplicación de la web semántica para evitar la
+pérdida de información y habilitar la construcción de nuevas aplicaciones
+para explotar más convenientemente la información.
+
+\section{Propuesta}
+
+Las listas de correo son parte fundamental de la comunicación en Internet.
+Existen listas de correo dedicadas a cualquier tema de interés imaginable.
+Hoy en día, es común que las listas de correo publiquen sus archivos (los
+mensajes antiguos) en forma de páginas web, lo que dispara su utilidad,
+especialmente en combinación con los buscadores actuales. Gracias a esta 
+publicación, es posible consultar los mensajes desde el navegador, sin 
+necesidad de estar suscrito a las listas de correo, y también se puede 
+localizar un mensaje usando Google u otro buscador.
+
+Estos archivos contienen una formidable base de conocimiento, especialmente
+en temas técnicos. Un uso muy común consiste en introducir un mensaje de error 
+(de una aplicación) en Google y obtener como resultado un mensaje archivado que 
+aborda el problema, probablemente porque alguien se ha encontrado previamente 
+con el mismo error y ha efectuado la consulta en una lista de correo pública.
+Con suerte, alguna de las respuestas al mensaje localizado contendrá la
+solución al problema, aportada por un experto suscrito a la lista de correo.
+
+\subsection{Problemas}
+
+Por desgracia, consultar los archivos de una lista de correo en la web es
+más incómodo que hacerlo mediante un cliente de correo electrónico.
+Por poner sólo algunos ejemplos, el navegador no permite ejecutar ninguna
+de estas acciones:
+
+\begin{itemize}
+ \item Mostrar el hilo de la conversación en forma de árbol.
+ \item Imprimir el hilo completo.
+ \item Mostrar una lista de los mensajes entre dos fechas arbitrarias.
+ \item Ocultar los mensajes que no tienen respuestas.
+ \item Mostrar sólo los mensajes de una cierta persona.
+ \item Buscar una cadena de texto sólo en los mensajes de un determinado hilo.
+ \item Descargar el hilo como un fichero, o cualquier otra forma de exportar la
+ información para poder acceder a ella desde un cliente de correo electrónico
+ o fuera de línea.
+ \item Responder a un mensaje usando un cliente de correo (o un webmail) y 
+ citando el mensaje original.
+\end{itemize}
+
+Al indexar los archivos de las listas de correo, los buscadores se encuentran
+en ocasiones que los mensajes están replicados en varios servidores (mirrors).
+Al no tener forma de identificar los mensajes, la desgraciada consecuencia
+es que los mensajes aparecen varias veces en los resultados de las búsquedas,
+y sólo el usuario puede darse cuenta de que se trata de una repetición.
+Naturalmente, el comportamiento ideal sería que los mensajes aparecieran
+sólo una vez en los resultados del buscador.
+
+\subsection{Origen de los problemas: pérdida de información}
+
+En el origen de estos problemas se encuentra una pérdida de información
+que se produce al convertir los mensajes archivados a HTML para su publicación
+en la web.
+
+Los gestores más habituales de listas de correo (mailman, majordomo, sympa,
+etc.) generan un fichero en formato Mailbox (mbox) con los mensajes que
+han sido enviados a la lista.
+
+Otros programas independientes, como hypermail, monharc, pipermail..., se
+especializan en convertir el fichero Mailbox en un conjunto de páginas
+web estáticas.
+
+Los programas más sofisticados son capaces de generar índices complejos
+de los archivos (por fecha, por autor, por hilo...), con múltiples referencias
+cruzadas entre los mensajes en forma de hipervínculos (mensaje anterior,
+mensaje siguiente, etc.).
+
+Pero incluso en el mejor de los casos, esta información sólo es comprensible
+para el usuario, nunca para la máquina.
+
+En consecuencia, es imposible explotarla más allá de las formas previstas
+por el programa que ha generado los archivos.
+
+Entre la información que se pierde en la publicación, se encuentra:
+
+\begin{itemize}
+ \item El asunto del mensaje.
+ \item El autor del mensaje.
+ \item La fecha del mensaje.
+ \item La referencia a la lista de correo en la que se publicó el mensaje.
+ \item La referencia al mensaje anterior, si existe.
+ \item Las referencias (enlaces) a las posibles respuestas al mensaje.
+\end{itemize}
+
+\subsection{Propuesta para conservar la información}
+
+Las tecnologías de la web semántica (y concretamente, RDF) son perfectamente
+capaces de publicar en la web toda la información señalada en la sección
+anterior. Dado que la información ya existe en el origen, no es necesario 
+ningún procedimiento manual para enriquecerla. Tan sólo debe considerarse un 
+proceso de conversión que no desprecie la información, sino que la publique 
+junto con los archivos en HTML. De esta forma, las listas de correo se 
+introducirían en la web semántica.
+
+
+\chapter{Planificación}
+
+
+\chapter{Metodología}
+
+
+\chapter{Manuales}
+
+\section{Resumen}
+
+En esta documentación se incluyen dos manuales:
+
+\begin{itemize}
+ \item Manual técnico (incluye el código fuente en un anexo).
+ \item Manual de usuario.
+\end{itemize}
+
+\section{Manual técnico}
+
+\section{Manual de usuario}
+
+
+\chapter{Anexos}
+
+\section{Acerca}
+
+Este documento ha sido escrito usando \LaTeX. El contenido de este documento 
+se encuentra protegido por los términos de la licencia CreativeCommons [TODO].
+
+\end{document}
+
