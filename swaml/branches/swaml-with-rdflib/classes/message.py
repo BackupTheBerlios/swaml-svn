@@ -24,6 +24,7 @@ class Message:
     def __init__(self, msg, config):
         """Message constructor"""
         self.__class__.id += 1
+        self.id = self.__class__.id
         self.msg = msg
         self.config = config
         
