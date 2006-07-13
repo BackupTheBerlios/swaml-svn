@@ -28,7 +28,7 @@ class Configuration:
             'dir' : 'archive/',
             'url' : 'http://localhost/swaml/',
             'mbox' : 'mbox',
-            'format' : 'MM-YY/messageID.rdf',
+            'format' : 'YY-MM/messageID.rdf',
             'defaultTo' : 'foo@bar.com'
             }        
         self.antispam = ' AT '
