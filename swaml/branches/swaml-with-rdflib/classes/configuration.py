@@ -26,9 +26,10 @@ class Configuration:
         #default values
         self.config = {            
             'dir' : 'archive/',
-            'url' : 'http://localhost/',
+            'url' : 'http://localhost/swaml/',
             'mbox' : 'mbox',
-            'format' : 'MM-YY/messageID.rdf'
+            'format' : 'MM-YY/messageID.rdf',
+            'defaultTo' : 'foo@bar.com'
             }        
         self.antispam = ' AT '
 
@@ -44,7 +45,6 @@ class Configuration:
         
         if (var in self.config.keys()):
             return self.config[var]
-
 
     def set(self, var, value):
         """Method to set a configuration property"""

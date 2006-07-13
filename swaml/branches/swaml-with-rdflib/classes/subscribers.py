@@ -16,8 +16,9 @@
 import sys, os, string, sha
 from template import Template
 from services import Services
+from message import Message
 from rdflib import Graph
-from rdflib import URIRef, Literal, BNode, Namespace
+from rdflib import URIRef, Literal, Variable, BNode, Namespace
 from rdflib import RDF
 from rdflib import plugin
 from rdflib.store import Store
@@ -54,7 +55,12 @@ class Subscriber:
     
     def getSentMails(self):
         """Get the array with subscriber sent mails ids"""
-        return self.mails
+        
+        sent = []
+        for one in self.mails:
+            sent.append(one.getUri())
+        
+        return sent
     
     def setName(self, name):
         """Set subscriber's name"""
@@ -141,13 +147,8 @@ class Subscribers:
                 mails = BNode()
                 store.add((person, SWAML["sentMails"], mails))
                 store.add((mails, RDF.type, RDF.Bag))
-                for id in sentMails:
-                    one = BNode()
-                    store.add((mails, RDF.li, one))
-                    store.add((one, RDF.type, SWAML["Mail"]))
-                    #TODO: include rdfs:seeAlso and rdf:about as arguments
-                    store.add((one, RDFS["seeAlso"], URIRef("foo/bar.rdf#"+id)))
-                    store.add((one, RDF.about, URIRef("foo/bar.rdf#"+id)))
+                for uri in sentMails:
+                    store.add((mails, RDF.li, URIRef(uri)))
                     
         #and dump to disk
         rdf_file = open(self.config.get('dir') + 'subscribers.rdf', 'w+')
