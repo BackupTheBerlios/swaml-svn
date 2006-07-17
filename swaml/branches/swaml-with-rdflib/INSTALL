@@ -5,6 +5,10 @@ Short Answer:
 
 FIXME
 
+Dependencies:
+	- python >= 2.4.0
+	- rdflib >= 2.2.0 (non debian package)
+
 
 Long Answer:
 ^^^^^^^^^^^^
