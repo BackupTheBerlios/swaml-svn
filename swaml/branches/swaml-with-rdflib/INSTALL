@@ -7,7 +7,8 @@ FIXME
 
 Dependencies:
 	- python >= 2.4.0
-	- rdflib >= 2.2.0 (non debian package)
+	- rdflib >= 2.2.0 (official release <http://rdflib.net/releases/>,
+			   non debian package)
 
 
 Long Answer:
