@@ -20,6 +20,7 @@ from mbox import Mbox
 from template import Template
 from subscribers import Subscribers
 from message import Message
+from index import Index
 
 class Publisher:
     """Class to coordinate all publication task"""
@@ -119,25 +120,21 @@ class Publisher:
         
         mbox = Mbox(self.config.get('mbox'))
         messages = 0
-        self.default_to = ''
 
         if not (os.path.exists(self.config.get('dir'))):
             os.mkdir(self.config.get('dir'))
-                        
-        self.beginIndex()
 
         message = mbox.nextMessage()
         
         while(message != None):
             msg = Message(message, self.config)
             messages += 1
-            self.addIndex(msg)
-            self.toRDF(msg)
-            #message.toRdf()
+            self.index.add(msg.getUri())
+            self.toRDF(msg) #refactor: message.toRDF()
             #self.toHTML(msg, messages)
             message = mbox.nextMessage()
             
-        self.closeIndex()
+        self.index.toRDF()
 
         self.subscribers.toRDF()
 
@@ -149,3 +146,4 @@ class Publisher:
         
         self.config = config
         self.subscribers = Subscribers(config)
+        self.index = Index(self.config.get('dir') + 'index.rdf')

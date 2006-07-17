@@ -105,7 +105,7 @@ class Subscribers:
         store = Graph()
         
         #namespaces
-        swamlNS = u'http://swaml.berlios.de/ns/0.1/'
+        swamlNS = u'http://swaml.berlios.de/ns/0.1#'
         store.bind('swaml', swamlNS)
         SWAML = Namespace(swamlNS)
         
