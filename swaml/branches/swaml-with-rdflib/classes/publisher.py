@@ -31,8 +31,8 @@ class Publisher:
         self.template = Template()
         self.tpl = self.template.get('rdf_index_head')
         self.tpl = self.tpl.replace('{TITLE}', 'FIXME')
-        today = datetime.date(1,2,3) #TODO: how to obtain real actual date?
-        self.tpl = self.tpl.replace('{DATE}', str(today.day)+'/'+str(today.month)+'/'+str(today.year))
+        today = datetime.date.today()
+        self.tpl = self.tpl.replace('{DATE}', str(today))
         rdf_file = open(self.config.get('dir') + 'index.rdf', 'w+')
         rdf_file.write(self.template.get('xml_head'))
         rdf_file.write(self.template.get('rdf_head'))
