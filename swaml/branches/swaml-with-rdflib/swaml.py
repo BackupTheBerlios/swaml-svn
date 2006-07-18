@@ -75,22 +75,22 @@ Usage: swaml.py [OPTIONS]
 
 Options:
 
-   -d DIR, --dir=DIR          : use DIR to publish, 'archive/' by default.
+   -d DIR, --dir=DIR          : use DIR to publish the RDF files; 'archive/' is used by default.
 
-   -u URL, --url=URL          : base URL.
+   -u URL, --url=URL          : base URL to browse archives.
 
-   -m MBOX, --mbox=MBOX       : open MBOX file, by default uses 'mbox'.
+   -m MBOX, --mbox=MBOX       : open MBOX file, 'mbox' by default value.
 
-   -f FORMAT, --format=FORMAT : path FORMAT to publish messages, the string 'YYYY-MMM/messageID.rdf' uses by default.
+   -f FORMAT, --format=FORMAT : path pattern to store the messages. FORMAT is an string that can contain following keys:
 
-                                 You could use these variables:
-                                   'DD': number of day that message was sent
-                                   'MM': number of month that message was sent
-                                   'MMM': month string that message was sent
-                                   'YYYY': year that message was sent
-                                   'ID': message numeric id
+                                   	'DD': number of day that message was sent
+                                   	'MM': number of month that message was sent
+                                   	'MMM': month string that message was sent
+                                   	'YYYY': year that message was sent
+                                   	'ID': message numeric id
 
-                                 For example something like 'YYYY/MM/DD/ID.rdf'.
+                                The string 'YYYY-MMM/messageID.rdf' is used by default, but you can compose the string
+                                as you want (for example something like 'YYYY/MM/DD/ID.rdf').
 
    -h, --help                 : print this help message and exit.
 
