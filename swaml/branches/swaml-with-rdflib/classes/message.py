@@ -53,9 +53,13 @@ class Message:
         else:
             index = index.replace('DD', str(date[2]))
 
-        #string month
-        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        index = index.replace('MMM', months[date[1]-1])
+        #long string month
+        longMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+        index = index.replace('MMMM', longMonths[date[1]-1])
+
+        #short string month
+        shortMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        index = index.replace('MMM', shortMonths[date[1]-1])
 
         #numeric month
         if (date[1] < 10):

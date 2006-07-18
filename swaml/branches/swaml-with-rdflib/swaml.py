@@ -85,7 +85,8 @@ Options:
 
                                    	'DD': number of day that message was sent
                                    	'MM': number of month that message was sent
-                                   	'MMM': month string that message was sent
+                                   	'MMM': short month string that message was sent
+                                   	'MMMM': long month string that message was sent
                                    	'YYYY': year that message was sent
                                    	'ID': message numeric id
 
