@@ -14,7 +14,7 @@
 # for more details.
 
 import sys, os, string, sha
-import email, email.Errors
+import datetime, email, email.Errors, email.Utils
 
 class Message:
     """Mail message abstraction"""
@@ -40,50 +40,20 @@ class Message:
     def getPath(self):
         """Return the message's index name"""
         
-        #format permited vars (feature 1355)
-        message_month = 'unknow'
-        message_year = 'unknow'
-        message_id = str(self.id)
-
-        date_text = self.msg['Date'].split(',')                
-
-        #possible date formats:
-        #  Case 1: May 2005 23:13:26 +0900
-        #  Case 2: Fri, 16 Sep 2005 00:15:12 +0200
-        #          Wed,  6 Jul 2005 16:54:29 +0200
-        #  Case 3: Fri, 06 May 05 10:25:23 Hora oficial do Brasil
-        #
-        #to do: locate an standar function to parse date
-        
-        if (len(date_text) == 1):
-            #case 1
-            date = date_text[0].split(' ')
-            message_month = date[1]
-            message_year = date[2]
-
-        elif (len(date_text) == 2):
-            #case 2 or 3
-            date = date_text[1]
-            while(date[0]==' '):
-                date = date[1:]
-            date = date.split(' ')
-            
-            if (len(date[2])<4):
-                #case 3
-                if (date[2][0]=='9'):
-                    date[2] = '19' + date[2]
-                else:
-                    date[2] = '20' + date[2]                
-
-            message_month = date[1]
-            message_year = date[2]
-
-
+        #format permited vars (feature #1355)
         index = self.config.get('format')
-        index = index.replace('MM', message_month)
-        index = index.replace('YY', message_year)
-        index = index.replace('ID', message_id)
 
+        #translate months
+        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+	
+        #replace vars
+        date = email.Utils.parsedate(self.getDate())
+        index = index.replace('MMM', months[date[1]-1])
+        index = index.replace('MM', str(date[1]))
+        index = index.replace('YYYY', str(date[0]))
+        index = index.replace('ID', str(self.id))
+
+        #create subdirs
         dirs = index.split('/')[:-1]
         index_dir = ''
         for one_dir in dirs:
@@ -156,5 +126,6 @@ class Message:
     
     def getBody(self):
         return self.msg.fp.read()
-        
+
+
         

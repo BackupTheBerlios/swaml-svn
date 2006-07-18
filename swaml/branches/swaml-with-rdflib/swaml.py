@@ -77,11 +77,12 @@ Options:
    -d DIR, --dir=DIR          : use DIR to publish, 'archive/' by default.
    -u URL, --url=URL          : base URL.
    -m MBOX, --mbox=MBOX       : open MBOX file, by default uses 'mbox'.
-   -f FORMAT, --format=FORMAT : path FORMAT to publish messages, the string 'MM-YY/messageID.rdf' uses by default.
-                                Some variables you could use:
-                                   'MM': month that message sent
-                                   'YY'': year that message sent
-                                   'ID': message id
+   -f FORMAT, --format=FORMAT : path FORMAT to publish messages, the string 'YYYY-MMM/messageID.rdf' uses by default.
+                                 You could use some variables:
+                                   'MM': number of month that message was sent
+                                   'MMM': month string that message was sent
+                                   'YYYY': year that message was sent
+                                   'ID': message numeric id
    -h, --help                 : print this help message and exit.
 
 Report bugs to: <http://swaml.berlios.de/bugs>

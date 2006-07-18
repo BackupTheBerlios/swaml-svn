@@ -78,8 +78,8 @@ class Publisher:
             msg = Message(message, self.config)
             messages += 1
             self.index.add(msg)
-            self.toRDF(msg) #refactor: message.toRDF()
-            #self.toHTML(msg, messages)
+            self.toRDF(msg) #refactor: msg.toRDF()
+            #self.toHTML(msg)
             message = mbox.nextMessage()
             
         self.index.toRDF()
