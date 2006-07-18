@@ -39,18 +39,34 @@ class Message:
         
     def getPath(self):
         """Return the message's index name"""
-        
+
+        #replace vars        
         #format permited vars (feature #1355)
         index = self.config.get('format')
-
-        #translate months
-        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 	
-        #replace vars
+        #message date
         date = email.Utils.parsedate(self.getDate())
+
+        #day
+        if (date[2] < 10):
+            index = index.replace('DD', '0' + str(date[2]))
+        else:
+            index = index.replace('DD', str(date[2]))
+
+        #string month
+        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         index = index.replace('MMM', months[date[1]-1])
-        index = index.replace('MM', str(date[1]))
+
+        #numeric month
+        if (date[1] < 10):
+            index = index.replace('MM', '0' + str(date[1]))
+        else:
+            index = index.replace('MM', str(date[1]))
+
+        #year
         index = index.replace('YYYY', str(date[0]))
+
+        #swaml id
         index = index.replace('ID', str(self.id))
 
         #create subdirs

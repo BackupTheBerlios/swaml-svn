@@ -69,23 +69,33 @@ class Swaml:
         """
         
         print """
-Usage: swaml.py [OPTION...]
+Usage: swaml.py [OPTIONS]
         
-'swaml' publish the files of a mailing list into the semantic web.
+'swaml' transform the archives of a mailing list (in mbox format) into a semantic web friendly format (RDF in XML).
 
 Options:
+
    -d DIR, --dir=DIR          : use DIR to publish, 'archive/' by default.
+
    -u URL, --url=URL          : base URL.
+
    -m MBOX, --mbox=MBOX       : open MBOX file, by default uses 'mbox'.
+
    -f FORMAT, --format=FORMAT : path FORMAT to publish messages, the string 'YYYY-MMM/messageID.rdf' uses by default.
-                                 You could use some variables:
+
+                                 You could use these variables:
+                                   'DD': number of day that message was sent
                                    'MM': number of month that message was sent
                                    'MMM': month string that message was sent
                                    'YYYY': year that message was sent
                                    'ID': message numeric id
+
+                                 For example something like 'YYYY/MM/DD/ID.rdf'.
+
    -h, --help                 : print this help message and exit.
 
 Report bugs to: <http://swaml.berlios.de/bugs>
+
 """
         sys.exit()
         
