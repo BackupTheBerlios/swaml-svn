@@ -24,59 +24,7 @@ from index import Index
 
 class Publisher:
     """Class to coordinate all publication task"""
-
-
-    def beginIndex(self):
-        """Begin file with mail list's index"""
-        
-        self.template = Template()
-        self.tpl = self.template.get('rdf_index_head')
-        self.tpl = self.tpl.replace('{TITLE}', 'FIXME')
-        today = datetime.date.today()
-        self.tpl = self.tpl.replace('{DATE}', str(today))
-        rdf_file = open(self.config.get('dir') + 'index.rdf', 'w+')
-        rdf_file.write(self.template.get('xml_head'))
-        rdf_file.write(self.template.get('rdf_head'))
-        rdf_file.write(self.tpl)
-        rdf_file.flush()
-        rdf_file.close()
-
-
-    def addIndex(self, msg):
-        """Add an item to index file"""
-        
-        template = Template()
-        tpl = template.get('rdf_index_item')
-
-        try:
-            tpl = tpl.replace('{FROM_NAME}', msg.getFromName())
-            tpl = tpl.replace('{FROM_MBOX}', sha.new('mailto:'+msg.getFromMail()).hexdigest())                              
-            tpl = tpl.replace('{TO}', msg.getTo())                          
-            tpl = tpl.replace('{SUBJECT}', msg.getSubject())
-            tpl = tpl.replace('{MESSAGE_ID}', msg.getSwamlId())
-            tpl = tpl.replace('{RDF_URL}', msg.getUri())            
-        except KeyError, detail:
-            print 'Error proccesing messages: ' + str(detail)
-            self.tpl = ''
-                                        
-        rdf_file = open(self.config.get('dir') + 'index.rdf', 'a')
-        rdf_file.write(self.tpl)
-        rdf_file.flush()
-        rdf_file.close()                                        
-                                    
-
-    def closeIndex(self):
-        """Close index file"""
-        
-        self.template = Template()
-        self.tpl = self.template.get('rdf_index_foot')
-        rdf_file = open(self.config.get('dir') + 'index.rdf', 'a')
-        rdf_file.write(self.tpl)
-        rdf_file.write(self.template.get('rdf_foot'))        
-        rdf_file.flush()
-        rdf_file.close()
-                                                                
-
+                                                               
     def toRDF(self, msg):
         """Print a message into RDF in XML format"""        
         

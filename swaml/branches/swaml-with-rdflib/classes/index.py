@@ -72,4 +72,3 @@ class Index:
         rdf_file.close()
     
         
-        
