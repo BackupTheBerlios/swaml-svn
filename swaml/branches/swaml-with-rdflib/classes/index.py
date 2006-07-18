@@ -26,7 +26,7 @@ class Index:
         self.items = []
         
     def add(self, new):
-        self.items.append(new)
+        self.items.append(new.getUri())
         
     def toRDF(self):
         """Dump inde to RDF file"""

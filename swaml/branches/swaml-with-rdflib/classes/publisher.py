@@ -77,7 +77,7 @@ class Publisher:
         while(message != None):
             msg = Message(message, self.config)
             messages += 1
-            self.index.add(msg.getUri())
+            self.index.add(msg)
             self.toRDF(msg) #refactor: message.toRDF()
             #self.toHTML(msg, messages)
             message = mbox.nextMessage()
