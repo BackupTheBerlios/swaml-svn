@@ -15,7 +15,7 @@
 
 import sys, os, string, sha
 from rdflib import Graph
-from rdflib import URIRef, Literal, BNode, Namespace
+from rdflib import URIRef, Literal, BNode
 from rdflib import RDF
 from rdflib.store import Store
 
@@ -35,21 +35,11 @@ class Index:
         store = Graph()
         
         #namespaces
-        swamlNS = u'http://swaml.berlios.de/ns/0.1#'
-        store.bind('swaml', swamlNS)
-        SWAML = Namespace(swamlNS)
-        
-        foafNS = u'http://xmlns.com/foaf/0.1/'
-        store.bind('foaf', foafNS)
-        FOAF = Namespace(foafNS)
-        
-        rdfsNS = u'http://www.w3.org/2000/01/rdf-schema#'
-        store.bind('rdfs', rdfsNS)
-        RDFS = Namespace(rdfsNS)
-        
-        dcNS = u'http://purl.org/dc/elements/1.1/'
-        store.bind('dc', dcNS)
-        DC = Namespace(dcNS)
+        from namespaces import SWAML, RDFS, FOAF, DC
+        store.bind('swaml', SWAML)
+        store.bind('foaf', FOAF)
+        store.bind('rdfs', RDFS)
+        store.bind('dc', DC)
         
         index = BNode()
         store.add((index, RDF.type, SWAML['Index']))

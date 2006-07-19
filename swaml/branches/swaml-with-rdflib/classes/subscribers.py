@@ -18,7 +18,7 @@ from template import Template
 from services import Services
 from message import Message
 from rdflib import Graph
-from rdflib import URIRef, Literal, Variable, BNode, Namespace
+from rdflib import URIRef, Literal, Variable, BNode
 from rdflib import RDF
 from rdflib import plugin
 from rdflib.store import Store
@@ -105,17 +105,10 @@ class Subscribers:
         store = Graph()
         
         #namespaces
-        swamlNS = u'http://swaml.berlios.de/ns/0.1#'
-        store.bind('swaml', swamlNS)
-        SWAML = Namespace(swamlNS)
-        
-        foafNS = u'http://xmlns.com/foaf/0.1/'
-        store.bind('foaf', foafNS)
-        FOAF = Namespace(foafNS)
-        
-        rdfsNS = u'http://www.w3.org/2000/01/rdf-schema#'
-        store.bind('rdfs', rdfsNS)
-        RDFS = Namespace(rdfsNS)
+        from namespaces import SWAML, RDFS, FOAF
+        store.bind('swaml', SWAML)
+        store.bind('foaf', FOAF)
+        store.bind('rdfs', RDFS)
         
         #subscribers = URIRef("subscribers.html")
         subscribers = BNode()
