@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python2.4
 #
 # SWAML <http://swaml.berlios.de/>
 # Semantic Web Archive of Mailing Lists
@@ -16,7 +16,11 @@
 # for more details.
 
 
-__author__ = 'Sergio Fdez <wikier@asturlinux.org>'
+__author__ = 'Sergio Fdez <http://www.wikier.org/>'
+__contributors__ = ["Diego Berrueta <http://www.berrueta.net/>",
+                    "Jose Emilio Labra <http://www.di.uniovi.es/~labra/>"]
+__copyright__ = "Copyright 2005-2006, Sergio Fdez"
+__license__ = "GNU General Public License"
 __version__ = "0.0.1"
 
 
@@ -25,7 +29,12 @@ from classes.configuration import Configuration
 from classes.publisher import Publisher
 
 class Swaml:
-    """Main class of SWAML project"""
+    """
+    Main class of SWAML project
+    
+    @autor: Sergio Fdez
+    @license: GPL
+    """
 
     def args(self, argv, config):
         "Getting params of default input"
@@ -53,33 +62,50 @@ class Swaml:
 
 
     def usage(self):
-        """Print help to use SWAML"""
+        """
+        Print help to use SWAML
+        
+        @todo: locate better name for format vars
+        """
         
         print """
-Usage: python swaml.py [OPTION...]
+Usage: swaml.py [OPTIONS]
         
-'swaml' publish the files of a mailing list into the semantic web.
+'swaml' transform the archives of a mailing list (in mbox format) into a semantic web friendly format (RDF in XML).
 
 Options:
-   -d DIR, --dir=DIR          : use DIR to publish, 'archive/' by default.
-   -u URL, --url=URL          : base URL.
-   -m MBOX, --mbox=MBOX       : open MBOX file, by default uses 'mbox'.
-   -f FORMAT, --format=FORMAT : path FORMAT to publish messages, the string 'MM-YY/messageID.rdf' uses by default.
-                                Some variables you could use:
-                                   'MM': month that message sent
-                                   'YY'': year that message sent
-                                   'ID': message id
+
+   -d DIR, --dir=DIR          : use DIR to publish the RDF files; 'archive/' is used by default.
+
+   -u URL, --url=URL          : base URL to browse archives.
+
+   -m MBOX, --mbox=MBOX       : open MBOX file, 'mbox' by default value.
+
+   -f FORMAT, --format=FORMAT : path pattern to store the messages. FORMAT is an string that can contain following keys:
+
+                                   	'DD': number of day that message was sent
+                                   	'MM': number of month that message was sent
+                                   	'MMM': short month string that message was sent
+                                   	'MMMM': long month string that message was sent
+                                   	'YYYY': year that message was sent
+                                   	'ID': message numeric id
+
+                                The string 'YYYY-MMM/messageID.rdf' is used by default, but you can compose the string
+                                as you want (for example something like 'YYYY/MM/DD/ID.rdf').
+
    -h, --help                 : print this help message and exit.
 
 Report bugs to: <http://swaml.berlios.de/bugs>
-"""
-        #to do: locate better name for format vars
 
+"""
         sys.exit()
         
 
     def __init__(self, argv):
-        """main method"""
+        """
+        main method
+        @param argv: values of inline arguments
+        """
         
         self.config = Configuration()
         args_ret = self.args(argv, self.config)

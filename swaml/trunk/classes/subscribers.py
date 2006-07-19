@@ -1,5 +1,3 @@
-#!/usr/bin/python
-#
 # SWAML <http://swaml.berlios.de/>
 # Semantic Web Archive of Mailing Lists
 #
@@ -15,49 +13,147 @@
 # or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 # for more details.
 
-import sys, os, string, sha
-from template import Template
+import sys, os, string
+from services import Services
+from message import Message
+from rdflib import Graph
+from rdflib import URIRef, Literal, Variable, BNode
+from rdflib import RDF
+from rdflib import plugin
+from rdflib.store import Store
+
+
+class Subscriber:
+    """Subscriber abstraction"""
+    
+    id = 0
+    
+    def __init__(self, name, mail):
+        """Subscriber constructor"""
+        self.__class__.id += 1
+        self.setName(name)
+        self.setMail(mail)
+        self.setFoaf(Services().getFoaf(mail))
+        self.mails = []
+        
+    def getName(self):
+        """Get subscriber's name"""
+        return self.name
+    
+    def getMail(self):
+        """Get subscriber's mail address"""
+        return self.mail 
+    
+    def getShaMail(self):
+        """Get subscriber's sha sum of mail address"""
+        return Services().getShaMail(self.mail) 
+    
+    def getFoaf(self):
+        """Get subscriber's FOAF"""
+        return self.foaf    
+    
+    def getSentMails(self):
+        """Get the array with subscriber sent mails ids"""
+        
+        sent = []
+        for one in self.mails:
+            sent.append(one.getUri())
+        
+        return sent
+    
+    def setName(self, name):
+        """Set subscriber's name"""
+        if (len(name)>1 and name[0]=='"' and name[-1]=='"'):
+            self.name = name[1:-1]
+        else:
+            self.name = name
+    
+    def setMail(self, mail):
+        """Set subscriber's mail address"""
+        self.mail = mail
+        
+    def setFoaf(self, foaf):
+        """Set subscriber's FOAF"""
+        self.foaf = foaf     
+        
+    def addMail(self, new):
+        """Add new sent mail"""
+        self.mails.append(new) 
+                
+        
 
 class Subscribers:
     """Class to abstract the subscriber management"""
 
-    def add(self, name, mail):
+    def add(self, msg):
         """Add a new subscriber"""
         
-        if (not name in self.subscribers):
-            self.subscribers[name] = mail
+        name = msg.getFromName()
+        mail = msg.getFromMail()
+        
+        if (not mail in self.subscribers):
+            self.subscribers[mail] = Subscriber(name, mail)
+            
+        self.subscribers[mail].addMail(msg)
 
 
-    def intoRDF(self):
+    def toRDF(self):
         """Dump to RDF file all subscribers"""
         
         if not (os.path.exists(self.config.get('dir'))):
             os.mkdir(self.config.get('dir'))
 
-        self.template = Template()
+        #rdf graph
+        store = Graph()
         
+        #namespaces
+        from namespaces import SWAML, RDFS, FOAF
+        store.bind('swaml', SWAML)
+        store.bind('foaf', FOAF)
+        store.bind('rdfs', RDFS)
+        
+        #subscribers
+        subscribers = URIRef(self.config.get('url') + 'subscribers.rdf')
+        store.add((subscribers, RDF.type, SWAML["Subscribers"]))
+
+        #a BNode for each subcriber
+        for mail, subscriber in self.subscribers.items():
+            #subscriberNode = BNode()
+            person = BNode()
+            store.add((subscribers, SWAML["subscriber"], person))
+            store.add((person, RDF.type, FOAF["Person"]))
+            try:
+                name = subscriber.getName()
+                if (len(name) > 0):
+                    store.add((person, FOAF["name"], Literal(name) ))            
+                store.add((person, FOAF["mbox_sha1sum"], Literal(subscriber.getShaMail())))
+                foafResource = subscriber.getFoaf()
+                if (foafResource != None):
+                    store.add((person, RDFS["seeAlso"], URIRef(foafResource)))
+            except UnicodeDecodeError, detail:
+                print 'Error proccesing subscriber ' + subscriber.getName() + ': ' + str(detail)
+            
+            sentMails = subscriber.getSentMails()
+            if (len(sentMails)>0):
+                #build rdf:Bag
+                mails = BNode()
+                store.add((person, SWAML["sentMails"], mails))
+                store.add((mails, RDF.type, RDF.Bag))
+                for uri in sentMails:
+                    store.add((mails, RDF.li, URIRef(uri)))
+                    
+        #and dump to disk
         rdf_file = open(self.config.get('dir') + 'subscribers.rdf', 'w+')
-        rdf_file.write(self.template.get('xml_head'))
-        rdf_file.write(self.template.get('rdf_head'))
-        rdf_file.write(self.template.get('rdf_subscribers_head'))
-        rdf_file.flush()
-
-        for name, mail in self.subscribers.items():
-            self.tpl = self.template.get('rdf_subscriber')
-            self.tpl = self.tpl.replace('{NAME}', name)
-            self.tpl = self.tpl.replace('{MAIL}', sha.new('mailto:'+mail).hexdigest())
-            self.tpl = self.tpl.replace('{FOAF}', "FIXME")
-            rdf_file.write(self.tpl)
-            rdf_file.flush()
-
-        rdf_file.write(self.template.get('rdf_subscribers_foot'))
-        rdf_file.write(self.template.get('rdf_foot'))
+        rdf_file.write(store.serialize(format="pretty-xml"))
         rdf_file.flush()
         rdf_file.close()
                                 
 
     def __init__(self, config):
-        """Constructor method"""
+        """
+        Constructor method
+        
+        @param config: general configuration"""
         
         self.config = config
         self.subscribers = {}

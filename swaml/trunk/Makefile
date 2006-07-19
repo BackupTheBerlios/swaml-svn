@@ -21,7 +21,5 @@ test:
 
 clean:
 	rm -rf archive/
-	rm -f *~
+	rm  -f `find . -name "*~"`
 	rm -f classes/*.pyc
-	rm -f classes/*~
-	rm -f include/templates/*~
