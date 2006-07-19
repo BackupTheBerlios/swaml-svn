@@ -15,6 +15,12 @@
 
 import sys, os, string, sha
 import datetime, email, email.Errors, email.Utils
+from rdflib import Graph
+from rdflib import URIRef, Literal, Variable, BNode
+from rdflib import RDF
+from rdflib import plugin
+from rdflib.store import Store
+from services import Services
 
 class Message:
     """Mail message abstraction"""
@@ -124,8 +130,8 @@ class Message:
             to = self.config.get('defaultTo')
                 
         to = to.replace('@', self.config.getAntiSpam())
-        to = to.replace('<', '&lt;')
-        to = to.replace('>', '&gt;')                                     
+        to = to.replace('<', '')
+        to = to.replace('>', '')                                     
         
         return to     
     
@@ -146,6 +152,63 @@ class Message:
     
     def getBody(self):
         return self.msg.fp.read()
+    
+    def toRDF(self):
+        """
+        Print a message into RDF in XML format
+        """
+        
+        #rdf graph
+        store = Graph()
+        
+        #namespaces
+        from namespaces import SWAML, RDFS, FOAF
+        store.bind('swaml', SWAML)
+        store.bind('foaf', FOAF)
+        store.bind('rdfs', RDFS)
+        
+        #message node
+        message = URIRef(self.getUri())
+        store.add((message, RDF.type, SWAML["Message"]))
+        
+        try:
+            
+            #sender
+            sender = BNode()
+            store.add((message, SWAML["sender"], sender))
+            store.add((sender, RDF.type, FOAF["Person"]))   
+                      
+            name = self.getFromName()
+            if (len(name) > 0):
+                store.add((sender, FOAF["name"], Literal(name) ))   
+                
+            mail = self.getFromMail()
+            store.add((sender, FOAF["mbox_sha1sum"], Literal(Services().getShaMail(mail))))
+            
+            foafResource = Services().getFoaf(mail)
+            if (foafResource != None):
+                store.add((sender, RDFS["seeAlso"], URIRef(foafResource)))
+                
+            #mail details
+            store.add((message, SWAML['id'], Literal(self.getSwamlId())))
+            store.add((message, SWAML['to'], Literal(self.getTo())))         
+            store.add((message, SWAML['subject'], Literal(self.getSubject()))) 
+            store.add((message, SWAML['date'], Literal(self.getDate())))  
+            store.add((message, SWAML['inReplyTo'], Literal(self.getInReplyTo()))) 
+            #store.add((message, SWAML['body'], Literal(self.getBody())))      
+            store.add((message, SWAML['body'], Literal(u'FIXME')))            
+                
+        except UnicodeDecodeError, detail:
+            print 'Error proccesing message ' + str(self.getId()) + ': ' + str(detail)   
+        
+        #and dump to disk
+        rdf_file = open(self.config.get('dir') + self.getPath(), 'w+')
+        rdf_file.write(store.serialize(format="pretty-xml"))
+        rdf_file.flush()
+        rdf_file.close()        
+        
+
+        
 
 
         

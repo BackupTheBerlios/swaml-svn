@@ -23,45 +23,7 @@ from message import Message
 from index import Index
 
 class Publisher:
-    """Class to coordinate all publication task"""
-                                                               
-    def toRDF(self, msg):
-        """Print a message into RDF in XML format"""        
-        
-        template = Template()
-        tpl = template.get('rdf_message')
-
-        rdf_file = open(self.config.get('dir') + msg.getPath(), 'w+')
-        rdf_file.write(template.get('xml_head'))
-        rdf_file.write(template.get('rdf_head'))
-        rdf_file.flush()
-            
-        name = msg.getFromName()
-        tpl = tpl.replace('{FROM_NAME}', name)
-        mail = msg.getFromMail()
-        tpl = tpl.replace('{FROM_MBOX}', sha.new('mailto:'+mail).hexdigest())
-        tpl = tpl.replace('{TO}', msg.getTo())                                                                                                              
-        tpl = tpl.replace('{SUBJECT}', msg.getSubject())
-        tpl = tpl.replace('{DATE}', msg.getDate())
-        tpl = tpl.replace('{MESSAGE_ID}', msg.getSwamlId())
-        tpl = tpl.replace('{RDF_URL}', msg.getUri())
-        tpl = tpl.replace('{HTML_URL}', 'FIXME')
-        tpl = tpl.replace('{IN_REPLY_TO}', msg.getInReplyTo())            
-        tpl = tpl.replace('{BODY}', msg.getBody())
-        
-        self.subscribers.add(name, mail, msg)
-
-        rdf_file.write(tpl)
-        rdf_file.write(template.get('rdf_foot'))
-        rdf_file.flush()
-        rdf_file.close()
-
-
-    def toHTML(self, message):
-        """Print a message into HTML format"""
-        
-        pass
-    
+    """Class to coordinate all publication task"""                                                               
 
     def publish(self):
         """Publish a mbox"""
@@ -78,8 +40,9 @@ class Publisher:
             msg = Message(message, self.config)
             messages += 1
             self.index.add(msg)
-            self.toRDF(msg) #refactor: msg.toRDF()
-            #self.toHTML(msg)
+            self.subscribers.add(msg)
+            msg.toRDF()
+            #msg.toHTML()
             message = mbox.nextMessage()
             
         self.index.toRDF()

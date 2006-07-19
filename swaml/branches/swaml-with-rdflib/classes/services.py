@@ -32,7 +32,7 @@ class Services:
         @todo customize foaf service
         """
         
-        mail_sha1sum = sha.new('mailto:'+mail).hexdigest()
+        mail_sha1sum = self.getShaMail(mail)
         
         # TODO: customize this with a real service
         #
@@ -52,6 +52,18 @@ class Services:
             return foafs[mail_sha1sum]
         else:
             return None
+        
+    def getShaMail(self, mail):
+        """
+        Services to obtain encrypted email address
+        
+        @param mail: an email address
+        @type mail: string
+        @return: encryted mail on foaf:mbox_sha1sum format
+        @rtype: string
+        """        
+        
+        return sha.new('mailto:'+mail).hexdigest()
 
 
 

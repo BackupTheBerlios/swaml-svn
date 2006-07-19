@@ -13,7 +13,7 @@
 # or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 # for more details.
 
-import sys, os, string, sha
+import sys, os, string
 from template import Template
 from services import Services
 from message import Message
@@ -47,7 +47,7 @@ class Subscriber:
     
     def getShaMail(self):
         """Get subscriber's sha sum of mail address"""
-        return sha.new('mailto:'+self.mail).hexdigest()  
+        return Services().getShaMail(self.mail) 
     
     def getFoaf(self):
         """Get subscriber's FOAF"""
@@ -86,8 +86,11 @@ class Subscriber:
 class Subscribers:
     """Class to abstract the subscriber management"""
 
-    def add(self, name, mail, msg):
+    def add(self, msg):
         """Add a new subscriber"""
+        
+        name = msg.getFromName()
+        mail = msg.getFromMail()
         
         if (not mail in self.subscribers):
             self.subscribers[mail] = Subscriber(name, mail)
@@ -110,12 +113,9 @@ class Subscribers:
         store.bind('foaf', FOAF)
         store.bind('rdfs', RDFS)
         
-        #subscribers = URIRef("subscribers.html")
-        subscribers = BNode()
+        #subscribers
+        subscribers = URIRef(self.config.get('url') + 'subscribers.rdf')
         store.add((subscribers, RDF.type, SWAML["Subscribers"]))
-        
-        #changing default encoding?
-        #sys.setdefaultencoding('latin-1')
 
         #a BNode for each subcriber
         for mail, subscriber in self.subscribers.items():
