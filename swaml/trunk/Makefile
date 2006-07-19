@@ -21,5 +21,5 @@ test:
 
 clean:
 	rm -rf archive/
-	rm  -f `find . -name "*~"`
-	rm -f classes/*.pyc
+	rm -f `find . -name "*~"`
+	rm -f `find . -name "*.pyc"`
