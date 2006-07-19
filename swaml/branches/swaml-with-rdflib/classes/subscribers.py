@@ -14,7 +14,6 @@
 # for more details.
 
 import sys, os, string
-from template import Template
 from services import Services
 from message import Message
 from rdflib import Graph
