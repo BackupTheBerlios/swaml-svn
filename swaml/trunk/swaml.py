@@ -49,13 +49,13 @@ class Swaml:
         for opt, arg in opts:
             if opt in ("-h", "--help"):
                 self.usage()
-            elif opt in ("-d", "--dir=") and arg:
+            elif opt in ("-d", "--dir") and arg:
                 self.config.set("dir", arg)
-            elif opt in ("-u", "--url=") and arg:
+            elif opt in ("-u", "--url") and arg:
                 self.config.set("url", arg)
-            elif opt in ("-m", "--mbox=") and arg:
+            elif opt in ("-m", "--mbox") and arg:
                 self.config.set("mbox", arg)
-            elif opt in ("-f", "--format=") and arg:
+            elif opt in ("-f", "--format") and arg:
                 self.config.set("format", arg)                                
             else:
                 self.usage()
