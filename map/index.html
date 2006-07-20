@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+  <head>
+    <title>SWAML Map - View SWAML subscribers on Google Maps</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+
+    <style type="text/css">
+    v\:* {
+      behavior:url(#default#VML);
+    }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="resources/css/swamlmap.css" />
+
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAmz_NANxejR0UFr6RTGNvIhQPUYXYJjFmipbGxsJBhj6Kd8CFlhTwqDnjVivOXoEvDSF5ivOIuvBzHQ"
+      type="text/javascript"></script>
+    <script type="text/javascript">
+
+    //<![CDATA[
+
+     // Creates a marker at the given point with the given number label
+     function createMarker(point, text) {
+  	var marker = new GMarker(point);
+  	GEvent.addListener(marker, "click", function() { marker.openInfoWindowHtml(text); });
+  	return marker;
+    }
+
+    function load() {
+      if (GBrowserIsCompatible()) {
+        var map = new GMap2(document.getElementById("map"));
+
+	map.addControl(new GSmallMapControl());
+	map.addControl(new GMapTypeControl());
+
+        map.setCenter(new GLatLng(43.437028, -5.77544), 10);
+	var point = new GLatLng(43.437028, -5.77544);
+	map.addOverlay(createMarker(point, 'my home'));
+
+      }
+    }
+
+    //]]>
+    </script>
+  </head>
+  <body onload="load()" onunload="GUnload()">
+	<div>
+		<div id="panel" style="float:left; text-align:center;">
+			<img src="resources/images/swamlmap.png" width="150" height="150" alt="SWAML Map" 
+			 	style="display: block; margin-left: auto; margin-right: auto;" />
+		</div>
+    		<div id="map" style="width: 1000px; height: 600px; border: 3px solid red; float: right; margin: 2px 0px 2px 10px;" />
+	</div>
+  </body>
+</html>
