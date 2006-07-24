@@ -47,6 +47,7 @@ class Publisher:
         self.index.toRDF()
 
         self.subscribers.toRDF()
+        #self.subscribers.toKML()
 
         return messages
     

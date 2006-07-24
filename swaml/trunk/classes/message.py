@@ -99,7 +99,7 @@ class Message:
         name = ' '.join(from_parted[:-1])
         mail = from_parted[-1]
 
-        return [name, mail]
+        return [unicode(name, errors='ignore'), mail]
     
     def getFromName(self):   
         if(self.msg['From'].find('<')!= -1):
@@ -122,7 +122,6 @@ class Message:
         
     def getTo(self):        
         to = ' '
-        
         try:                
             to = self.msg['To']
         except:
@@ -133,25 +132,22 @@ class Message:
         to = to.replace('<', '')
         to = to.replace('>', '')                                     
         
-        return to     
+        return unicode(to, errors='ignore')
     
     def getSubject(self):
-        return self.msg['Subject']
-    
+        return unicode(self.msg['Subject'], errors='ignore')
+        
     def getDate(self):
         return self.msg['Date']    
     
     def getInReplyTo(self):
-        #if (self.msg.get('In-Reply-To')):
-        #    self.tpl = self.tpl.replace('{IN_REPLY_TO}', self.msg['In-Reply-To'])
-        #elif (self.msg.get('References')):
-        #    self.tpl = self.tpl.replace('{IN_REPLY_TO}', self.msg['References'])
-        #else:
-        #    self.tpl = self.tpl.replace('{IN_REPLY_TO}', 'none')        
+        # self.msg.get('In-Reply-To')
+        # self.msg.get('References')
+        # None 
         return 'FIXME'
     
     def getBody(self):
-        return self.msg.fp.read()
+        return unicode(self.msg.fp.read(), errors='ignore')
     
     def toRDF(self):
         """
@@ -172,7 +168,7 @@ class Message:
         store.add((message, RDF.type, SWAML["Message"]))
         
         try:
-            
+                        
             #sender
             sender = BNode()
             store.add((message, SWAML["sender"], sender))
@@ -191,21 +187,23 @@ class Message:
                 
             #mail details
             store.add((message, SWAML['id'], Literal(self.getSwamlId())))
-            store.add((message, SWAML['to'], Literal(self.getTo())))         
+            store.add((message, SWAML['to'], Literal(self.getTo())))                         
             store.add((message, SWAML['subject'], Literal(self.getSubject()))) 
-            store.add((message, SWAML['date'], Literal(self.getDate())))  
-            store.add((message, SWAML['inReplyTo'], Literal(self.getInReplyTo()))) 
-            #store.add((message, SWAML['body'], Literal(self.getBody())))      
-            store.add((message, SWAML['body'], Literal(u'FIXME')))            
+            store.add((message, SWAML['date'], Literal(self.getDate())))                
+            store.add((message, SWAML['inReplyTo'], Literal(self.getInReplyTo())))                
+            store.add((message, SWAML['body'], Literal(self.getBody())))      
                 
         except UnicodeDecodeError, detail:
-            print 'Error proccesing message ' + str(self.getId()) + ': ' + str(detail)   
+            print 'Error proccesing message ' + str(self.getId()) + ': ' + str(detail) 
         
         #and dump to disk
-        rdf_file = open(self.config.get('dir') + self.getPath(), 'w+')
-        rdf_file.write(store.serialize(format="pretty-xml"))
-        rdf_file.flush()
-        rdf_file.close()        
+        try:
+            rdf_file = open(self.config.get('dir') + self.getPath(), 'w+')
+            rdf_file.write(store.serialize(format="pretty-xml"))
+            rdf_file.flush()
+            rdf_file.close()        
+        except IOError, detail:
+            print 'IOError: ', str(detail)
         
 
         

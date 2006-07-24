@@ -16,6 +16,7 @@
 import sys, os, string
 from services import Services
 from message import Message
+import rdflib
 from rdflib import Graph
 from rdflib import URIRef, Literal, Variable, BNode
 from rdflib import RDF
@@ -147,13 +148,48 @@ class Subscribers:
         rdf_file.write(store.serialize(format="pretty-xml"))
         rdf_file.flush()
         rdf_file.close()
+        
+    def toKML(self):
+        """
+        Public subscribers' geography information,
+        if it's available in his foaf files,
+        into KML file
+        """
+        
+        print 'method susbcribers.toKML()'
+        
+        from rdflib.sparql import sparqlGraph, GraphPattern
+        from namespaces import SWAML, RDFS, FOAF, GEO
+        
+        for mail, subscriber in self.subscribers.items():
+            foaf = Services().getFoaf(mail)
+            if (foaf != None):
+                print foaf
+                sparqlGr = sparqlGraph.SPARQLGraph()
+                sparqlGr.parse(foaf)
+            
+                select = ('?lat', '?long')
+                where  = GraphPattern([    ('?x', RDF['type'], FOAF['Person']),
+                                           ('?x', FOAF['mbox_sha1sum'], subscriber.getShaMail()),                        
+                                           ('?x', FOAF['based_near'], '?y'),
+                                           ('?y', GEO['lat'], '?lat'),
+                                           ('?y', GEO['long'], '?long')    
+                                       ])
+            
+                result = sparqlGr.query(select, where)
+            
+                for one in result:
+                    print ' - ' + one[0] + ' <' + mail + '> (' + one[1] + ',' + one[2] + ')'
+        
+        print 'end method toKML()'
                                 
 
     def __init__(self, config):
         """
         Constructor method
         
-        @param config: general configuration"""
+        @param config: general configuration
+        """
         
         self.config = config
         self.subscribers = {}

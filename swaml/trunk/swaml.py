@@ -17,11 +17,11 @@
 
 
 __author__ = 'Sergio Fdez <http://www.wikier.org/>'
-__contributors__ = ["Diego Berrueta <http://www.berrueta.net/>",
-                    "Jose Emilio Labra <http://www.di.uniovi.es/~labra/>"]
-__copyright__ = "Copyright 2005-2006, Sergio Fdez"
-__license__ = "GNU General Public License"
-__version__ = "0.0.1"
+__contributors__ = ['Diego Berrueta <http://www.berrueta.net/>',
+                    'Jose Emilio Labra <http://www.di.uniovi.es/~labra/>']
+__copyright__ = 'Copyright 2005-2006, Sergio Fdez'
+__license__ = 'GNU General Public License'
+__version__ = '0.0.1'
 
 
 import sys, string, getopt
