@@ -21,7 +21,8 @@ from rdflib import Graph
 from rdflib import URIRef, Literal, Variable, BNode
 from rdflib import RDF
 from rdflib import plugin
-from rdflib.store import Store
+from rdflib.sparql import sparqlGraph, GraphPattern
+from namespaces import SWAML, RDFS, FOAF, GEO
 
 
 class Subscriber:
@@ -108,7 +109,6 @@ class Subscribers:
         store = Graph()
         
         #namespaces
-        from namespaces import SWAML, RDFS, FOAF
         store.bind('swaml', SWAML)
         store.bind('foaf', FOAF)
         store.bind('rdfs', RDFS)
@@ -156,32 +156,36 @@ class Subscribers:
         into KML file
         """
         
-        print 'method susbcribers.toKML()'
-        
-        from rdflib.sparql import sparqlGraph, GraphPattern
-        from namespaces import SWAML, RDFS, FOAF, GEO
-        
         for mail, subscriber in self.subscribers.items():
             foaf = Services().getFoaf(mail)
             if (foaf != None):
-                print foaf
+
                 sparqlGr = sparqlGraph.SPARQLGraph()
-                sparqlGr.parse(foaf)
+                
+                try:
+                    sparqlGr.parse(foaf)
+                except:
+                    print 'An error ocurrer trying to parse ' + foaf + ' rdf file'
             
                 select = ('?lat', '?long')
-                where  = GraphPattern([    ('?x', RDF['type'], FOAF['Person']),
-                                           ('?x', FOAF['mbox_sha1sum'], subscriber.getShaMail()),                        
-                                           ('?x', FOAF['based_near'], '?y'),
-                                           ('?y', GEO['lat'], '?lat'),
-                                           ('?y', GEO['long'], '?long')    
-                                       ])
-            
-                result = sparqlGr.query(select, where)
-            
-                for one in result:
-                    print ' - ' + one[0] + ' <' + mail + '> (' + one[1] + ',' + one[2] + ')'
-        
-        print 'end method toKML()'
+                
+                try:
+                    
+                    where  = GraphPattern([    ('?x', RDF['type'], FOAF['Person']), 
+                                               ('?x', FOAF['mbox_sha1sum'], subscriber.getShaMail()),
+                                               ('?x', FOAF['based_near'], '?y'),
+                                               ('?y', GEO['lat'], '?lat'),
+                                               ('?y', GEO['long'], '?long')    
+                                           ])
+                                           
+                    result = sparqlGr.query(select, where)
+                    
+                    for one in result:
+                        print ' - ' + one[0] + ' <' + mail + '> (' + one[1] + ',' + one[2] + ')'
+                    
+                   
+                except TypeError, detail:
+                    print 'TypeError (' + str(detail) + ') on sparql query to inference geography subscriber information from ' + foaf
                                 
 
     def __init__(self, config):

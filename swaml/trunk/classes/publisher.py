@@ -47,7 +47,7 @@ class Publisher:
         self.index.toRDF()
 
         self.subscribers.toRDF()
-        #self.subscribers.toKML()
+        self.subscribers.toKML()
 
         return messages
     
@@ -57,4 +57,4 @@ class Publisher:
         
         self.config = config
         self.subscribers = Subscribers(config)
-        self.index = Index(self.config.get('dir') + 'index.rdf')
+        self.index = Index(self.config)

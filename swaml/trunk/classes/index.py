@@ -21,8 +21,8 @@ from rdflib.store import Store
 
 class Index:
     
-    def __init__(self, path):
-        self.path = path
+    def __init__(self, config):
+        self.config = config
         self.items = []
         
     def add(self, new):
@@ -41,11 +41,12 @@ class Index:
         store.bind('rdfs', RDFS)
         store.bind('dc', DC)
         
-        index = BNode()
-        store.add((index, RDF.type, SWAML['Index']))
-        store.add((index, DC['title'], Literal('FIXME')))
-        store.add((index, DC['publisher'], Literal('SWAML')))
-        store.add((index, DC['description'], Literal('RDF files of a mailing list')))
+        index = URIRef(self.config.get('url')+'index.rdf')
+        store.add((index, RDF.type, SWAML['MailingList']))
+        store.add((index, DC['title'], Literal(u'title (FIXME)')))
+        store.add((index, DC['publisher'], Literal(u'SWAML')))
+        store.add((index, DC['description'], Literal(u'RDF files of a mailing list')))
+        store.add((index, SWAML['subscribers'], URIRef(self.config.get('url')+'subscribers.rdf')))
                                            
         items = BNode()
         store.add((index, SWAML['sentMails'], items))
@@ -56,7 +57,7 @@ class Index:
             store.add((items, RDF.li, URIRef(item)))
                     
         #and dump to disk
-        rdf_file = open(self.path, 'w+')
+        rdf_file = open(self.config.get('dir')+'index.rdf', 'w+')
         rdf_file.write(store.serialize(format="pretty-xml"))
         rdf_file.flush()
         rdf_file.close()
