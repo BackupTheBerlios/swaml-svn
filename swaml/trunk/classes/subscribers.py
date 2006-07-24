@@ -22,7 +22,7 @@ from rdflib import URIRef, Literal, Variable, BNode
 from rdflib import RDF
 from rdflib import plugin
 from rdflib.sparql import sparqlGraph, GraphPattern
-from namespaces import SWAML, RDFS, FOAF, GEO
+from namespaces import SWAML, RDF, RDFS, FOAF, GEO
 
 
 class Subscriber:
@@ -35,7 +35,13 @@ class Subscriber:
         self.__class__.id += 1
         self.setName(name)
         self.setMail(mail)
-        self.setFoaf(Services().getFoaf(mail))
+        services = Services()
+        self.setFoaf(services.getFoaf(mail))
+        if (self.foaf != None):
+            lat, lon = services.getGeoPosition(self.getFoaf())
+            self.setGeo(lat, lon)
+        else:
+            self.setGeo()
         self.mails = []
         
     def getName(self):
@@ -63,6 +69,9 @@ class Subscriber:
         
         return sent
     
+    def getGeo(self):
+        return self.geo
+    
     def setName(self, name):
         """Set subscriber's name"""
         if (len(name)>1 and name[0]=='"' and name[-1]=='"'):
@@ -81,11 +90,27 @@ class Subscriber:
     def addMail(self, new):
         """Add new sent mail"""
         self.mails.append(new) 
+        
+    def setGeo(self, lat=None, lon=None):
+        self.geo = [lat, lon]
                 
         
 
 class Subscribers:
-    """Class to abstract the subscriber management"""
+    """
+    Class to abstract the subscribers management
+    """
+    
+    def __init__(self, config):
+        """
+        Constructor method
+        
+        @param config: general configuration
+        """
+        
+        self.config = config
+        self.subscribers = {}
+
 
     def add(self, msg):
         """Add a new subscriber"""
@@ -99,7 +124,7 @@ class Subscribers:
         self.subscribers[mail].addMail(msg)
 
 
-    def toRDF(self):
+    def __toRDF(self):
         """Dump to RDF file all subscribers"""
         
         if not (os.path.exists(self.config.get('dir'))):
@@ -131,6 +156,15 @@ class Subscribers:
                 foafResource = subscriber.getFoaf()
                 if (foafResource != None):
                     store.add((person, RDFS["seeAlso"], URIRef(foafResource)))
+                    lat, lon = subscriber.getGeo()
+                    if (lat != None and lon != None): 
+                        store.bind('geo', GEO)                       
+                        geo = BNode()
+                        store.add((person, FOAF['based_near'], geo))
+                        store.add((geo, GEO['lat'], Literal(lat)))
+                        store.add((geo, GEO['long'], Literal(lon)))
+                        #TODO: we want something like <foaf:based_near geo:lat="" geo:long="" />
+                        
             except UnicodeDecodeError, detail:
                 print 'Error proccesing subscriber ' + subscriber.getName() + ': ' + str(detail)
             
@@ -149,54 +183,56 @@ class Subscribers:
         rdf_file.flush()
         rdf_file.close()
         
-    def toKML(self):
+    def __toKML(self):
         """
         Public subscribers' geography information,
         if it's available in his foaf files,
         into KML file
         """
+
+        from pykml.kml import KML
+        kml = KML()
+        kml.createFolder(u'SWAML Subscribers')
         
         for mail, subscriber in self.subscribers.items():
-            foaf = Services().getFoaf(mail)
-            if (foaf != None):
-
-                sparqlGr = sparqlGraph.SPARQLGraph()
-                
-                try:
-                    sparqlGr.parse(foaf)
-                except:
-                    print 'An error ocurrer trying to parse ' + foaf + ' rdf file'
+            lat, lon = subscriber.getGeo()
+            if ((lat != None) and (lon != None)):          
+                kml.createPlacemark(subscriber.getName(), lat=float(lat), lon=float(lon))
             
-                select = ('?lat', '?long')
-                
-                try:
-                    
-                    where  = GraphPattern([    ('?x', RDF['type'], FOAF['Person']), 
-                                               ('?x', FOAF['mbox_sha1sum'], subscriber.getShaMail()),
-                                               ('?x', FOAF['based_near'], '?y'),
-                                               ('?y', GEO['lat'], '?lat'),
-                                               ('?y', GEO['long'], '?long')    
-                                           ])
-                                           
-                    result = sparqlGr.query(select, where)
-                    
-                    for one in result:
-                        print ' - ' + one[0] + ' <' + mail + '> (' + one[1] + ',' + one[2] + ')'
-                    
-                   
-                except TypeError, detail:
-                    print 'TypeError (' + str(detail) + ') on sparql query to inference geography subscriber information from ' + foaf
+        file = open(self.config.get('dir') + 'subscribers.kml', 'w+')
+        kml.writepretty(file)    
+        file.close()
+        
+        del KML
                                 
 
-    def __init__(self, config):
+    def process(self):
         """
-        Constructor method
-        
-        @param config: general configuration
+        Process subscriber to obtain more semantic information
         """
         
-        self.config = config
-        self.subscribers = {}
+        #first compact list
+        self.__compact()
+        
+        #more ideas?
 
+    def __compact(self):
+        """
+        Compact mailing list subscribers
+        according his foaf information
+        """
+        
+        #diego's idea: look on foaf if the subscriber uses more than one address
+        pass
+    
+    def export(self):
+        """
+        Export subscriber information into multiple
+        formats (RDF and KML)
+        """
+        
+        self.__toRDF()
+        self.__toKML()
+                           
                                     
 del sys, string

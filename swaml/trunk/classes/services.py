@@ -55,6 +55,31 @@ class Services:
         else:
             return None
         
+    def getGeoPosition(self, foaf):
+        """
+        Obtain geography information from foaf
+        """
+        
+        import rdflib
+        from rdflib.sparql import sparqlGraph, GraphPattern
+        from rdflib import Namespace, Literal
+        from namespaces import SWAML, RDF, RDFS, FOAF, GEO
+
+        sparqlGr = sparqlGraph.SPARQLGraph()
+        sparqlGr.parse(foaf)
+    
+        select = ('?lat', '?long')
+        where  = GraphPattern([    ('?x', RDF['type'], FOAF['Person']),
+                    ('?x', FOAF['based_near'], '?y'),
+                    ('?y', GEO['lat'], '?lat'),
+                    ('?y', GEO['long'], '?long')    ])
+    
+        result = sparqlGr.query(select, where)
+    
+        for one in result:
+            return [one[0], one[1]]
+
+        
     def getShaMail(self, mail):
         """
         Services to obtain encrypted email address
