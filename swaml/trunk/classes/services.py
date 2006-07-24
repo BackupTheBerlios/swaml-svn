@@ -78,6 +78,8 @@ class Services:
     
         for one in result:
             return [one[0], one[1]]
+        
+        return [None, None]
 
         
     def getShaMail(self, mail):
