@@ -190,18 +190,19 @@ class Subscribers:
         into KML file
         """
 
-        from pykml.kml import KML
+        from kml import KML
         kml = KML()
-        kml.createFolder(u'SWAML Subscribers')
         
         for mail, subscriber in self.subscribers.items():
             lat, lon = subscriber.getGeo()
-            if ((lat != None) and (lon != None)):          
-                kml.createPlacemark(subscriber.getName(), lat=float(lat), lon=float(lon))
+            if ((lat != None) and (lon != None)): 
+                kml.addPlace(lat, lon, name=subscriber.getName())
             
-        file = open(self.config.get('dir') + 'subscribers.kml', 'w+')
-        kml.writepretty(file)    
-        file.close()
+        #and dump to disk
+        kml_file = open(self.config.get('dir') + 'subscribers.kml', 'w+')
+        kml.write(kml_file)
+        kml_file.flush()
+        kml_file.close()
         
         del KML
                                 
