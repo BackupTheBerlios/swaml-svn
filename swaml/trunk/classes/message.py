@@ -30,28 +30,37 @@ class Message:
         """Message constructor"""
         self.__class__.id += 1
         self.id = self.__class__.id
+        self.config = config
+        
+        try:
+            #tip because decode_header returns the exception 
+            #    ValueError: too many values to unpack
+            #performance this tip
+            subject_parted = msg['Subject'].split(' ') 
+            subject = ''
+            for one in subject_parted:
+                [(s, enconding)] = decode_header(one)
+                if (subject == ''):
+                    subject = s
+                else:
+                    subject += ' ' + s
+            self.subject = subject
+        except:
+            self.subject = unicode(msg['Subject'], errors='ignore') 
+        
         self.messageId = msg['Message-Id']
         self.date = msg['Date']
         self.From = msg['From']
         self.getAddressFrom = msg.getaddr('From')
-        self.to = msg['To']
+        try:
+            self.to = msg['To']    
+        except:
+            #some mails have not a 'to' field
+            self.to = self.config.get('defaultTo')    
         
-        #tip because decode_header returns the exception 
-        #    ValueError: too many values to unpack
-        #performance this tip
-        subject_parted = msg['Subject'].split(' ') 
-        subject = ''
-        for one in subject_parted:
-            [(s, enconding)] = decode_header(one)
-            if (subject == ''):
-                subject = s
-            else:
-                subject += ' ' + s
-        self.subject = subject #unicode(msg['Subject'], errors='ignore') 
         
         self.body = msg.fp.read()
         #[(self.body, enconding)] = decode_header(msg.fp.read())
-        self.config = config
         
     def getId(self):
         return self.id
@@ -140,12 +149,7 @@ class Message:
         
         
     def getTo(self):        
-        to = ' '
-        try:                
-            to = self.to
-        except:
-            #some mails have not a 'to' field
-            to = self.config.get('defaultTo')
+        to = self.to
                 
         to = to.replace('@', self.config.getAntiSpam())
         to = to.replace('<', '')
