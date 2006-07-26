@@ -57,7 +57,7 @@ class Index:
         subscribers = BNode()
         store.add((index, SWAML['Subscribers'], subscribers))
         store.add((subscribers, SWAML['subscribersIndex'], URIRef(self.config.get('url')+'subscribers.rdf')))
-	store.add((subscribers, SWAML['subscribersCoordinates'], URIRef(self.config.get('url')+'subscribers.kml')))
+        store.add((subscribers, SWAML['subscribersCoordinates'], URIRef(self.config.get('url')+'subscribers.kml')))
                   
         #and items                         
         items = BNode()
@@ -68,9 +68,12 @@ class Index:
             store.add((items, RDF.li, URIRef(item)))
                     
         #and dump to disk
-        rdf_file = open(path, 'w+')
-        rdf_file.write(store.serialize(format="pretty-xml"))
-        rdf_file.flush()
-        rdf_file.close()
+        try:
+            rdf_file = open(path, 'w+')
+            rdf_file.write(store.serialize(format="pretty-xml"))
+            rdf_file.flush()
+            rdf_file.close()
+        except IOError, detail:
+            print 'Error exporting index to RDF: ' + str(detail)
     
         

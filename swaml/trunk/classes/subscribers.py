@@ -178,10 +178,13 @@ class Subscribers:
                     store.add((mails, RDF.li, URIRef(uri)))
                     
         #and dump to disk
-        rdf_file = open(self.config.get('dir') + 'subscribers.rdf', 'w+')
-        rdf_file.write(store.serialize(format="pretty-xml"))
-        rdf_file.flush()
-        rdf_file.close()
+        try:
+            rdf_file = open(self.config.get('dir') + 'subscribers.rdf', 'w+')
+            rdf_file.write(store.serialize(format="pretty-xml"))
+            rdf_file.flush()
+            rdf_file.close()
+        except IOError, detail:
+            print 'Error exporting subscribers to RDF: ' + str(detail)
         
     def __toKML(self):
         """
@@ -199,10 +202,13 @@ class Subscribers:
                 kml.addPlace(lat, lon, name=subscriber.getName())
             
         #and dump to disk
-        kml_file = open(self.config.get('dir') + 'subscribers.kml', 'w+')
-        kml.write(kml_file)
-        kml_file.flush()
-        kml_file.close()
+        try:
+            kml_file = open(self.config.get('dir') + 'subscribers.kml', 'w+')
+            kml.write(kml_file)
+            kml_file.flush()
+            kml_file.close()
+        except IOError, detail:
+            print 'Error exporting coordinates to KML: ' + str(detail)
         
         del KML
                                 

@@ -192,7 +192,7 @@ class Message:
             store.add((message, SWAML['date'], Literal(self.getDate())))                
             store.add((message, SWAML['inReplyTo'], Literal(self.getInReplyTo())))                
             store.add((message, SWAML['body'], Literal(self.getBody())))      
-                
+            
         except UnicodeDecodeError, detail:
             print 'Error proccesing message ' + str(self.getId()) + ': ' + str(detail) 
         
@@ -203,7 +203,7 @@ class Message:
             rdf_file.flush()
             rdf_file.close()        
         except IOError, detail:
-            print 'IOError: ', str(detail)
+            print 'IOError saving message ' + str(self.getId()) + ': ' + str(detail)
         
 
         
