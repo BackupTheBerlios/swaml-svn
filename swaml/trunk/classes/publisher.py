@@ -40,6 +40,8 @@ class Publisher:
             messages += 1
             self.index.add(msg)
             self.subscribers.add(msg)
+            subscriber = self.subscribers.get(msg.getFromMail())
+            msg.setSender(subscriber)
             msg.toRDF()
             #msg.toHTML()
             message = mbox.nextMessage()

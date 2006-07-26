@@ -14,11 +14,19 @@
 # for more details.
 
 import sys, os, string, sha
+import rdflib
+from rdflib.sparql import sparqlGraph, GraphPattern
+from rdflib import Namespace, Literal
+from namespaces import SWAML, RDF, RDFS, FOAF, GEO
 
-class Services:
+class FoafUtils:
     """
     Collection of util services to SWAML
     """
+    
+    def __init__(self):
+        self.__actualFoaf = None
+        self.__graph = None
     
     def getFoaf(self, mail):
         """
@@ -55,31 +63,47 @@ class Services:
         else:
             return None
         
+    def __getGraph(self, foaf):
+        """
+        A simple mechanism to cache foaf graph
+        """
+        if (self.__actualFoaf != foaf or self.__graph == None):
+            self.__actualFoaf = foaf
+            self.__graph = sparqlGraph.SPARQLGraph()
+            try:
+                self.__graph.parse(foaf)
+            except:
+                self.__graph = None
+        
+        return self.__graph
+        
     def getGeoPosition(self, foaf):
         """
         Obtain geography information from foaf
         """
         
-        import rdflib
-        from rdflib.sparql import sparqlGraph, GraphPattern
-        from rdflib import Namespace, Literal
-        from namespaces import SWAML, RDF, RDFS, FOAF, GEO
-
-        sparqlGr = sparqlGraph.SPARQLGraph()
-        sparqlGr.parse(foaf)
-    
-        select = ('?lat', '?long')
-        where  = GraphPattern([    ('?x', RDF['type'], FOAF['Person']),
-                    ('?x', FOAF['based_near'], '?y'),
-                    ('?y', GEO['lat'], '?lat'),
-                    ('?y', GEO['long'], '?long')    ])
-    
-        result = sparqlGr.query(select, where)
-    
-        for one in result:
-            return [one[0], one[1]]
+        sparqlGr = self.__getGraph(foaf)
+        
+        if (sparqlGr != None):
+        
+            select = ('?lat', '?long')
+            where  = GraphPattern([    ('?x', RDF['type'], FOAF['Person']),
+                        ('?x', FOAF['based_near'], '?y'),
+                        ('?y', GEO['lat'], '?lat'),
+                        ('?y', GEO['long'], '?long')    ])
+        
+            result = sparqlGr.query(select, where)
+        
+            for one in result:
+                return [one[0], one[1]]
         
         return [None, None]
+    
+    def getPic(self, foaf):
+        """
+        Get picture from FOAF
+        """
+        pass
 
         
     def getShaMail(self, mail):

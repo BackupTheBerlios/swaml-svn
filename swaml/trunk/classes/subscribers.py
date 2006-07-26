@@ -14,7 +14,7 @@
 # for more details.
 
 import sys, os, string
-from services import Services
+from services import FoafUtils
 from message import Message
 import rdflib
 from rdflib import Graph
@@ -26,43 +26,51 @@ from namespaces import SWAML, RDF, RDFS, FOAF, GEO
 
 
 class Subscriber:
-    """Subscriber abstraction"""
+    """
+    Subscriber abstraction
+    """
     
     id = 0
     
     def __init__(self, name, mail):
-        """Subscriber constructor"""
+        """
+        Subscriber constructor
+        """
         self.__class__.id += 1
         self.setName(name)
         self.setMail(mail)
-        services = Services()
-        self.setFoaf(services.getFoaf(mail))
-        if (self.foaf != None):
-            lat, lon = services.getGeoPosition(self.getFoaf())
-            self.setGeo(lat, lon)
-        else:
-            self.setGeo()
+        self.foaf = None
+        self.geo = [None, None]
         self.mails = []
         
     def getName(self):
-        """Get subscriber's name"""
+        """
+        Get subscriber's name
+        """
         return self.name
     
     def getMail(self):
-        """Get subscriber's mail address"""
+        """
+        Get subscriber's mail address
+        """
         return self.mail 
     
     def getShaMail(self):
-        """Get subscriber's sha sum of mail address"""
-        return Services().getShaMail(self.mail) 
+        """
+        Get subscriber's sha sum of mail address
+        """
+        return FoafUtils().getShaMail(self.mail) 
     
     def getFoaf(self):
-        """Get subscriber's FOAF"""
+        """
+        Get subscriber's FOAF
+        """
         return self.foaf    
     
     def getSentMails(self):
-        """Get the array with subscriber sent mails ids"""
-        
+        """
+        Get the array with subscriber sent mails ids
+        """        
         sent = []
         for one in self.mails:
             sent.append(one.getUri())
@@ -70,29 +78,55 @@ class Subscriber:
         return sent
     
     def getGeo(self):
+        """
+        Obtain geo coordinates
+        """
         return self.geo
     
+    def getPic(self):
+        """
+        Return the uri of his picture
+        """
+        return self.pic
+    
     def setName(self, name):
-        """Set subscriber's name"""
+        """
+        Set subscriber's name
+        """
         if (len(name)>1 and name[0]=='"' and name[-1]=='"'):
             self.name = name[1:-1]
         else:
             self.name = name
     
     def setMail(self, mail):
-        """Set subscriber's mail address"""
+        """
+        Set subscriber's mail address
+        """
         self.mail = mail
         
     def setFoaf(self, foaf):
-        """Set subscriber's FOAF"""
+        """
+        Set subscriber's FOAF
+        """
         self.foaf = foaf     
         
     def addMail(self, new):
-        """Add new sent mail"""
+        """
+        Add new sent mail
+        """
         self.mails.append(new) 
         
-    def setGeo(self, lat=None, lon=None):
+    def setGeo(self, lat, lon):
+        """
+        Set coordinates
+        """
         self.geo = [lat, lon]
+        
+    def setPic(self, uri):
+        """
+        Set subscriber picture
+        """
+        self.pic = uri
                 
         
 
@@ -122,7 +156,12 @@ class Subscribers:
             self.subscribers[mail] = Subscriber(name, mail)
             
         self.subscribers[mail].addMail(msg)
-
+        
+    def get(self, mail):
+        if (mail in self.subscribers):
+            return self.subscribers[mail]
+        else:
+            return None
 
     def __toRDF(self):
         """Dump to RDF file all subscribers"""
@@ -218,12 +257,34 @@ class Subscribers:
         Process subscriber to obtain more semantic information
         """
         
-        #first compact list
-        self.__compact()
+        foafserv = FoafUtils()
         
-        #more ideas?
+        for mail, subscriber in self.subscribers.items():
+            self.__copileFoafInfo(subscriber, foafserv) #get foaf information
+            self.__compact(subscriber, foafserv) #compact subscribers list
+            #more ideas?
 
-    def __compact(self):
+    def __copileFoafInfo(self, subscriber, foafserv):
+        """
+        Compile subscribers' information from
+        his FOAFs
+        """  
+        foaf = foafserv.getFoaf(subscriber.getMail())
+        if (foaf != None):
+            subscriber.setFoaf(foaf)
+            
+            #coordinates
+            lat, lon = foafserv.getGeoPosition(foaf)
+            if (lat != None and lon != None):
+                subscriber.setGeo(lat, lon)
+                
+            pic = foafserv.getPic(foaf)
+            if (pic != None):
+                subscriber.setPic(pic)
+                
+                
+
+    def __compact(self, subscriber, foafserv):
         """
         Compact mailing list subscribers
         according his foaf information

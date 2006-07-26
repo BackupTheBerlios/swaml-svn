@@ -19,18 +19,19 @@ from email.Header import decode_header
 from rdflib import Graph
 from rdflib import URIRef, Literal, Variable, BNode
 from rdflib import RDF
-from services import Services
+from services import FoafUtils
 
 class Message:
     """Mail message abstraction"""
     
     id = 0
     
-    def __init__(self, msg, config):
+    def __init__(self, msg, config, sender=None):
         """Message constructor"""
         self.__class__.id += 1
         self.id = self.__class__.id
         self.config = config
+        self.sender = sender
         
         try:
             #tip because decode_header returns the exception 
@@ -61,6 +62,12 @@ class Message:
         
         self.body = msg.fp.read()
         #[(self.body, enconding)] = decode_header(msg.fp.read())
+        
+    def setSender(self, sender):
+        """
+        Set message's sender
+        """
+        self.sender = sender
         
     def getId(self):
         return self.id
@@ -202,9 +209,9 @@ class Message:
                 store.add((sender, FOAF["name"], Literal(name) ))   
                 
             mail = self.getFromMail()
-            store.add((sender, FOAF["mbox_sha1sum"], Literal(Services().getShaMail(mail))))
+            store.add((sender, FOAF["mbox_sha1sum"], Literal(FoafUtils().getShaMail(mail))))
             
-            foafResource = Services().getFoaf(mail)
+            foafResource = self.sender.getFoaf()
             if (foafResource != None):
                 store.add((sender, RDFS["seeAlso"], URIRef(foafResource)))
                 
