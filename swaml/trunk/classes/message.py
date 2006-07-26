@@ -47,7 +47,6 @@ class Message:
                 subject = s
             else:
                 subject += ' ' + s
-        print msg['Subject'] + ' - ' + subject
         self.subject = subject #unicode(msg['Subject'], errors='ignore') 
         
         self.body = msg.fp.read()
