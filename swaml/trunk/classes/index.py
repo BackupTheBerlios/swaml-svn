@@ -41,26 +41,34 @@ class Index:
         store.bind('rdfs', RDFS)
         store.bind('dc', DC)
         
-        index = URIRef(self.config.get('url')+'index.rdf')
+        #path
+        path = self.config.get('url') + 'index.rdf'
+
+        #root node
+        index = URIRef(path)
         store.add((index, RDF.type, SWAML['MailingList']))
+
+        #list information
         store.add((index, DC['title'], Literal(u'title (FIXME)')))
         store.add((index, DC['publisher'], Literal(u'SWAML')))
         store.add((index, DC['description'], Literal(u'RDF files of a mailing list')))
+
+        #subscribers
         subscribers = BNode()
         store.add((index, SWAML['Subscribers'], subscribers))
         store.add((subscribers, SWAML['subscribersIndex'], URIRef(self.config.get('url')+'subscribers.rdf')))
 	store.add((subscribers, SWAML['subscribersCoordinates'], URIRef(self.config.get('url')+'subscribers.kml')))
-                                           
+                  
+        #and items                         
         items = BNode()
         store.add((index, SWAML['sentMails'], items))
         store.add((items, RDF.type, RDF.Bag))
 
-        #a BNode for each item
         for item in self.items:
             store.add((items, RDF.li, URIRef(item)))
                     
         #and dump to disk
-        rdf_file = open(self.config.get('dir')+'index.rdf', 'w+')
+        rdf_file = open(path, 'w+')
         rdf_file.write(store.serialize(format="pretty-xml"))
         rdf_file.flush()
         rdf_file.close()
