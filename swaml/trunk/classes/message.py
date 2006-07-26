@@ -15,7 +15,6 @@
 
 import sys, os, string, sha
 import datetime, email, email.Errors, email.Utils
-from email.Header import decode_header
 from rdflib import Graph
 from rdflib import URIRef, Literal, Variable, BNode
 from rdflib import RDF
