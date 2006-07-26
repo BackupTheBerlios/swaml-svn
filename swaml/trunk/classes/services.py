@@ -77,7 +77,7 @@ class FoafUtils:
         
         return self.__graph
         
-    def getGeoPosition(self, foaf):
+    def getGeoPosition(self, foaf, mail):
         """
         Obtain geography information from foaf
         """
@@ -87,10 +87,12 @@ class FoafUtils:
         if (sparqlGr != None):
         
             select = ('?lat', '?long')
-            where  = GraphPattern([    ('?x', RDF['type'], FOAF['Person']),
-                        ('?x', FOAF['based_near'], '?y'),
-                        ('?y', GEO['lat'], '?lat'),
-                        ('?y', GEO['long'], '?long')    ])
+            where  = GraphPattern([ ('?x', RDF['type'], FOAF['Person']),
+                                    ('?x', FOAF['mbox_sha1sum'], self.getShaMail(mail)),
+                                    ('?x', FOAF['based_near'], '?y'),
+                                    ('?y', GEO['lat'], '?lat'),
+                                    ('?y', GEO['long'], '?long')    
+                                  ])
         
             result = sparqlGr.query(select, where)
         
@@ -99,11 +101,27 @@ class FoafUtils:
         
         return [None, None]
     
-    def getPic(self, foaf):
+    def getPic(self, foaf, mail):
         """
         Get picture from FOAF
         """
-        pass
+        sparqlGr = self.__getGraph(foaf)
+        
+        if (sparqlGr != None):
+        
+            select = ('?pic')
+            where  = GraphPattern([ ('?x', RDF['type'], FOAF['Person']),
+                                    ('?x', FOAF['mbox_sha1sum'], self.getShaMail(mail)),
+                                    ('?x', FOAF['depiction'], '?pic')   
+                                  ])
+        
+            result = sparqlGr.query(select, where)
+        
+            for one in result:
+                return one
+        
+        return None
+        
 
         
     def getShaMail(self, mail):

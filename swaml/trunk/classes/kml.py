@@ -58,10 +58,11 @@ class KML:
                 name.appendChild(doc.createTextNode(name_text))
                 placemark.appendChild(name)
             
-            desc_text = place.getDescription()
-            if (desc_text != None):
+            pic = place.getDescription()
+            if (pic != None):
                 description = doc.createElement('description')
-                description.appendChild(doc.createTextNode(desc_text))
+                desc = '<img src="'+pic+'" />'
+                description.appendChild(doc.createTextNode(desc))
                 placemark.appendChild(description)
             
             #look at node

@@ -41,6 +41,7 @@ class Subscriber:
         self.setMail(mail)
         self.foaf = None
         self.geo = [None, None]
+        self.pic = None
         self.mails = []
         
     def getName(self):
@@ -237,8 +238,10 @@ class Subscribers:
         
         for mail, subscriber in self.subscribers.items():
             lat, lon = subscriber.getGeo()
+            pic = subscriber.getPic()
             if ((lat != None) and (lon != None)): 
-                kml.addPlace(lat, lon, name=subscriber.getName())
+                kml.addPlace(lat, lon, name=subscriber.getName(), description=pic)
+                
             
         #and dump to disk
         try:
@@ -269,16 +272,17 @@ class Subscribers:
         Compile subscribers' information from
         his FOAFs
         """  
-        foaf = foafserv.getFoaf(subscriber.getMail())
+        mail = subscriber.getMail()
+        foaf = foafserv.getFoaf(mail)
         if (foaf != None):
             subscriber.setFoaf(foaf)
             
             #coordinates
-            lat, lon = foafserv.getGeoPosition(foaf)
+            lat, lon = foafserv.getGeoPosition(foaf, mail)
             if (lat != None and lon != None):
                 subscriber.setGeo(lat, lon)
                 
-            pic = foafserv.getPic(foaf)
+            pic = foafserv.getPic(foaf, mail)
             if (pic != None):
                 subscriber.setPic(pic)
                 
