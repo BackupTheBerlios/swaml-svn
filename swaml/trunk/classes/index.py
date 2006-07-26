@@ -46,7 +46,10 @@ class Index:
         store.add((index, DC['title'], Literal(u'title (FIXME)')))
         store.add((index, DC['publisher'], Literal(u'SWAML')))
         store.add((index, DC['description'], Literal(u'RDF files of a mailing list')))
-        store.add((index, SWAML['subscribers'], URIRef(self.config.get('url')+'subscribers.rdf')))
+        subscribers = BNode()
+        store.add((index, SWAML['Subscribers'], subscribers))
+        store.add((subscribers, SWAML['subscribersIndex'], URIRef(self.config.get('url')+'subscribers.rdf')))
+	store.add((subscribers, SWAML['subscribersCoordinates'], URIRef(self.config.get('url')+'subscribers.kml')))
                                            
         items = BNode()
         store.add((index, SWAML['sentMails'], items))
