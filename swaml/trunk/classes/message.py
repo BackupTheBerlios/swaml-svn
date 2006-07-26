@@ -19,7 +19,7 @@ from email.Header import decode_header
 from rdflib import Graph
 from rdflib import URIRef, Literal, Variable, BNode
 from rdflib import RDF
-from services import FoafUtils
+from services import FoafUtils, Charset
 
 class Message:
     """Mail message abstraction"""
@@ -34,18 +34,7 @@ class Message:
         self.sender = sender
         
         try:
-            #tip because decode_header returns the exception 
-            #    ValueError: too many values to unpack
-            #performance this tip
-            subject_parted = msg['Subject'].split(' ') 
-            subject = ''
-            for one in subject_parted:
-                [(s, enconding)] = decode_header(one)
-                if (subject == ''):
-                    subject = s
-                else:
-                    subject += ' ' + s
-            self.subject = subject
+            self.subject = Charset().decode(msg['Subject'])
         except:
             self.subject = unicode(msg['Subject'], errors='ignore') 
         
@@ -139,11 +128,12 @@ class Message:
     def getFromName(self):   
         if(self.From.find('<')!= -1):
             #mail similar than: Name Surmane <name@domain.com>
-            return str(self.getAddressFrom[0])
+            from_name = str(self.getAddressFrom[0])
         else:
             #something like: Name Surmane name@domain.com
             from_name, from_mail = self.parseFrom(self.From)
-            return from_name
+            
+        return Charset().decoded(from_name)
             
     def getFromMail(self):   
         if(self.From.find('<')!= -1):

@@ -18,6 +18,7 @@ import rdflib
 from rdflib.sparql import sparqlGraph, GraphPattern
 from rdflib import Namespace, Literal
 from namespaces import SWAML, RDF, RDFS, FOAF, GEO
+from email.Header import decode_header
 
 class FoafUtils:
     """
@@ -137,5 +138,27 @@ class FoafUtils:
         return sha.new('mailto:'+mail).hexdigest()
 
 
+class Charset:
+    """
+    Collection of services related with charset and encondig
+    """
+    
+    def decoded(self, orig):
+        """
+        Decode an string
+        """
+        #tip because decode_header returns the exception 
+        #    ValueError: too many values to unpack
+        #TODO: performance this tip
+        parted = orig.split(' ') 
+        dest = ''
+        for one in parted:
+            [(s, enconding)] = decode_header(one)
+            if (dest == ''):
+                dest = s
+            else:
+                dest += ' ' + s
+        
+        return dest
 
         
