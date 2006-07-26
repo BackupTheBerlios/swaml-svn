@@ -15,11 +15,10 @@
 
 import sys, os, string, sha
 import datetime, email, email.Errors, email.Utils
+from email.Header import decode_header
 from rdflib import Graph
 from rdflib import URIRef, Literal, Variable, BNode
 from rdflib import RDF
-from rdflib import plugin
-from rdflib.store import Store
 from services import Services
 
 class Message:
@@ -31,7 +30,28 @@ class Message:
         """Message constructor"""
         self.__class__.id += 1
         self.id = self.__class__.id
-        self.msg = msg
+        self.messageId = msg['Message-Id']
+        self.date = msg['Date']
+        self.From = msg['From']
+        self.getAddressFrom = msg.getaddr('From')
+        self.to = msg['To']
+        
+        #tip because decode_header returns the exception 
+        #    ValueError: too many values to unpack
+        #performance this tip
+        subject_parted = msg['Subject'].split(' ') 
+        subject = ''
+        for one in subject_parted:
+            [(s, enconding)] = decode_header(one)
+            if (subject == ''):
+                subject = s
+            else:
+                subject += ' ' + s
+        print msg['Subject'] + ' - ' + subject
+        self.subject = subject #unicode(msg['Subject'], errors='ignore') 
+        
+        self.body = msg.fp.read()
+        #[(self.body, enconding)] = decode_header(msg.fp.read())
         self.config = config
         
     def getId(self):
@@ -39,8 +59,8 @@ class Message:
     
     def getSwamlId(self):
         #TODO: obtain a better SWAML ID
-        parted_id = self.msg['Message-Id'].split('.')
-        msg_id = parted_id[len(parted_id)-1] + '-' + self.msg['Date'] + '-swaml-' + str(self.id)
+        parted_id = self.messageId.split('.')
+        msg_id = parted_id[len(parted_id)-1] + '-' + self.date + '-swaml-' + str(self.id)
         return sha.new(msg_id).hexdigest()        
         
     def getPath(self):
@@ -51,7 +71,7 @@ class Message:
         index = self.config.get('format')
 	
         #message date
-        date = email.Utils.parsedate(self.getDate())
+        date = email.Utils.parsedate(self.date)
 
         #day
         if (date[2] < 10):
@@ -102,28 +122,28 @@ class Message:
         return [unicode(name, errors='ignore'), mail]
     
     def getFromName(self):   
-        if(self.msg['From'].find('<')!= -1):
+        if(self.From.find('<')!= -1):
             #mail similar than: Name Surmane <name@domain.com>
-            return str(self.msg.getaddr('From')[0])
+            return str(self.getAddressFrom[0])
         else:
             #something like: Name Surmane name@domain.com
-            from_name, from_mail = self.parseFrom(self.msg['From'])
+            from_name, from_mail = self.parseFrom(self.From)
             return from_name
             
     def getFromMail(self):   
-        if(self.msg['From'].find('<')!= -1):
+        if(self.From.find('<')!= -1):
             #mail similar than: Name Surmane <name@domain.com>
-            return str(self.msg.getaddr('From')[1])
+            return str(self.getAddressFrom[1])
         else:
             #something like: Name Surmane name@domain.com
-            from_name, from_mail = self.parseFrom(self.msg['From'])
+            from_name, from_mail = self.parseFrom(self.From)
             return from_mail             
         
         
     def getTo(self):        
         to = ' '
         try:                
-            to = self.msg['To']
+            to = self.to
         except:
             #some mails have not a 'to' field
             to = self.config.get('defaultTo')
@@ -135,10 +155,10 @@ class Message:
         return unicode(to, errors='ignore')
     
     def getSubject(self):
-        return unicode(self.msg['Subject'], errors='ignore')
+        return self.subject
         
     def getDate(self):
-        return self.msg['Date']    
+        return self.date
     
     def getInReplyTo(self):
         # self.msg.get('In-Reply-To')
@@ -147,7 +167,7 @@ class Message:
         return 'FIXME'
     
     def getBody(self):
-        return unicode(self.msg.fp.read(), errors='ignore')
+        return self.body
     
     def toRDF(self):
         """
