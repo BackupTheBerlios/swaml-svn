@@ -42,7 +42,7 @@ class Index:
         store.bind('dc', DC)
         
         #path
-        path = self.config.get('url') + 'index.rdf'
+        path = self.config.get('dir') + 'index.rdf'
 
         #root node
         index = URIRef(path)
