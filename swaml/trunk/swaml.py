@@ -42,8 +42,8 @@ class Swaml:
         self.config = config
 
         try:
-            opts, args = getopt.getopt(argv, "d:u:m:f:h", ["dir=","url=","mbox=","format=","help"])
-        except:
+            opts, args = getopt.getopt(argv, "d:u:m:f:k:h", ["dir=","url=","mbox=","format=","kml=","help"])
+        except getopt.GetoptError:
             self.usage()
 
         for opt, arg in opts:
@@ -56,9 +56,13 @@ class Swaml:
             elif opt in ("-m", "--mbox") and arg:
                 self.config.set("mbox", arg)
             elif opt in ("-f", "--format") and arg:
-                self.config.set("format", arg)                                
+                self.config.set("format", arg)
+            elif opt in ("-k", "--kml") and arg:
+                self.config.set("kml", arg)                                      
             else:
                 self.usage()
+                
+        #self.config.show()
 
 
     def usage(self):
@@ -75,13 +79,13 @@ Usage: swaml.py [OPTIONS]
 
 Options:
 
-   -d DIR, --dir=DIR          : use DIR to publish the RDF files; 'archive/' is used by default.
+   -d DIR, --dir=DIR            : use DIR to publish the RDF files; 'archive/' is used by default.
 
-   -u URL, --url=URL          : base URL to browse archives.
+   -u URL, --url=URL            : base URL to browse archives.
 
-   -m MBOX, --mbox=MBOX       : open MBOX file, 'mbox' by default value.
+   -m MBOX, --mbox=MBOX         : open MBOX file, 'mbox' by default value.
 
-   -f FORMAT, --format=FORMAT : path pattern to store the messages. FORMAT is an string that can contain following keys:
+   -f FORMAT, --format=FORMAT   : path pattern to store the messages. FORMAT is an string that can contain following keys:
 
                                    	'DD': number of day that message was sent
                                    	'MM': number of month that message was sent
@@ -90,10 +94,12 @@ Options:
                                    	'YYYY': year that message was sent
                                    	'ID': message numeric id
 
-                                The string 'YYYY-MMM/messageID.rdf' is used by default, but you can compose the string
-                                as you want (for example something like 'YYYY/MM/DD/ID.rdf').
+                                  The string 'YYYY-MMM/messageID.rdf' is used by default, but you can compose the string
+                                  as you want (for example something like 'YYYY/MM/DD/ID.rdf').
+   
+   -k {yes/no}, --kml={yes/no]  : flag to activate export KML support.                                 
 
-   -h, --help                 : print this help message and exit.
+   -h, --help                   : print this help message and exit.
 
 Report bugs to: <http://swaml.berlios.de/bugs>
 
@@ -115,7 +121,10 @@ Report bugs to: <http://swaml.berlios.de/bugs>
 
 
 if __name__ == '__main__':
-    execute = Swaml(sys.argv[1:])
+    try:
+        Swaml(sys.argv[1:])
+    except KeyboardInterrupt:
+        print 'Received Ctrl+C or another break signal. Exiting...'
 
                                                                             
 del sys, string, getopt

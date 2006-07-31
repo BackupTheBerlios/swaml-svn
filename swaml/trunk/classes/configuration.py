@@ -29,7 +29,9 @@ class Configuration:
             'url' : 'http://localhost/swaml/',
             'mbox' : 'mbox',
             'format' : 'YYYY-MMM/messageID.rdf',
-            'defaultTo' : 'foo@bar.com'
+            'defaultTo' : 'foo@bar.com',
+            'kml' : True,
+            'foaf' : True
             }        
         self.antispam = ' AT '
 
@@ -52,10 +54,15 @@ class Configuration:
         if (var in self.config.keys()):
             
             #two litle exceptions in var format
-            if ((var=='dir' or var=='url') and value[-1]!='/'):
+            if ((var == 'dir' or var == 'url') and value[-1] != '/'):
                 value += '/'
-            if (var=='format' and value[-4:]!='.rdf'):
+            elif (var == 'format' and value[-4:] != '.rdf'):
                 value += '.rdf'
+            elif (var == 'kml' or var == 'foaf'):
+                if (value.lower() == 'no'):
+                    value = False
+                else:
+                    value = True
                 
             self.config[var] = value
             return True
@@ -67,7 +74,7 @@ class Configuration:
         """[Deprecated] Show al configure options"""
         
         for var in self.config.keys():
-            print var + ': ' + self.config[var]
+            print var + ': ' + str(self.config[var])
 
 
 

@@ -304,7 +304,8 @@ class Subscribers:
         """
         
         self.__toRDF()
-        self.__toKML()
+        if (self.config.get('kml')):
+            self.__toKML()
                            
                                     
 del sys, string
