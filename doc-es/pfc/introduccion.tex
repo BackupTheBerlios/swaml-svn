@@ -13,6 +13,18 @@ Este artículo describe la aplicación de la web semántica para evitar la
 pérdida de información y habilitar la construcción de nuevas aplicaciones
 para explotar más convenientemente la información.
 
+\section{Objetivos}
+
+FIXME
+
+\section{Estado del arte}
+
+FIXME
+
+\section{Estructura de la documentación}
+
+FIXME
+
 \section{Propuesta}
 
 Las listas de correo son parte fundamental de la comunicación en Internet.
@@ -77,7 +89,7 @@ especializan en convertir el fichero Mailbox en un conjunto de páginas
 web estáticas.
 
 Los programas más sofisticados son capaces de generar índices complejos
-de los archivos (por fecha, por autor, por hilo...), con mÃºltiples referencias
+de los archivos (por fecha, por autor, por hilo...), con múltiples referencias
 cruzadas entre los mensajes en forma de hipervínculos (mensaje anterior,
 mensaje siguiente, etc.).
 
@@ -103,54 +115,79 @@ Entre la información que se pierde en la publicación, se encuentra:
 Las tecnologías de la web semántica (y concretamente, RDF) son perfectamente
 capaces de publicar en la web toda la información señalada en la sección
 anterior. Dado que la información ya existe en el origen, no es necesario 
-ningÃºn procedimiento manual para enriquecerla. Tan sólo debe considerarse un 
+ningún procedimiento manual para enriquecerla. Tan sólo debe considerarse un 
 proceso de conversión que no desprecie la información, sino que la publique 
 junto con los archivos en HTML. De esta forma, las listas de correo se 
 introducirían en la web semántica.
 
-\section{Introducción a la Web Semántica}
+\subsection{Aplicaciones}
 
-En 1989 Tim Berners-Lee realizó para el CERN un modelo de gestión de la información
-basado en un sistema distribuido de hipertexto. Fue el origen de lenguaje de marcado
-HTML y la semila de la Web actual.
+Enriquecer semánticamente la publicación web de los archivos de las listas
+de correo abriría la puerta a nuevas aplicaciones:
 
-No tardó mucho en darse cuenta que ese modelo no era suficiente para manejar grandes
-volúmenes de información, pues resultaría muy dificil encontrarla y usarla eficientemente.
+\begin{itemize}
+  \item Eliminar la aparición repetida de los mismos mensajes en los resultados
+ 	de los buscadores.Para lograrlo, los buscadores deberían procesar la 
+	información semántica para reconocer las copias (mirrors) de los archivos.
+  \item Implementar en los navegadores nuevas funcionalidades para resolver alguno
+	de los problemas antes señalados. Estas capacidades, que mejorarían 
+	sensiblemente la comodidad en la consulta de los archivos, podrían añadirse 
+	como extensiones o plug-ins de los navegadores actuales.
+  \item Obtener información sobre los suscriptores de una lista de correo. Por ejemplo, 
+	conocer en qué otras listas de correo participa una persona. Esta aplicación es 
+	especialmente interesante en conexión con FOAF\footnote{http://www.foaf-project.org/}.
+	De este modo, se podría sacar una \emph{orla} con las fotos de los participantes 
+	en una lista de correo \footnote{Como hace GNOME, véase http://planet.gnome.org/heads/}, 
+	o situarlos geográficamente en un mapa
+	\footnote{Como hace Debian, véase http://www.debian.org/devel/developers.loc}
+  \item Facilitar la internacionalización. Al hacer comprensibles las relaciones entre 
+	los mensajes por el software, el navegador proporcionaría las opciones de 
+	exploración (mensaje siguiente, mensaje anterior, etc.) en el idioma del 
+	usuario, independientemente del idioma en el que se encontrasen las páginas 
+	HTML.
+  \item Mejorar la accesibilidad de la información. Las tecnologías de accesibilidad 
+	podrían informar sobre quién es el autor del mensaje o cuántas respuestas hay, 
+	usando la voz u otros medios.
+\end{itemize}
 
-\subsection{Estructura de la Web Semántica}
+\subsection{Trabajos relacionados}
 
-En la figura \ref{fig:swStack} encontramos el diseño preliminar de la web semántica:
+Existen algunos trabajos similares a esta propuesta:
 
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=12cm]{images/semantic-web-stack.png}
-	\caption{Pila de la web semántica}
-	\label{fig:swStack}
-\end{figure}
+\begin{itemize}
+  \item El proyecto DOAML\footnote{http://www.doaml.net/} consiste en un 
+	vocabulario RDF para describir listas de correo. Como ejemplo, en 
+	la web del proyecto se encuentran las descripciones de las listas 
+	de correo del W3C. La información de este vocabulario limita sus 
+	referencias a los mensajes archivados a un enlace a la versión HTML 
+	de éstos.
+  \item Por otro lado, EMiR\footnote{http://xmlns.filsa.org/emir/} es un 
+	esquema RDF para describir mensajes de correo electrónico. 
+  \item En la misma línea se encuentra XMTP\footnote{http://www.openhealth.org/xmtp/}.
+\end{itemize}
 
-\subsection{RDF}
+\subsection{Conclusiones}
 
-Acrónimo del inglés \emph{Resource Description Framework} (marco de descripción de recursos). 
+Introducir los archivos de las listas de correo en la web semántica sólo
+requiere disponer de una aplicación de publicación que utilice la tecnología
+apropiada (RDF) como complemento al HTML.
 
-\begin{figure} [h]
-\begin{verbatim}
-<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-	 xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-	 xmlns:dc="http://purl.org/dc/elements/1.1/"
->
-  <rdf:Description rdf:about="http://www.wikier.org/">
-    <dc:creator>Sergio Fdez</dc:creator>
-    <rdfs:seeAlso rdf:resource="http://www.wikier.org/foaf.rdf"/>	
-  </rdf:Description>
-</rdf:RDF>
-\end{verbatim}
-	\caption{Ejemplo de grafo RDF serializado en XML.}
-	\label{fig:ejemplo.rdfxml}
-\end{figure}
+Con un mínimo esfuerzo, los administradores de todas las listas de correo
+podrían emplear la aplicación en sus listas, por lo que la implantación
+sería rápida\footnote{En realidad, cualquier suscriptor (no necesariamente 
+el administrador) de una lista de correo podría publicar los archivos enriquecidos.
+Tan sólo debería disponer de todos los mensajes antiguos almacenados en su 
+cliente de correo electrónico, y exportarlos al formato Mbox.}. Además, al 
+no requerirse la participación de un experto para el enriquecimiento de la 
+información, resultaría posible enriquecer inmediatamente grandes volúmenes 
+de información, incluso listas de correo que lleven muchos años en funcionamiento.
 
-\subsection{Publicaciones}
+El desarrollo de una aplicación de estas características requeriría, en
+primer lugar, la creación de un esquema de información, que muy bien podría
+ser una combinación de los ya existentes; y en segundo lugar, el procesamiento 
+de un fichero Mbox para extraer la información que contiene.
 
-Aunque no existen buenas publicaciones en castellano, hay dos libros en inglés que
-es imprescindible ojear: \emph{A Semantic Web primer}\cite{SemanticWebPrimer} y
-\emph{Practical RDF}\cite{OreillyPracticalRDF}.
 
+\section{Agradecimientos}
+
+FIXME

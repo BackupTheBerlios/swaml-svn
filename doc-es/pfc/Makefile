@@ -13,6 +13,6 @@ src:
 	python2.4 python2text.py ../../swaml/trunk/*.py #output dir?
 
 clean:
-	rm -f *.aux *.log *.dvi *.toc *.pdf *.bbl *.blg *.backup
+	rm -f *.aux *.log *.dvi *.toc *.pdf *.bbl *.blg *.lof *.backup
 	rm -f *~
 
