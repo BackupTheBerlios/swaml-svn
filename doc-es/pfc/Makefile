@@ -14,5 +14,5 @@ src:
 
 clean:
 	rm -f *.aux *.log *.dvi *.toc *.pdf *.bbl *.blg *.lof *.backup
-	rm -f *~
+	rm -f `find . -name "*~"`
 
