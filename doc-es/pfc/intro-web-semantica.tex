@@ -3,27 +3,44 @@ En 1989 Tim Berners-Lee realizó para el CERN un modelo de gestión de la
 información basado en un sistema distribuido de hipertexto. Fue el origen 
 de lenguaje de marcado HTML y la semila de la Web actual.
 
-No tardó mucho en darse cuenta que ese modelo no era suficiente para manejar 
-grandes volúmenes de información, pues resultaría muy dificil encontrarla y 
-usarla eficientemente.
+No tardó mucho en darse cuenta que ese modelo no era suficiente para 
+manejar grandes volúmenes de información, pues resultaría muy dificil 
+encontrarla y usarla eficientemente. Así el propio Tim Berners-Lee expondría
+en 2001 su visión\footnote{Cita extraida de las transparencias de José Emilio 
+Labra Gayo para el curso de verano sobre Web Semántica de la Universidad de 
+Oviedo, \url{http://www.di.uniovi.es/~labra/cursos/ver06/}} de la Web Semántica:
+
+\begin{quote}
+	\emph{``\textbf{disponer datos} en la Web \textbf{definidos y enlazados} 
+	de forma que puedan ser \textbf{utilizados por las máquinas}, no solamente 
+	para visualizarnos, sino también para \textbf{automatizar} tareas, 
+	\textbf{integrar} y \textbf{reutilizar} datos entre aplicaciones''}
+\end{quote} 
 
 \section{Evolución de la Web}
 
-En los últimos años la Web ha experimentado una notable evolución como puede 
-verse en la figura \ref{fig:webEvo}\footnote{Extraida de la presentación del 
-Martín Álvarez Espinar (\url{http://www.w3c.es/Presentaciones/2005/1018-WebSemanticaREBIUN-MA/}), 
-Oficina Española del W3C}, que le ha llevado a convertirse no sólo en un almacen 
-de contenido estático, sino también en un repositorio universal de conocimiento 
-y servicios.
+La Web es un recurso muy especial y particular, con unas características muy 
+especiales que deben tenerse en cuenta: no centralizada, información dinámica,
+mucha cantidad de información y está abierta a todo el mundo.
+
+En los últimos años la Web ha experimentado una notable evolución, como puede 
+verse en la figura \ref{fig:evoWeb}\footnote{Extraida de una presentación 
+(\url{http://www.w3c.es/Presentaciones/2005/1018-WebSemanticaREBIUN-MA/}) de 
+Martín Álvarez Espinar, de la Oficina Española del W3C}, que le ha llevado a 
+convertirse no sólo en un almacen de contenido estático, sino también en un 
+repositorio universal de conocimiento y servicios.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=12cm]{images/web-evolution.png}
-	\caption{Evolución de la Web.}
-	\label{fig:webEvo}
+	\caption{Evolución de la Web}
+	\label{fig:evoWeb}
 \end{figure}
 
-Y en toda esta evolución la Web Semántica juega (o jugará) un papel muy importante.
+A pesar de todas estas pequeñas revoluciones, todavia seguimos en una web 
+\emph{sintáctica}. Una Web en la que todavía es muy difícil realizar
+muchas tareas que con la Web Semántica, y todas sus tecnologías, al menos
+serán un poco más fácil de hacer.
 
 \section{Estructura de la Web Semántica}
 
@@ -104,7 +121,7 @@ predicado binario con el objeto, que puede ser otra URI o un literal.
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=10cm]{images/arc.png}
-	\caption{Arco RDF.}
+	\caption{Arco RDF}
 	\label{fig:rdfTriplet}
 \end{figure}
 
@@ -121,7 +138,7 @@ lugar a un grafo del estilo de:
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=10cm]{images/arc-example.png}
-	\caption{Ejemplo de arco RDF.}
+	\caption{Ejemplo de arco RDF}
 	\label{fig:rdfTripletExample}
 \end{figure}
 
@@ -139,7 +156,7 @@ información:
 	  </rdf:Description>
 	</rdf:RDF>
 \end{verbatim}
-	\caption{Ejemplo de grafo RDF serializado en XML.}
+	\caption{Ejemplo de grafo RDF serializado en XML}
 	\label{fig:ejemplo.rdfxml}
 \end{figure}
 
@@ -148,7 +165,7 @@ información:
 	@prefix dc <http://http://purl.org/dc/elements/1.1/>
 	<http://www.wikier.org> dc:creator "Sergio Fdez"
 \end{verbatim}
-	\caption{Ejemplo de grafo RDF serializado en N3.}
+	\caption{Ejemplo de grafo RDF serializado en N3}
 	\label{fig:ejemplo.rdfn3}
 \end{figure}
 
@@ -180,7 +197,7 @@ La versión actual de OWL (1.0) tienes tres variantes:
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=12cm]{images/owl-variants.png}
-	\caption{Variantes de OWL.}
+	\caption{Variantes de OWL}
 	\label{fig:owlVariants}
 \end{figure}
 
@@ -208,7 +225,7 @@ podría ser SQL.
 		}
 	\end{verbatim}
 	\centering
-	\caption{Ejemplo de consulta SPARQL.}
+	\caption{Ejemplo de consulta SPARQL}
 	\label{fig:ejemplo.sparql}
 \end{figure}
 
@@ -271,7 +288,7 @@ se trata de un vocabulario RDF para describir semánticamente información persona
 	  </foaf:Person>
 	</rdf:RDF>
 \end{verbatim}
-	\caption{Ejemplo de FOAF.}
+	\caption{Ejemplo de FOAF}
 	\label{fig:ejemplo.foaf}
 \end{figure}
 
