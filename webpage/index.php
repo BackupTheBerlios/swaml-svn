@@ -145,11 +145,6 @@
     without you need to subscribe of any of <a href="/lists">project mailing lists</a>.</p>
    </div>
 
-   <br/><br/><br/>
-
-   <div id="revision">
-    <p class="editdate">Last update on Mon April 2006</p>
-   </div>
   </div>
 
   <div id="footer">
