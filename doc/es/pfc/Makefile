@@ -1,13 +1,19 @@
 # SWAML PFC Makefile
 
 DESTDIR =
+PDFVIEWER = evince
 
-all:	clean
+all:	clean pdf
+
+pdf:	
 	pdflatex swaml.tex
 	bibtex swaml
 	pdflatex swaml.tex
 	bibtex swaml
 	pdflatex swaml.tex
+
+view:	pdf
+	$(PDFVIEWER) swaml.pdf
 
 src:
 	python2.4 python2text.py ../../swaml/trunk/*.py #output dir?
