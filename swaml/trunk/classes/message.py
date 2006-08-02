@@ -14,11 +14,11 @@
 # for more details.
 
 import sys, os, string, sha
-import datetime, email, email.Errors, email.Utils
+import datetime, email, email.Errors
 from rdflib import Graph
 from rdflib import URIRef, Literal, Variable, BNode
 from rdflib import RDF
-from services import FoafUtils, Charset
+from services import FoafUtils, Charset, DateUtils
 
 class Message:
     """Mail message abstraction"""
@@ -70,37 +70,19 @@ class Message:
         """Return the message's index name"""
 
         #replace vars        
-        #format permited vars (feature #1355)
+        #FIXME: format permited vars (feature #1355)
         index = self.config.get('format')
-	
+        
         #message date
-        date = email.Utils.parsedate(self.date)
-
-        #day
-        if (date[2] < 10):
-            index = index.replace('DD', '0' + str(date[2]))
-        else:
-            index = index.replace('DD', str(date[2]))
-
-        #long string month
-        longMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-        index = index.replace('MMMM', longMonths[date[1]-1])
-
-        #short string month
-        shortMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        index = index.replace('MMM', shortMonths[date[1]-1])
-
-        #numeric month
-        if (date[1] < 10):
-            index = index.replace('MM', '0' + str(date[1]))
-        else:
-            index = index.replace('MM', str(date[1]))
-
-        #year
-        index = index.replace('YYYY', str(date[0]))
-
-        #swaml id
-        index = index.replace('ID', str(self.id))
+        date = DateUtils(self.date)   
+             
+         #replace vars
+        index = index.replace('DD', date.getStringDay()) #day
+        index = index.replace('MMMM', date.getLongStringMonth()) #long string month
+        index = index.replace('MMM', date.getShortStringMonth()) #short string month
+        index = index.replace('MM', date.getStringMonth()) #numeric month
+        index = index.replace('YYYY', date.getStringYear()) #year
+        index = index.replace('ID', str(self.id)) #swaml id
 
         #create subdirs
         dirs = index.split('/')[:-1]
