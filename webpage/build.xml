@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<project name="SWAML-Web" default="scp">
+
+	<property environment="env" />	
+	<property name="host" value="shell.berlios.de" />
+	<property name="path" value="/home/groups/swaml/htdocs/" />
+	
+	<target name="scp" description="upload web files" depends="clean">
+	   <exec executable="scp">
+		<arg value="index.php" />
+		<arg value="style.css" />
+		<arg value="doap.rdf" />
+		<arg value="${user}@${host}:${path}" />
+	  </exec>
+	</target>
+
+	<target name="clean" description="clean files">
+		<delete file="**/*~" /> 
+	</target>
+
+	<target name="usage" description="task usage">
+		<echo message="Usage: ant -Duser=me"/>
+	</target>
+    
+</project>
+
