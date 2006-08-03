@@ -14,7 +14,7 @@ $(NAME).pdf:
 	pdflatex $(NAME).tex
 
 view:	$(NAME).pdf
-	$(PDFVIEWER) $(NAME).pdf
+	$(PDFVIEWER) $(NAME).pdf &
 
 src:
 	python2.4 python2text.py ../../swaml/trunk/*.py #output dir?
