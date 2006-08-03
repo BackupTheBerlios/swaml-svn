@@ -13,14 +13,6 @@ Este artículo describe la aplicación de la web semántica para evitar la
 pérdida de información y habilitar la construcción de nuevas aplicaciones
 para explotar más convenientemente la información.
 
-\section{Objetivos}
-
-FIXME
-
-\section{Estado del arte}
-
-FIXME
-
 \section{Estructura de la documentación}
 
 FIXME
@@ -38,10 +30,10 @@ localizar un mensaje usando Google u otro buscador.
 
 Estos archivos contienen una formidable base de conocimiento, especialmente
 en temas técnicos. Un uso muy común consiste en introducir un mensaje de error 
-(de una aplicación) en Google\footnote{http://www.google.es/} y obtener como 
-resultado un mensaje archivado que aborda el problema, probablemente porque 
-alguien se ha encontrado previamente con el mismo error y ha efectuado la 
-consulta en una lista de correo póblica. Con suerte, alguna de las respuestas 
+(de una aplicación) en Google\footnote{\ur{http://www.google.es/}} y obtener 
+como resultado un mensaje archivado que aborda el problema, probablemente 
+porque alguien se ha encontrado previamente con el mismo error y ha efectuado 
+la consulta en una lista de correo póblica. Con suerte, alguna de las respuestas 
 al mensaje localizado contendrá la solución al problema, aportada por un experto 
 suscrito a la lista de correo.
 
@@ -69,7 +61,7 @@ de estas acciones:
 Al indexar los archivos de las listas de correo, los buscadores se encuentran
 en ocasiones que los mensajes están replicados en varios servidores (mirrors).
 Al no tener forma de identificar los mensajes, la desgraciada consecuencia
-es que los mensajes aparecen varias veces en los resultados de las bÃºsquedas,
+es que los mensajes aparecen varias veces en los resultados de las búsquedas,
 y sólo el usuario puede darse cuenta de que se trata de una repetición.
 Naturalmente, el comportamiento ideal sería que los mensajes aparecieran
 sólo una vez en los resultados del buscador.
@@ -137,9 +129,9 @@ de correo abriría la puerta a nuevas aplicaciones:
 	conocer en qué otras listas de correo participa una persona. Esta aplicación es 
 	especialmente interesante en conexión con FOAF\footnote{http://www.foaf-project.org/}.
 	De este modo, se podría sacar una \emph{orla} con las fotos de los participantes 
-	en una lista de correo \footnote{Como hace GNOME, véase http://planet.gnome.org/heads/}, 
-	o situarlos geográficamente en un mapa
-	\footnote{Como hace Debian, véase http://www.debian.org/devel/developers.loc}
+	en una lista de correo \footnote{Como hace GNOME, véase 
+	\url{http://planet.gnome.org/heads/}}, o situarlos geográficamente en un mapa
+	\footnote{Como hace Debian, véase \url{http://www.debian.org/devel/developers.loc}}
   \item Facilitar la internacionalización. Al hacer comprensibles las relaciones entre 
 	los mensajes por el software, el navegador proporcionaría las opciones de 
 	exploración (mensaje siguiente, mensaje anterior, etc.) en el idioma del 
@@ -150,20 +142,20 @@ de correo abriría la puerta a nuevas aplicaciones:
 	usando la voz u otros medios.
 \end{itemize}
 
-\subsection{Trabajos relacionados}
+\subsection{Estado del arte}
 
 Existen algunos trabajos similares a esta propuesta:
 
 \begin{itemize}
-  \item El proyecto DOAML\footnote{http://www.doaml.net/} consiste en un 
+  \item El proyecto DOAML\footnote{\url{http://www.doaml.net/}} consiste en un 
 	vocabulario RDF para describir listas de correo. Como ejemplo, en 
 	la web del proyecto se encuentran las descripciones de las listas 
 	de correo del W3C. La información de este vocabulario limita sus 
 	referencias a los mensajes archivados a un enlace a la versión HTML 
 	de éstos.
-  \item Por otro lado, EMiR\footnote{http://xmlns.filsa.org/emir/} es un 
+  \item Por otro lado, EMiR\footnote{\url{http://xmlns.filsa.org/emir/}} es un 
 	esquema RDF para describir mensajes de correo electrónico. 
-  \item En la misma línea se encuentra XMTP\footnote{http://www.openhealth.org/xmtp/}.
+  \item En la misma línea se encuentra XMTP\footnote{\url{http://www.openhealth.org/xmtp/}}.
 \end{itemize}
 
 \subsection{Conclusiones}
@@ -186,7 +178,6 @@ El desarrollo de una aplicación de estas características requeriría, en
 primer lugar, la creación de un esquema de información, que muy bien podría
 ser una combinación de los ya existentes; y en segundo lugar, el procesamiento 
 de un fichero Mbox para extraer la información que contiene.
-
 
 \section{Agradecimientos}
 
