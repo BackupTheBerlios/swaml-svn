@@ -189,6 +189,11 @@ idéntica información semántica:
 	\label{fig:ejemplo.rdfn3}
 \end{figure}
 
+\subsection{RDFS}
+
+RDFS\footnote{\url{http://www.w3.org/TR/rdf-schema/}} (RDF Schema) es una
+forma primitiva y limitada de describir ontologías en RDF, también llamado
+«\emph{vocabulario RDF}».
 
 \subsection{OWL}
 
@@ -200,7 +205,8 @@ la Web.
 Tiene en DAML+OIL\footnote{\url{http://www.daml.org/2001/03/daml+oil-index}}, 
 otros dos lenguajes de ontologías, sus antecesores inmediatos.
 
-La versión actual de OWL (1.0) tienes tres variantes:
+La versión actual de OWL (1.0) tiene principalmente tres variantes según su
+complejidad:
 
 \begin{itemize}
   \item OWL Full, intimamente ligado a la lógica de RDF, pero que puede resultar
@@ -215,11 +221,26 @@ La versión actual de OWL (1.0) tienes tres variantes:
 	\end{displaymath}
 \end{itemize}
 
+Una perpectiva sencilla sería mostrada por la figura \ref{fig:owlVariants}.
+
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=12cm]{images/owl-variants.png}
-	\caption{Variantes de OWL}
+	\caption{Perspectiva completa de OWL}
 	\label{fig:owlVariants}
+\end{figure}
+
+Aunque el panorama no es tan sencillo, y para diferenciar cada una de ellas no
+se puede hacer fijandose sólo en la complejidad, sino también en la parte de la 
+lógica que abarcan. Quedando un panorama aún más confuso, como se puede ver en la
+figura \ref{fig:owlVariantsExtended}\footnote{Gráfico extraido de Ontotext, 
+\url{http://www.ontotext.com/inference/rdfs_rules_owl.html#owl_fragments}}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=10cm]{images/owl-dialects.png}
+	\caption{Variantes de OWL ampliado}
+	\label{fig:owlVariantsExtended}
 \end{figure}
 
 Hay que tener en cuenta que existe cierto solapamiento entre la expresividad de
