@@ -31,12 +31,7 @@ class Message:
         self.id = self.__class__.id
         self.config = config
         self.sender = sender
-        
-        try:
-            self.subject = Charset().decode(msg['Subject'])
-        except:
-            self.subject = unicode(msg['Subject'], errors='ignore') 
-        
+        self.subject = msg['Subject']
         self.messageId = msg['Message-Id']
         self.date = msg['Date']
         self.From = msg['From']
@@ -45,11 +40,27 @@ class Message:
             self.to = msg['To']    
         except:
             #some mails have not a 'to' field
-            self.to = self.config.get('defaultTo')    
+            self.to = self.config.get('defaultTo')   
+            
+        try:
+            self.inReplyTo = msg['In-Reply-To']    
+        except:
+            self.inReplyTo = None
+            
+        self.parent = None
+        self.childs = []
+            
+        self.swamlId = self.__calculateId()
+        self.nextByDate = None
+        self.previousByDate = None
         
-        
-        self.body = msg.fp.read()
+        #body after indexing all messages
+        self.body = None
+        #self.body = msg.fp.read()
         #[(self.body, enconding)] = decode_header(msg.fp.read())
+        
+    def setBody(self, body):
+        self.body = body
         
     def setSender(self, sender):
         """
@@ -57,14 +68,26 @@ class Message:
         """
         self.sender = sender
         
+    def setParent(self, parent):
+        self.parent = parent.getUri()
+        
+    def addChild(self, child):
+        self.childs.append(child.getUri())
+        
+    def setNextByDate(self, next):
+        self.nextByDate = next.getUri()
+        
+    def setPreviousByDate(self, previous):
+        self.previousByDate = previous.getUri()
+        
     def getId(self):
         return self.id
     
     def getSwamlId(self):
-        #TODO: obtain a better SWAML ID
-        parted_id = self.messageId.split('.')
-        msg_id = parted_id[len(parted_id)-1] + '-' + self.date + '-swaml-' + str(self.id)
-        return sha.new(msg_id).hexdigest()        
+        return self.swamlId    
+    
+    def getMessageId(self):
+        return self.messageId
         
     def getPath(self):
         """Return the message's index name"""
@@ -97,14 +120,14 @@ class Message:
     def getUri(self):    
         return self.config.get('url') + self.getPath()
     
-    def parseFrom(self, from_text):
+    def __parseFrom(self, from_text):
         """Method to parse from field"""
         
         from_parted = from_text.split(' ')
         name = ' '.join(from_parted[:-1])
         mail = from_parted[-1]
 
-        return [unicode(name, errors='ignore'), mail]
+        return [name, mail]
     
     def getFromName(self):   
         if(self.From.find('<')!= -1):
@@ -112,9 +135,9 @@ class Message:
             from_name = str(self.getAddressFrom[0])
         else:
             #something like: Name Surmane name@domain.com
-            from_name, from_mail = self.parseFrom(self.From)
+            from_name, from_mail = self.__parseFrom(self.From)
             
-        return Charset().decoded(from_name)
+        return Charset().encode(from_name) #Charset().decoded(from_name)
             
     def getFromMail(self):   
         if(self.From.find('<')!= -1):
@@ -122,7 +145,7 @@ class Message:
             return str(self.getAddressFrom[1])
         else:
             #something like: Name Surmane name@domain.com
-            from_name, from_mail = self.parseFrom(self.From)
+            from_name, from_mail = self.__parseFrom(self.From)
             return from_mail             
         
         
@@ -133,20 +156,26 @@ class Message:
         to = to.replace('<', '')
         to = to.replace('>', '')                                     
         
-        return unicode(to, errors='ignore')
+        return to
     
     def getSubject(self):
-        return self.subject
+        return Charset().encode(self.subject)
         
     def getDate(self):
         return self.date
     
     def getInReplyTo(self):
-        # self.msg.get('In-Reply-To')
-        # self.msg.get('References')
-        # None 
-        return 'FIXME'
+        return self.inReplyTo
     
+    def getParent(self):
+        return self.parent
+    
+    def getNextByDate(self):
+        return self.nextByDate
+        
+    def getPreviousByDate(self):
+        return self.previousByDate
+   
     def getBody(self):
         return self.body
     
@@ -177,8 +206,8 @@ class Message:
                       
             name = self.getFromName()
             if (len(name) > 0):
-                store.add((sender, FOAF["name"], Literal(name) ))   
-                
+                store.add((sender, FOAF["name"], Literal(name) ))
+
             mail = self.getFromMail()
             store.add((sender, FOAF["mbox_sha1sum"], Literal(FoafUtils().getShaMail(mail))))
             
@@ -190,11 +219,30 @@ class Message:
             store.add((message, SWAML['id'], Literal(self.getSwamlId())))
             store.add((message, SWAML['to'], Literal(self.getTo())))                         
             store.add((message, SWAML['subject'], Literal(self.getSubject()))) 
-            store.add((message, SWAML['date'], Literal(self.getDate())))                
-            store.add((message, SWAML['inReplyTo'], Literal(self.getInReplyTo())))                
+            store.add((message, SWAML['date'], Literal(self.getDate())))  
+            
+            parent = self.getParent()
+            if (parent != None):
+                store.add((message, SWAML['inReplyTo'], Literal(parent)))  
+                
+            if (len(self.childs) > 0):
+                childs = BNode()
+                store.add((message, SWAML['answers'], childs))
+                store.add((childs, RDF.type, RDF.Bag))
+                for child in self.childs:
+                    store.add((childs, RDF.li, URIRef(child)))
+                
+            previous = self.getPreviousByDate()
+            if (previous != None):
+                store.add((message, SWAML['previousByDate'], Literal(parent)))
+                
+            next = self.getNextByDate()
+            if (previous != None):
+                store.add((message, SWAML['nextByDate'], Literal(parent)))                
+                        
             store.add((message, SWAML['body'], Literal(self.getBody())))      
             
-        except UnicodeDecodeError, detail:
+        except Exception, detail:
             print 'Error proccesing message ' + str(self.getId()) + ': ' + str(detail) 
         
         #and dump to disk
@@ -205,6 +253,12 @@ class Message:
             rdf_file.close()        
         except IOError, detail:
             print 'IOError saving message ' + str(self.getId()) + ': ' + str(detail)
+            
+    def __calculateId(self):
+        #TODO: obtain a better SWAML ID
+        parted_id = self.messageId.split('.')
+        msg_id = parted_id[len(parted_id)-1] + '-' + self.date + '-swaml-' + str(self.id)
+        return sha.new(msg_id).hexdigest()            
         
 
         

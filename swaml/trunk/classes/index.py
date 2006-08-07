@@ -23,11 +23,48 @@ class Index:
     
     def __init__(self, config):
         self.config = config
-        self.items = []
+        self.items = {}
+        self.translateIndex = {}
         
     def add(self, new):
-        self.items.append(new.getUri())
+        id = new.getMessageId() #FIXME, bug #8295
+        swamlId = new.getSwamlId()
         
+        #store mesage
+        if (swamlId in self.items):
+            print 'Error adding new index item: ' + swamlId + ' is duplicated'
+        else:
+            self.items[swamlId] = new
+            
+        #and translation
+        if (id in self.translateIndex):
+            print 'Duplicated message id: ' + id + ' (see more on bug #8295)'
+        #deliberately only we maintain the reference with the most 
+        # recent message with this id (bug #8295)
+        self.translateIndex[id] = swamlId
+            
+    def get(self, id):
+        """
+        Get message who has this ID
+        """
+        swamlId = self.__getTranslation(id)
+        return self.getMessage(swamlId)
+        
+    def getMessage(self, id):
+        """
+        Get message who has this SWAML ID
+        """
+        if (id in self.items):
+            return self.items[id]
+        else:
+            return None
+        
+    def __getTranslation(self, id):
+        if (id in self.translateIndex):
+            return self.translateIndex[id]
+        else:
+            return None
+                
     def toRDF(self):
         """Dump inde to RDF file"""
 

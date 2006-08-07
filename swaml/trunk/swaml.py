@@ -26,9 +26,9 @@ __version__ = '0.0.1'
 
 import sys, string, getopt
 from classes.configuration import Configuration
-from classes.publisher import Publisher
+from classes.mailinglist import MailingList
 
-class Swaml:
+class SWAML:
     """
     Main class of SWAML project
     
@@ -36,10 +36,10 @@ class Swaml:
     @license: GPL
     """
 
-    def args(self, argv, config):
-        "Getting params of default input"
-
-        self.config = config
+    def parseArgs(self, argv):
+        """
+        Getting params of default input
+        """
 
         try:
             opts, args = getopt.getopt(argv, "d:u:m:f:k:h", ["dir=","url=","mbox=","format=","kml=","help"])
@@ -114,15 +114,16 @@ Report bugs to: <http://swaml.berlios.de/bugs>
         """
         
         self.config = Configuration()
-        args_ret = self.args(argv, self.config)
-        self.pub = Publisher(self.config)
-        print str(self.pub.publish()), 'messages procesed'
+        self.parseArgs(argv)
+        self.list = MailingList(self.config)
+        messages = self.list.publish()
+        print str(messages), 'messages procesed'
 
 
 
 if __name__ == '__main__':
     try:
-        Swaml(sys.argv[1:])
+        SWAML(sys.argv[1:])
     except KeyboardInterrupt:
         print 'Received Ctrl+C or another break signal. Exiting...'
 

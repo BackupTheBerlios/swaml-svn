@@ -152,10 +152,24 @@ class Charset:
     Collection of services related with charset and encondig
     """
     
-    def decoded(self, orig):
+    def __init__(self, charset='iso-8859-1'):
+        self.charset = charset
+    
+    def encode(self, orig):
         """
         Decode an string
         """
+        
+        ret = ''
+        
+        try:
+            ret = self.__force_decode(orig)
+        except Exception:
+            ret = self.__unicode(orig, self.charset)
+            
+        return ret
+            
+    def __decode(self, orig):            
         #tip because decode_header returns the exception 
         #    ValueError: too many values to unpack
         #TODO: performance this tip
@@ -169,6 +183,18 @@ class Charset:
                 dest += ' ' + s
         
         return dest
+    
+    def __unicode(self, orig, charset):
+        ret = ''
+        
+        try:
+            ret = unicode(orig, charset)
+        except TypeError:
+            ret = orig   
+                     
+        return orig
+        
+    
 
 class DateUtils:
     
