@@ -21,6 +21,8 @@ from namespaces import SWAML, RDF, RDFS, FOAF, GEO
 from email.Header import decode_header
 import email.Utils
 
+
+
 class FoafUtils:
     """
     Collection of util services to SWAML
@@ -57,7 +59,8 @@ class FoafUtils:
                      '98a99390f2fe9395041bddc41e933f50e59a5ecb' : 'http://www.asturlinux.org/~berrueta/foaf.rdf',
                      '8114083efd55b6d18cae51f1591dd9906080ae89' : 'http://di002.edv.uniovi.es/~labra/labraFoaf.rdf',
                      '84d076726727b596b08198e26ef37e4817353e97' : 'http://frade.no-ip.info:2080/~ivan/foaf.rdf',
-                     'bd6566af7b3bfa28f917aa545bf4174661817d79' : 'http://www.asturlinux.org/~jsmanrique/foaf.rdf'
+                     'bd6566af7b3bfa28f917aa545bf4174661817d79' : 'http://www.asturlinux.org/~jsmanrique/foaf.rdf',
+                     '97d9756f1281858d0e9e4489003073e4986546ce' : 'http://xtrasgu.asturlinux.org/descargas/foaf.rdf'
                 }
                 
         if (mail_sha1sum in foafs):
@@ -76,6 +79,10 @@ class FoafUtils:
                 self.__graph.parse(foaf)
             except:
                 self.__graph = None
+
+        #tip to set socket timeout global var
+        import socket
+        socket.setdefaulttimeout(10) #timeout in seconds
         
         return self.__graph
         
