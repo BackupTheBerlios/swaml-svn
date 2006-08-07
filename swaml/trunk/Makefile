@@ -3,7 +3,7 @@
 DESTDIR =
 
 install:
-	echo unavailable
+	mkdir -p $(DESTDIR)/etc/swaml
 
 uninstall:
 	echo unavailable
