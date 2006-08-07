@@ -72,6 +72,11 @@ class FoafUtils:
         """
         A simple mechanism to cache foaf graph
         """
+        
+        #tip to set socket timeout global var
+        import socket
+        socket.setdefaulttimeout(10) #timeout in seconds
+        
         if (self.__actualFoaf != foaf or self.__graph == None):
             self.__actualFoaf = foaf
             self.__graph = sparqlGraph.SPARQLGraph()
@@ -79,10 +84,6 @@ class FoafUtils:
                 self.__graph.parse(foaf)
             except:
                 self.__graph = None
-
-        #tip to set socket timeout global var
-        import socket
-        socket.setdefaulttimeout(10) #timeout in seconds
         
         return self.__graph
         
