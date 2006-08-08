@@ -201,6 +201,7 @@ class Subscribers:
             person = URIRef(subscriber.getStringId())
             store.add((subscribers, SWAML["subscriber"], person))
             store.add((person, RDF.type, FOAF["Person"]))
+            
             try:
                 name = subscriber.getName()
                 if (len(name) > 0):
@@ -209,6 +210,8 @@ class Subscribers:
                 foafResource = subscriber.getFoaf()
                 if (foafResource != None):
                     store.add((person, RDFS["seeAlso"], URIRef(foafResource)))
+                    
+                    #coordinates
                     lat, lon = subscriber.getGeo()
                     if (lat != None and lon != None): 
                         store.bind('geo', GEO)                       
@@ -217,6 +220,11 @@ class Subscribers:
                         store.add((geo, GEO['lat'], Literal(lat)))
                         store.add((geo, GEO['long'], Literal(lon)))
                         #TODO: we want something like <foaf:based_near geo:lat="" geo:long="" />
+                        
+                    #depiction
+                    pic = subscriber.getPic()
+                    if (pic != None):
+                        store.add((person, FOAF['depiction'], URIRef(pic)))
                         
             except UnicodeDecodeError, detail:
                 print 'Error proccesing subscriber ' + subscriber.getName() + ': ' + str(detail)
