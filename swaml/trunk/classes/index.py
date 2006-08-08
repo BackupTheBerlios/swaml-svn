@@ -77,12 +77,9 @@ class Index:
         store.bind('foaf', FOAF)
         store.bind('rdfs', RDFS)
         store.bind('dc', DC)
-        
-        #path
-        path = self.config.get('dir') + 'index.rdf'
 
         #root node
-        index = URIRef(path)
+        index = URIRef(self.config.get('url')+'index.rdf')
         store.add((index, RDF.type, SWAML['MailingList']))
 
         #list information
@@ -91,22 +88,15 @@ class Index:
         store.add((index, DC['description'], Literal(u'RDF files of a mailing list')))
 
         #subscribers
-        subscribers = BNode()
-        store.add((index, SWAML['Subscribers'], subscribers))
-        store.add((subscribers, SWAML['subscribersIndex'], URIRef(self.config.get('url')+'subscribers.rdf')))
-        store.add((subscribers, SWAML['subscribersCoordinates'], URIRef(self.config.get('url')+'subscribers.kml')))
+        store.add((index, SWAML['subscribers'], URIRef(self.config.get('url')+'subscribers.rdf')))
                   
-        #and items                         
-        items = BNode()
-        store.add((index, SWAML['sentMails'], items))
-        store.add((items, RDF.type, RDF.Bag))
-
-        for item in self.items:
-            store.add((items, RDF.li, URIRef(item)))
+        #and all items                         
+        for id, msg in self.items.items():
+            store.add((index, SWAML['sentMail'], URIRef(msg.getUri())))
                     
         #and dump to disk
         try:
-            rdf_file = open(path, 'w+')
+            rdf_file = open(self.config.get('dir')+'index.rdf', 'w+')
             rdf_file.write(store.serialize(format="pretty-xml"))
             rdf_file.flush()
             rdf_file.close()

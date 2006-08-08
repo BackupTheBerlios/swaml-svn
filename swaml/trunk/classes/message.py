@@ -120,6 +120,9 @@ class Message:
     def getUri(self):    
         return self.config.get('url') + self.getPath()
     
+    def getSender(self):
+        return self.sender
+    
     def __parseFrom(self, from_text):
         """Method to parse from field"""
         
@@ -137,7 +140,7 @@ class Message:
             #something like: Name Surmane name@domain.com
             from_name, from_mail = self.__parseFrom(self.From)
             
-        return Charset().encode(from_name) #Charset().decoded(from_name)
+        return Charset().encode(from_name)
             
     def getFromMail(self):   
         if(self.From.find('<')!= -1):
@@ -198,47 +201,29 @@ class Message:
         store.add((message, RDF.type, SWAML["Message"]))
         
         try:
-                        
-            #sender
-            sender = BNode()
-            store.add((message, SWAML["sender"], sender))
-            store.add((sender, RDF.type, FOAF["Person"]))   
-                      
-            name = self.getFromName()
-            if (len(name) > 0):
-                store.add((sender, FOAF["name"], Literal(name) ))
-
-            mail = self.getFromMail()
-            store.add((sender, FOAF["mbox_sha1sum"], Literal(FoafUtils().getShaMail(mail))))
-            
-            foafResource = self.sender.getFoaf()
-            if (foafResource != None):
-                store.add((sender, RDFS["seeAlso"], URIRef(foafResource)))
-                
-            #mail details
-            store.add((message, SWAML['id'], Literal(self.getSwamlId())))
-            store.add((message, SWAML['to'], Literal(self.getTo())))                         
+                 
+            #message date
+            store.add((message, SWAML['sentIn'],URIRef(self.config.get('url')+'index.rdf')))   
+            store.add((message, SWAML["from"], URIRef(self.getSender().getUri())))
+            store.add((message, SWAML['id'], Literal(self.getSwamlId())))                      
             store.add((message, SWAML['subject'], Literal(self.getSubject()))) 
             store.add((message, SWAML['date'], Literal(self.getDate())))  
             
             parent = self.getParent()
             if (parent != None):
-                store.add((message, SWAML['inReplyTo'], Literal(parent)))  
+                store.add((message, SWAML['inReplyTo'], URIRef(parent)))  
                 
             if (len(self.childs) > 0):
-                childs = BNode()
-                store.add((message, SWAML['answers'], childs))
-                store.add((childs, RDF.type, RDF.Bag))
                 for child in self.childs:
-                    store.add((childs, RDF.li, URIRef(child)))
+                    store.add((message, SWAML['answer'], URIRef(child)))
                 
             previous = self.getPreviousByDate()
             if (previous != None):
-                store.add((message, SWAML['previousByDate'], Literal(parent)))
+                store.add((message, SWAML['previousByDate'], URIRef(previous)))
                 
             next = self.getNextByDate()
-            if (previous != None):
-                store.add((message, SWAML['nextByDate'], Literal(parent)))                
+            if (next != None):
+                store.add((message, SWAML['nextByDate'], URIRef(next)))                
                         
             store.add((message, SWAML['body'], Literal(self.getBody())))      
             

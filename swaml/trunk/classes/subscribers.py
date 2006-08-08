@@ -32,7 +32,7 @@ class Subscriber:
     
     id = 0
     
-    def __init__(self, name, mail):
+    def __init__(self, name, mail, config):
         """
         Subscriber constructor
         """
@@ -44,6 +44,7 @@ class Subscriber:
         self.geo = [None, None]
         self.pic = None
         self.mails = []
+        self.config = config
         
     def getName(self):
         """
@@ -102,6 +103,12 @@ class Subscriber:
         Return string id
         """
         return 's' + str(self.getId())
+    
+    def getUri(self):
+        """
+        Return the subscriber's URI
+        """
+        return self.config.get('url') + 'subscribers.rdf#' + self.getStringId()
     
     def setName(self, name):
         """
@@ -167,7 +174,7 @@ class Subscribers:
         mail = msg.getFromMail()
         
         if (not mail in self.subscribers):
-            self.subscribers[mail] = Subscriber(name, mail)
+            self.subscribers[mail] = Subscriber(name, mail, self.config)
             
         self.subscribers[mail].addMail(msg)
         
@@ -190,17 +197,12 @@ class Subscribers:
         store.bind('swaml', SWAML)
         store.bind('foaf', FOAF)
         store.bind('rdfs', RDFS)
-        
-        #subscribers
-        subscribers = URIRef(self.config.get('url') + 'subscribers.rdf')
-        store.add((subscribers, RDF.type, SWAML["Subscribers"]))
 
-        #a BNode for each subcriber
+        #a Node for each subcriber
         for mail, subscriber in self.subscribers.items():
             #subscriberNode = BNode()
             person = URIRef(subscriber.getStringId())
-            store.add((subscribers, SWAML["subscriber"], person))
-            store.add((person, RDF.type, FOAF["Person"]))
+            store.add((person, RDF.type, FOAF["Subscriber"]))
             
             try:
                 name = subscriber.getName()
@@ -231,12 +233,8 @@ class Subscribers:
             
             sentMails = subscriber.getSentMails()
             if (len(sentMails)>0):
-                #build rdf:Bag
-                mails = BNode()
-                store.add((person, SWAML["sentMails"], mails))
-                store.add((mails, RDF.type, RDF.Bag))
                 for uri in sentMails:
-                    store.add((mails, RDF.li, URIRef(uri)))
+                    store.add((person, SWAML['author'], URIRef(uri)))
                     
         #and dump to disk
         try:

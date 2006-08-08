@@ -55,8 +55,6 @@ class MailingList:
             self.index.add(msg)
             self.subscribers.add(msg)
             subscriber = self.subscribers.get(msg.getFromMail())
-            
-            #complete data
             msg.setSender(subscriber)
             
             #parent message (refactor)
