@@ -37,6 +37,7 @@ class Subscriber:
         Subscriber constructor
         """
         self.__class__.id += 1
+        self.id = self.__class__.id
         self.setName(name)
         self.setMail(mail)
         self.foaf = None
@@ -89,6 +90,18 @@ class Subscriber:
         Return the uri of his picture
         """
         return self.pic
+    
+    def getId(self):
+        """
+        Return subscriber numeric id
+        """
+        return self.id
+    
+    def getStringId(self):
+        """
+        Return string id
+        """
+        return 's' + str(self.getId())
     
     def setName(self, name):
         """
@@ -185,7 +198,7 @@ class Subscribers:
         #a BNode for each subcriber
         for mail, subscriber in self.subscribers.items():
             #subscriberNode = BNode()
-            person = BNode()
+            person = URIRef(subscriber.getStringId())
             store.add((subscribers, SWAML["subscriber"], person))
             store.add((person, RDF.type, FOAF["Person"]))
             try:
