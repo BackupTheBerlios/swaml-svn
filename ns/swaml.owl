@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!DOCTYPE owl [
+<!ENTITY foaf "http://xmlns.com/foaf/0.1/">
+<!ENTITY dc "http://purl.org/dc/elements/1.1/">
+<!ENTITY xsd "http://www.w3.org/2001/XMLSchema#">
+<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<!ENTITY owl "http://www.w3.org/2002/07/owl#">
+<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+<!ENTITY swaml "http://swaml.berlios.de/ns/swaml.owl#">
+]>
+<rdf:RDF
+ xmlns:foaf="http://xmlns.com/foaf/0.1/"
+ xmlns:dc="http://purl.org/dc/elements/1.1/"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:owl="http://www.w3.org/2002/07/owl#"
+ xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+ xmlns:swaml="http://swaml.berlios.de/ns/swaml.owl#"
+ xml:base="http://swaml.berlios.de/ns/swaml.owl"
+>
+<owl:Ontology rdf:about="http://swaml.berlios.de/ns/swaml.owl">
+<owl:versionInfo>0.1</owl:versionInfo>
+<rdfs:label>SWAML Ontology (OWL)</rdfs:label>
+</owl:Ontology>
+<owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#MailingList">
+  <rdfs:label>SWAML Mailing List</rdfs:label>
+</owl:Class>
+<owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Message">
+  <rdfs:label>Message sent to a mailing list</rdfs:label>
+</owl:Class>
+<owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Subscriber">
+  <rdfs:subClassOf>
+    <owl:Class rdf:about="http://xmlns.com/foaf/0.1/Person">
+    </owl:Class>
+  </rdfs:subClassOf>
+  <rdfs:label>Mailing list's subscriber</rdfs:label>
+</owl:Class>
+<owl:Class rdf:about="http://www.w3.org/2002/07/owl#Thing">
+</owl:Class>
+<owl:Class rdf:about="http://xmlns.com/foaf/0.1/Person">
+</owl:Class>
+<owl:ObjectProperty rdf:about="http://swaml.berlios.de/ns/swaml.owl#authorOf">
+  <rdfs:domain>
+    <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Subscriber">
+    </owl:Class>
+  </rdfs:domain>
+  <rdfs:range>
+    <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Message">
+    </owl:Class>
+  </rdfs:range>
+  <owl:inverseOf rdf:resource="http://swaml.berlios.de/ns/swaml.owl#from" />
+  <rdfs:label>Author of a message</rdfs:label>
+</owl:ObjectProperty>
+<owl:ObjectProperty rdf:about="http://swaml.berlios.de/ns/swaml.owl#from">
+  <rdfs:domain>
+    <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Message">
+    </owl:Class>
+  </rdfs:domain>
+  <rdfs:range>
+    <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Subscriber">
+    </owl:Class>
+  </rdfs:range>
+  <rdfs:label>From person</rdfs:label>
+</owl:ObjectProperty>
+
+<owl:DatatypeProperty rdf:about="http://swaml.berlios.de/ns/swaml.owl#subject">
+  <rdfs:domain>    <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Message">
+    </owl:Class>
+</rdfs:domain>
+  <rdfs:range>    <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#string"/>
+</rdfs:range>
+</owl:DatatypeProperty>
+
+
+<owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#MailingList">
+  <owl:disjointWith>
+  <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Message">
+  </owl:Class>
+  </owl:disjointWith>
+</owl:Class>
+<owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Subscriber">
+  <owl:disjointWith>
+  <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Message">
+  </owl:Class>
+  </owl:disjointWith>
+</owl:Class>
+<owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#MailingList">
+  <owl:disjointWith>
+  <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Subscriber">
+  </owl:Class>
+  </owl:disjointWith>
+</owl:Class>
+</rdf:RDF>
