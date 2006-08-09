@@ -77,23 +77,47 @@
 
 <html>
 
-<head>
-<title>UMBC Ontology Formatter</title>
-</head>
+ <head>
+  <title>SWAML Ontology</title>
+  <meta name="DC.creator" content="UMBC Ontology Formatter" />
+  <style type="text/css">
 
-<body bgcolor="#FFFFCC">
+	body { 	
+		background: #CCCCCC; 
+		font-family: Helvetica, Verdana, Arial, sans-serif;
+		font-size: 12px;
+		line-height: 14px;
+		margin: 2em;
+	}
 
-<h2 align="center"><font face="Arial">UMBC Ontology Formatter</font></h2>
+	h2 {	
+		text-align: center;
+		font-weight: bold;
+		font-size: 3em;
+	}
 
+	.submenu {
+		text-align: center;
+	}
 
-<p align="center">
+	td {
+		padding: 2em;
+	}
 
-<a href="#Ontology">Ontology Description</a>
-<a href="#Classes">Classes</a> 
-<a href="#Properties">Properties</a>
-<a href="#Individuals">Individuals</a> 
-<a href="#Undetermined "> Undetermined </a>
+  </style>
+ </head>
+
+<body>
+
+<h2>SWAML Ontology</h2>
+<p class="submenu">
+	<a href="#Ontology">Ontology Description</a> | 
+	<a href="#Classes">Classes</a> | 
+	<a href="#Properties">Properties</a> | 
+	<a href="#Individuals">Individuals</a> | 
+	<a href="#Undetermined "> Undetermined </a>
 </p>
+
 <table border="1" cellspacing="0" width="100%" id="AutoNumber2" bgcolor="#FFFFFF" bordercolor="#000000" cellpadding="0">
 <tr>
 <td>
@@ -166,7 +190,7 @@
 </ul>
 
 <hr/>
-$Author: dingli1 $ - $Id: owl2html.xsl,v 1.3 2005/01/28 12:16:57 dingli1 Exp $
+$Author: dingli1 $ - $Id: owl2html.xsl,v 1.3.1 2006/08/09 12:16:57 dingli1 Exp $
 
 </body>
 
