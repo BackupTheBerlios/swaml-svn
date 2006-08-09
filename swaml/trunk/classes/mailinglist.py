@@ -148,7 +148,10 @@ class MailingList:
         store.add((list, DC['description'], Literal(u'RDF files of a mailing list')))
 
         #suscriptors
-        store.add((list, SWAML['suscriptors'], URIRef(self.config.get('url')+'suscriptors.rdf')))
+        #store.add((list, SWAML['suscriptors'], URIRef(self.config.get('url')+'suscriptors.rdf')))
+        suscriptors = self.suscriptors.getSuscriptorsUris()
+        for uri in suscriptors:
+            store.add((list, SWAML['hasSuscriptor'], URIRef(uri)))
                   
         #and all messages uris
         uris = self.index.getMessagesUri()                        

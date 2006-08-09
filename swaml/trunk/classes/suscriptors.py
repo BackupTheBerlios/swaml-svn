@@ -325,6 +325,14 @@ class Suscriptors:
         
         if (self.config.get('kml')):
             self.__toKML()
+            
+    def getSuscriptorsUris(self):
+        uris = []
+        
+        for mail, suscriptor in self.suscriptors.items():
+            uris.append(suscriptor.getUri())
+            
+        return uris
                            
                                     
 del sys, string
