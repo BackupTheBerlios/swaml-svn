@@ -23,12 +23,13 @@ import datetime
 
 class MailingList:
     
-    def __init__(self, config):
+    def __init__(self, config, lang=None):
         """
         Constructor method
         """
         
         self.config = config
+        self.lang = lang
         self.suscriptors = Suscriptors(config)
         self.index = Index(self.config)
         
@@ -148,6 +149,8 @@ class MailingList:
         store.add((list, DC['publisher'], Literal(u'SWAML')))
         store.add((list, DC['description'], Literal(u'RDF files of a mailing list')))
         store.add((list, DC['date'], Literal(str(datetime.date.today()))))
+        if (self.lang != None):
+            store.add((list, DC['language'], Literal(self.lang)))
 
         #suscriptors
         #store.add((list, SWAML['suscriptors'], URIRef(self.config.get('url')+'suscriptors.rdf')))
