@@ -18,6 +18,7 @@ from mbox import Mbox
 from suscriptors import Suscriptors
 from message import Message
 from index import Index
+from rdflib import Graph, URIRef, Literal, BNode, RDF
 
 class MailingList:
     
@@ -110,7 +111,7 @@ class MailingList:
 
                 message = mbox.nextMessage()
                 
-            self.index.toRDF()
+            self.__toRDF()
     
             self.suscriptors.process()
             self.suscriptors.export()
@@ -123,5 +124,44 @@ class MailingList:
             print 'Something was wrong: ' + str(self.messages) + ' parsed, but ' + str(messages) + ' processed'
 
         return messages
+    
+    def __toRDF(self):
+        """Dump mailing list to RDF file"""
+
+        #rdf graph
+        store = Graph()
+        
+        #namespaces
+        from namespaces import SWAML, RDFS, FOAF, DC
+        store.bind('swaml', SWAML)
+        store.bind('foaf', FOAF)
+        store.bind('rdfs', RDFS)
+        store.bind('dc', DC)
+
+        #root node
+        list = URIRef(self.config.get('url')+'index.rdf')
+        store.add((list, RDF.type, SWAML['MailingList']))
+
+        #list information
+        store.add((list, DC['title'], Literal(u'title (FIXME)')))
+        store.add((list, DC['publisher'], Literal(u'SWAML')))
+        store.add((list, DC['description'], Literal(u'RDF files of a mailing list')))
+
+        #suscriptors
+        store.add((list, SWAML['suscriptors'], URIRef(self.config.get('url')+'suscriptors.rdf')))
+                  
+        #and all messages uris
+        uris = self.index.getMessagesUri()                        
+        for uri in uris:
+            store.add((list, SWAML['sentMail'], URIRef(uri)))
+                    
+        #and dump to disk
+        try:
+            rdf_file = open(self.config.get('dir')+'index.rdf', 'w+')
+            rdf_file.write(store.serialize(format="pretty-xml"))
+            rdf_file.flush()
+            rdf_file.close()
+        except IOError, detail:
+            print 'Error exporting mialing list to RDF: ' + str(detail)    
     
 

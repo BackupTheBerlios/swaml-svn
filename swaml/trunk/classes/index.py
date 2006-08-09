@@ -14,10 +14,6 @@
 # for more details.
 
 import sys, os, string, sha
-from rdflib import Graph
-from rdflib import URIRef, Literal, BNode
-from rdflib import RDF
-from rdflib.store import Store
 
 class Index:
     
@@ -65,42 +61,12 @@ class Index:
         else:
             return None
                 
-    def toRDF(self):
-        """Dump inde to RDF file"""
-
-        #rdf graph
-        store = Graph()
+    def getMessagesUri(self):
+        uris = []
         
-        #namespaces
-        from namespaces import SWAML, RDFS, FOAF, DC
-        store.bind('swaml', SWAML)
-        store.bind('foaf', FOAF)
-        store.bind('rdfs', RDFS)
-        store.bind('dc', DC)
-
-        #root node
-        index = URIRef(self.config.get('url')+'index.rdf')
-        store.add((index, RDF.type, SWAML['MailingList']))
-
-        #list information
-        store.add((index, DC['title'], Literal(u'title (FIXME)')))
-        store.add((index, DC['publisher'], Literal(u'SWAML')))
-        store.add((index, DC['description'], Literal(u'RDF files of a mailing list')))
-
-        #suscriptors
-        store.add((index, SWAML['suscriptors'], URIRef(self.config.get('url')+'suscriptors.rdf')))
-                  
-        #and all items                         
         for id, msg in self.items.items():
-            store.add((index, SWAML['sentMail'], URIRef(msg.getUri())))
-                    
-        #and dump to disk
-        try:
-            rdf_file = open(self.config.get('dir')+'index.rdf', 'w+')
-            rdf_file.write(store.serialize(format="pretty-xml"))
-            rdf_file.flush()
-            rdf_file.close()
-        except IOError, detail:
-            print 'Error exporting index to RDF: ' + str(detail)
+            uris.append(msg.getUri())
+            
+        return uris
     
         
