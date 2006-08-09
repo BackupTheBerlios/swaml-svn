@@ -19,6 +19,7 @@ from suscriptors import Suscriptors
 from message import Message
 from index import Index
 from rdflib import Graph, URIRef, Literal, BNode, RDF
+import datetime
 
 class MailingList:
     
@@ -146,6 +147,7 @@ class MailingList:
         store.add((list, DC['title'], Literal(u'title (FIXME)')))
         store.add((list, DC['publisher'], Literal(u'SWAML')))
         store.add((list, DC['description'], Literal(u'RDF files of a mailing list')))
+        store.add((list, DC['date'], Literal(str(datetime.date.today()))))
 
         #suscriptors
         #store.add((list, SWAML['suscriptors'], URIRef(self.config.get('url')+'suscriptors.rdf')))
