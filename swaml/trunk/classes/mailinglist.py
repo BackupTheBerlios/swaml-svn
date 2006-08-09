@@ -15,7 +15,7 @@
 
 import sys, os, mailbox, rfc822, string, email, email.Errors, datetime, sha
 from mbox import Mbox
-from subscribers import Suscriptors
+from suscriptors import Suscriptors
 from message import Message
 from index import Index
 
