@@ -15,7 +15,7 @@
 
 import sys, os, mailbox, rfc822, string, email, email.Errors, datetime, sha
 from mbox import Mbox
-from subscribers import Subscribers
+from subscribers import Suscriptors
 from message import Message
 from index import Index
 
@@ -27,7 +27,7 @@ class MailingList:
         """
         
         self.config = config
-        self.subscribers = Subscribers(config)
+        self.suscriptors = Suscriptors(config)
         self.index = Index(self.config)
         
     def __createDir(self):
@@ -53,9 +53,9 @@ class MailingList:
             
             #index it
             self.index.add(msg)
-            self.subscribers.add(msg)
-            subscriber = self.subscribers.get(msg.getFromMail())
-            msg.setSender(subscriber)
+            self.suscriptors.add(msg)
+            suscriptor = self.suscriptors.get(msg.getFromMail())
+            msg.setSender(suscriptor)
             
             #parent message (refactor)
             inReplyTo = msg.getInReplyTo()
@@ -112,8 +112,8 @@ class MailingList:
                 
             self.index.toRDF()
     
-            self.subscribers.process()
-            self.subscribers.export()
+            self.suscriptors.process()
+            self.suscriptors.export()
             
         except Exception, detail:
             print str(detail)

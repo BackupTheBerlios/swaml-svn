@@ -87,8 +87,8 @@ class Index:
         store.add((index, DC['publisher'], Literal(u'SWAML')))
         store.add((index, DC['description'], Literal(u'RDF files of a mailing list')))
 
-        #subscribers
-        store.add((index, SWAML['subscribers'], URIRef(self.config.get('url')+'subscribers.rdf')))
+        #suscriptors
+        store.add((index, SWAML['suscriptors'], URIRef(self.config.get('url')+'suscriptors.rdf')))
                   
         #and all items                         
         for id, msg in self.items.items():
