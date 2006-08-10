@@ -103,7 +103,7 @@
 	    foreach ($items as $item) {
 	      $title = $item[title];
 	      $link  = $item[link];
-	      $description  = ereg_replace("(http|ftp)://(www\.)?(.+)\.(com|net|org)/","<a href=\"\\0 \">\\0</a>", $item[description]);
+	      $description  = ereg_replace("(http|ftp)://(www\.)?(.+)\.(com|net|org)(/)","<a href=\"\\0 \">\\0</a>", $item[description]);
 	      $pubDate  = $item[pubdate];
 	      $date = explode(" ", $pubDate);
 	      echo "      <dt>[" . $date[1] . "-" . $months[$date[2]] . "-" . $date[3] . "]";
