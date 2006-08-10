@@ -22,12 +22,13 @@
   <!ENTITY owl		"http://www.w3.org/2002/07/owl#">
 ]>
 
-  <xsl:stylesheet    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"   version="0.8"    
-    xmlns:rdf="&rdf;"
-    xmlns:rdfs="&rdfs;"
-    xmlns:xsd="&xsd;"
-    xmlns:owl="&owl;"
-    xmlns ='http://daml.umbc.edu/ontologies/webofbelief/xslt/owl2jena.xsl'>
+  	<xsl:stylesheet	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"    
+    			xmlns:rdf="&rdf;"
+    			xmlns:rdfs="&rdfs;"
+    			xmlns:xsd="&xsd;"
+    			xmlns:owl="&owl;"
+    			xmlns ='http://daml.umbc.edu/ontologies/webofbelief/xslt/owl2jena.xsl'
+	>
 
   <xsl:output method="xml" indent='yes' doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"/>
 
