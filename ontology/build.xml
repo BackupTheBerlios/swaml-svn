@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="SWAML-Web" default="scp">
+<project name="SWAML-Ontology" default="scp">
 
 	<property environment="env" />	
 	<property name="user" value="wikier" />
