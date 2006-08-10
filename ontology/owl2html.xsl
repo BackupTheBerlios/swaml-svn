@@ -80,6 +80,8 @@
  <head>
   <title>SWAML Ontology</title>
   <meta name="DC.creator" content="UMBC Ontology Formatter" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="meta" title="DOAP" type="application/rdf+xml" href="/doap.rdf" />
   <style type="text/css">
 
 	body { 	
@@ -109,7 +111,8 @@
 
 <body>
 
-<h2>SWAML Ontology</h2>
+<h2>SWAML Ontology</h2>
+
 <p class="submenu">
 	<a href="#Ontology">Ontology Description</a> | 
 	<a href="#Classes">Classes</a> | 
@@ -130,7 +133,7 @@
         </ol>
         </xsl:if>
 <p></p>
-<h3><a name="Classes">Classes(<xsl:value-of select="count($nodeset-class)"/>)</a></h3>
+<h3><a name="Classes">Classes</a> (<xsl:value-of select="count($nodeset-class)"/>):</h3>
 
         <xsl:if test="count($nodeset-class)>0">
         <ol>
@@ -141,7 +144,7 @@
 
 
 <p></p>
-<h3><a name="Properties">Properties(<xsl:value-of select="count($nodeset-property)"/>)</a></h3>
+<h3><a name="Properties">Properties</a> (<xsl:value-of select="count($nodeset-property)"/>):</h3>
         <xsl:if test="count($nodeset-property)>0">
         <ol>
            <xsl:apply-templates select="$nodeset-property" mode="details">  
@@ -150,7 +153,7 @@
         </xsl:if>
 
 <p></p>
-<h3><a name="Individuals">Individuals(<xsl:value-of select="count($nodeset-individual)"/>)</a></h3>
+<h3><a name="Individuals">Individuals</a> (<xsl:value-of select="count($nodeset-individual)"/>):</h3>
         <xsl:if test="count($nodeset-individual)>0">
         <ol>
            <xsl:apply-templates select="$nodeset-individual" mode="details">  
@@ -159,7 +162,7 @@
         </xsl:if>
 
 <p></p>
-<h3><a name="Undetermined ">Undetermined(N/A)</a> </h3>
+<h3><a name="Undetermined ">Undetermined (N/A)</a> </h3>
 <p></p>
 
 </td>
@@ -167,30 +170,36 @@
 </table>
 
 
-<h3><font face="Arial">References</font></h3>
+<h3>References:</h3>
 <ul>
-  <li>	<font face="Arial">	<a href="http://www.w3.org/TR/REC-rdf-syntax/">RDF Syntax and Model</a>  
-	</font>
+  <li>
+	<a href="http://swaml.berlios.de/">SWAML Project</a>  
   </li>
-  <li>	<font face="Arial">	<a href="http://www.w3.org/TR/rdf-schema/">RDF Schemas</a>
-        </font> 
+  <li>
+	<a href="http://www.w3.org/TR/REC-rdf-syntax/">RDF Syntax and Model</a>  
   </li>
-  <li>	<font face="Arial">	<a href="http://www.w3.org/TR/owl-ref/">OWL Web Ontology Language Reference</a> 
-	</font> 
+  <li>
+	<a href="http://www.w3.org/TR/rdf-schema/">RDF Schemas</a>
   </li>
-  <li> 	<font face="Arial">	<a href="http://www.w3.org/TR/owl-semantics/">OWL Web Ontology Language Semantics and Abstract Syntax </a>
-	</font>
+  <li>
+	<a href="http://www.w3.org/TR/owl-ref/">OWL Web Ontology Language Reference</a> 
   </li>
-  <li>	<font face="Arial">	<a href="http://www.w3.org/TR/xslt">XSL Transformations (XSLT) Version 1.0</a>
-	</font>
-   </li>
-  <li>	<font face="Arial">	<a href="http://www.w3.org/2002/06/rdfs2html.xsl">RDF2HTML XSLT</a> (We learned many good ideas from this application)
-	</font>
+  <li>
+	<a href="http://www.w3.org/TR/owl-semantics/">OWL Web Ontology Language Semantics and Abstract Syntax </a>
+  </li>
+  <li>
+	<a href="http://www.w3.org/TR/xslt">XSL Transformations (XSLT) Version 1.0</a>
+  </li>
+  <li>
+	<a href="http://www.wasab.dk/morten/2004/05/owl2html.xsl">OWL2HTML XSLT</a> (We made some changes based on this application)
+  </li>   
+  <li>
+	<a href="http://www.w3.org/2002/06/rdfs2html.xsl">RDF2HTML XSLT</a> (We learned many good ideas from this application)
   </li>
 </ul>
 
 <hr/>
-$Author: dingli1 $ - $Id: owl2html.xsl,v 1.3.1 2006/08/09 12:16:57 dingli1 Exp $
+$Author: Wikier $ - $Id: owl2html.xsl,v 1.3.1 2006/08/10 9:26:57 Wikier Exp $
 
 </body>
 
