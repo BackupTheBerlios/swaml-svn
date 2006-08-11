@@ -19,13 +19,13 @@
  xml:base="http://swaml.berlios.de/ns/swaml.owl"
 >
 <owl:Ontology rdf:about="http://swaml.berlios.de/ns/swaml.owl">
-<rdfs:comment>Ontology to describe mail lists</rdfs:comment>
-<owl:versionInfo>0.1</owl:versionInfo>
 <rdfs:label>SWAML Ontology</rdfs:label>
+<owl:versionInfo>0.1</owl:versionInfo>
+<rdfs:comment>Ontology to describe mail lists</rdfs:comment>
 </owl:Ontology>
 <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#MailingList">
-  <rdfs:label>Mailing List</rdfs:label>
   <rdfs:comment>A mailing list</rdfs:comment>
+  <rdfs:label>Mailing List</rdfs:label>
 </owl:Class>
 <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Message">
   <rdfs:label>Message</rdfs:label>
@@ -104,8 +104,8 @@
     </owl:Class>
   </rdfs:range>
   <owl:inverseOf rdf:resource="http://swaml.berlios.de/ns/swaml.owl#nextByDate" />
-  <rdfs:label>previousByDate</rdfs:label>
   <rdfs:comment>Previous message by date in mailign list</rdfs:comment>
+  <rdfs:label>previousByDate</rdfs:label>
 </owl:ObjectProperty>
 <owl:ObjectProperty rdf:about="http://swaml.berlios.de/ns/swaml.owl#sentIn">
   <rdfs:domain>
@@ -117,8 +117,8 @@
     </owl:Class>
   </rdfs:range>
   <owl:inverseOf rdf:resource="http://swaml.berlios.de/ns/swaml.owl#sentMail" />
-  <rdfs:comment>Message sent it in a mailing list</rdfs:comment>
   <rdfs:label>sentIn</rdfs:label>
+  <rdfs:comment>Message sent it in a mailing list</rdfs:comment>
 </owl:ObjectProperty>
 <owl:ObjectProperty rdf:about="http://swaml.berlios.de/ns/swaml.owl#sentMail">
   <rdfs:domain>
@@ -153,8 +153,8 @@
 </rdfs:domain>
   <rdfs:range>    <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#string"/>
 </rdfs:range>
-  <rdfs:label>body</rdfs:label>
   <rdfs:comment>Message body</rdfs:comment>
+  <rdfs:label>body</rdfs:label>
 </owl:DatatypeProperty>
 <owl:DatatypeProperty rdf:about="http://swaml.berlios.de/ns/swaml.owl#date">
   <rdfs:domain>    <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Message">
@@ -189,8 +189,8 @@
 </rdfs:domain>
   <rdfs:range>    <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#string"/>
 </rdfs:range>
-  <rdfs:comment>Applying the SHA1 mathematical functional to a 'mailto:' identifier (URI) for the mailing</rdfs:comment>
   <rdfs:label>post_sha1sum</rdfs:label>
+  <rdfs:comment>Applying the SHA1 mathematical functional to a 'mailto:' identifier (URI) for the mailing</rdfs:comment>
 </owl:DatatypeProperty>
 <owl:DatatypeProperty rdf:about="http://swaml.berlios.de/ns/swaml.owl#subject">
   <rdfs:domain>    <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Message">
@@ -221,11 +221,4 @@
   </owl:Class>
   </owl:disjointWith>
 </owl:Class>
-<owl:DatatypeProperty rdf:about="http://swaml.berlios.de/ns/swaml.owl#post">
-  <owl:equivalentProperty>
-  <owl:DatatypeProperty rdf:about="http://swaml.berlios.de/ns/swaml.owl#post_sha1sum">
-  </owl:DatatypeProperty>
-  </owl:equivalentProperty>
-</owl:DatatypeProperty>
-
 </rdf:RDF>
