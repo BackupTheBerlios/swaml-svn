@@ -74,47 +74,9 @@
    </h2>
    <div class="wikitext">
     <?php
-
-        $months = array(   "Jan" => "01",
-                           "Feb" => "02",
-                           "Mar" => "03",
-                           "Apr" => "04",
-                           "May" => "05",
-                           "Jun" => "06",
-                           "Jul" => "07",
-                           "Aug" => "08",
-                           "Sep" => "09",
-                           "Oct" => "10",
-                           "Nov" => "11",
-                           "Dec" => "12"
-                    );
-
-          require_once('magpierss/rss_fetch.inc');
-          $url = 'http://developer.berlios.de/export/rss20_bsnews.php?group_id=4806';
-
-          $rss = fetch_rss($url);
-
-          if ( $rss and !$rss->ERROR) {
-
-	    $num_items = 10;
-	    $items = array_slice($rss->items, 0, $num_items);
-	    echo "<dl>\n";
-
-	    foreach ($items as $item) {
-	      $title = $item[title];
-	      $link  = $item[link];
-	      $description  = ereg_replace("(http|ftp)://(www\.)?(.+)\.(com|net|org)(/)","<a href=\"\\0 \">\\0</a>", $item[description]);
-	      $pubDate  = $item[pubdate];
-	      $date = explode(" ", $pubDate);
-	      echo "      <dt>[" . $date[1] . "-" . $months[$date[2]] . "-" . $date[3] . "]";
-              echo " <a href=\"" . $link . "\">" . $title . "</a></dt>\n";
-	      echo "      <dd>" . $description . "</dd>\n";
-	    }
-
-	    echo "    </dl>\n\n";
-
-          } else { echo "Error: " . $rss->ERROR; }
-
+	include('functions.php');
+	$swaml = new SWAML();
+	echo $swaml->parse_rss();
     ?>
    </div>
 

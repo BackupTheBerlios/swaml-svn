@@ -10,6 +10,7 @@
 	<target name="scp" description="upload web files" depends="clean">
 	   <exec executable="scp">
 		<arg value="index.php" />
+		<arg value="functions.php" />
 		<arg value="style.css" />
 		<arg value="doap.rdf" />
 		<arg value="${user}@${host}:${path}" />
