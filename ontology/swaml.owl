@@ -19,13 +19,22 @@
  xml:base="http://swaml.berlios.de/ns/swaml.owl"
 >
 <owl:Ontology rdf:about="http://swaml.berlios.de/ns/swaml.owl">
-<rdfs:label>SWAML Ontology</rdfs:label>
-<owl:versionInfo>0.1</owl:versionInfo>
-<rdfs:comment>Ontology to describe mail lists</rdfs:comment>
+  <rdfs:comment>Ontology to describe mail lists</rdfs:comment>
+  <owl:versionInfo>0.1</owl:versionInfo>
+  <rdfs:label>SWAML Ontology</rdfs:label>
 </owl:Ontology>
+
 <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#MailingList">
   <rdfs:comment>A mailing list</rdfs:comment>
   <rdfs:label>Mailing List</rdfs:label>
+  <owl:disjointWith>
+    <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Message">
+    </owl:Class>
+  </owl:disjointWith>
+  <owl:disjointWith>
+    <owl:Class rdf:about="http://xmlns.com/foaf/0.1/Person">
+    </owl:Class>
+  </owl:disjointWith>
 </owl:Class>
 <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Message">
   <rdfs:label>Message</rdfs:label>
@@ -36,13 +45,18 @@
     <owl:Class rdf:about="http://xmlns.com/foaf/0.1/Person">
     </owl:Class>
   </rdfs:subClassOf>
-  <rdfs:comment>A mailing list suscriptor</rdfs:comment>
   <rdfs:label>Suscriptor</rdfs:label>
+  <rdfs:comment>A mailing list suscriptor</rdfs:comment>
 </owl:Class>
 <owl:Class rdf:about="http://www.w3.org/2002/07/owl#Thing">
 </owl:Class>
 <owl:Class rdf:about="http://xmlns.com/foaf/0.1/Person">
+  <owl:disjointWith>
+    <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Message">
+    </owl:Class>
+  </owl:disjointWith>
 </owl:Class>
+
 <owl:ObjectProperty rdf:about="http://swaml.berlios.de/ns/swaml.owl#author">
   <rdfs:domain>
     <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Suscriptor">
@@ -66,8 +80,8 @@
     </owl:Class>
   </rdfs:range>
   <owl:inverseOf rdf:resource="http://swaml.berlios.de/ns/swaml.owl#author" />
-  <rdfs:comment>A message was sent by a person</rdfs:comment>
   <rdfs:label>from</rdfs:label>
+  <rdfs:comment>A message was sent by a person</rdfs:comment>
 </owl:ObjectProperty>
 <owl:ObjectProperty rdf:about="http://swaml.berlios.de/ns/swaml.owl#hasSuscriptor">
   <rdfs:domain>
@@ -117,8 +131,8 @@
     </owl:Class>
   </rdfs:range>
   <owl:inverseOf rdf:resource="http://swaml.berlios.de/ns/swaml.owl#sentMail" />
-  <rdfs:label>sentIn</rdfs:label>
   <rdfs:comment>Message sent it in a mailing list</rdfs:comment>
+  <rdfs:label>sentIn</rdfs:label>
 </owl:ObjectProperty>
 <owl:ObjectProperty rdf:about="http://swaml.berlios.de/ns/swaml.owl#sentMail">
   <rdfs:domain>
@@ -130,8 +144,8 @@
     </owl:Class>
   </rdfs:range>
   <owl:inverseOf rdf:resource="http://swaml.berlios.de/ns/swaml.owl#sentIn" />
-  <rdfs:label>sentMail</rdfs:label>
   <rdfs:comment>a mailing list have a sent mail</rdfs:comment>
+  <rdfs:label>sentMail</rdfs:label>
 </owl:ObjectProperty>
 <owl:ObjectProperty rdf:about="http://swaml.berlios.de/ns/swaml.owl#suscriptorOf">
   <rdfs:domain>
@@ -143,8 +157,8 @@
     </owl:Class>
   </rdfs:range>
   <owl:inverseOf rdf:resource="http://swaml.berlios.de/ns/swaml.owl#hasSuscriptor" />
-  <rdfs:comment>Suscriptor of a mailing list</rdfs:comment>
   <rdfs:label>suscriptorOf</rdfs:label>
+  <rdfs:comment>Suscriptor of a mailing list</rdfs:comment>
 </owl:ObjectProperty>
 
 <owl:DatatypeProperty rdf:about="http://swaml.berlios.de/ns/swaml.owl#body">
@@ -162,8 +176,8 @@
 </rdfs:domain>
   <rdfs:range>    <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#date"/>
 </rdfs:range>
-  <rdfs:label>date</rdfs:label>
   <rdfs:comment>Message date</rdfs:comment>
+  <rdfs:label>date</rdfs:label>
 </owl:DatatypeProperty>
 <owl:DatatypeProperty rdf:about="http://swaml.berlios.de/ns/swaml.owl#id">
   <rdfs:domain>    <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Message">
@@ -180,8 +194,8 @@
 </rdfs:domain>
   <rdfs:range>    <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#string"/>
 </rdfs:range>
-  <rdfs:label>post</rdfs:label>
   <rdfs:comment>Mailign list post address. Many people prefer to use swaml:post_sha1sum</rdfs:comment>
+  <rdfs:label>post</rdfs:label>
 </owl:DatatypeProperty>
 <owl:DatatypeProperty rdf:about="http://swaml.berlios.de/ns/swaml.owl#post_sha1sum">
   <rdfs:domain>    <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Message">
@@ -189,8 +203,8 @@
 </rdfs:domain>
   <rdfs:range>    <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#string"/>
 </rdfs:range>
-  <rdfs:label>post_sha1sum</rdfs:label>
   <rdfs:comment>Applying the SHA1 mathematical functional to a 'mailto:' identifier (URI) for the mailing</rdfs:comment>
+  <rdfs:label>post_sha1sum</rdfs:label>
 </owl:DatatypeProperty>
 <owl:DatatypeProperty rdf:about="http://swaml.berlios.de/ns/swaml.owl#subject">
   <rdfs:domain>    <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Message">
@@ -202,23 +216,4 @@
   <rdfs:comment>Message subject</rdfs:comment>
 </owl:DatatypeProperty>
 
-
-<owl:Class rdf:about="http://xmlns.com/foaf/0.1/Person">
-  <owl:disjointWith>
-  <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Message">
-  </owl:Class>
-  </owl:disjointWith>
-</owl:Class>
-<owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#MailingList">
-  <owl:disjointWith>
-  <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Message">
-  </owl:Class>
-  </owl:disjointWith>
-</owl:Class>
-<owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#MailingList">
-  <owl:disjointWith>
-  <owl:Class rdf:about="http://xmlns.com/foaf/0.1/Person">
-  </owl:Class>
-  </owl:disjointWith>
-</owl:Class>
 </rdf:RDF>
