@@ -51,7 +51,7 @@
 		  rdf:type/@rdf:resource='&owl;Ontology'  or (local-name()='Ontology' and namespace-uri()='&owl;')
   ]" />
 
-  <xsl:variable name="nodeset-class" select=".//*[     
+  <xsl:variable name="nodeset-class" select="./rdf:RDF/*[     
 		   rdf:type/@rdf:resource='&owl;Class'  or (local-name()='Class' and namespace-uri()='&owl;')
  		or rdf:type/@rdf:resource='&rdfs;Class' or (local-name()='Class' and namespace-uri()='&rdfs;')
   ]" />
