@@ -123,7 +123,7 @@
 	<a href="#Undetermined "> Undetermined </a>
 </p>
 
-<table border="1" cellspacing="0" width="100%" id="AutoNumber2" bgcolor="#FFFFFF" bordercolor="#000000" cellpadding="0">
+<table border="1" cellspacing="0" width="100%" id="AutoNumber2" bgcolor="#f2f2f2" bordercolor="#000000" cellpadding="0">
 <tr>
 <td>
 
