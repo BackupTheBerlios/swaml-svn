@@ -9,11 +9,11 @@ class SWAML {
 
 		$ret = " " . $text;
 
-		// matches an "http://yyyy" URL at the start of a line, or after a space.
-		$ret = preg_replace("#([\n ])(http)://([a-z0-9\-\.,\?!%\*_\#:;~\\&$@\/=\+]+)#i", "\\1<a href=\"\\2://\\3\" target=\"_blank\">\\2://\\3</a>", $ret);
+		// matches a "http://yyyy"
+		$ret = preg_replace("#([\n ])(http)://([a-z0-9\-\.,\?!%\*_\#:;~\\&$@\/=\+]+)#i", "\\1<a href=\"\\2://\\3\">\\2://\\3</a>", $ret);
 
-		// matches a "www.xxxx.yyyy[/zzzz]" kinda lazy URL thing
-		$ret = preg_replace("#([\n ])www\.([a-z0-9\-]+)\.([a-z0-9\-.\~]+)((?:/[a-z0-9\-\.,\?!%\*_\#:;~\\&$@\/=\+]*)?)#i", "\\1<a href=\"http://www.\\2.\\3\\4\" target=\"_blank\">www.\\2.\\3\\4</a>", $ret);
+		// matches a "www.xxxx.yyyy[/zzzz]"
+		$ret = preg_replace("#([\n ])www\.([a-z0-9\-]+)\.([a-z0-9\-.\~]+)((?:/[a-z0-9\-\.,\?!%\*_\#:;~\\&$@\/=\+]*)?)#i", "\\1<a href=\"http://www.\\2.\\3\\4\">www.\\2.\\3\\4</a>", $ret);
 
 		$ret = substr($ret, 1);
 
