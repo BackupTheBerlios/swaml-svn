@@ -78,13 +78,20 @@ comoda de usar y potente que las otras dos.
 Alguna de las caracteristicas más interesantes de SWOOP son:
 
 \begin{itemize}
-  \item Interfaz de usuario hypermedia, con elementos (pestañas, marcadores, etc)
-	que hacen la interfaz más amigable.
+  \item Interfaz de usuario hypermedia similar a la de un navegador convencional, 
+	con elementos (pestañas, marcadores, etc) que hacen la interfaz más 
+	amigable.
   \item Soporte de depuración de la ontología.
   \item Cliente para hacer razonamientos sencillos con Pellet.
   \item FIXME
 \end{itemize}
 
+Un problema común en todas estas herramientas de alto nivel para trabajar con
+grafos RDF es el serializado del grafo a sintáxis XML. No por su corrección,
+que la herramienta lo hace perfectamente, sino por su orden: es muy difícil
+que al serializar queden todos los nodos en el mismo orden. Por tanto es muy
+difícil conocer las diferencias entre distintas versiones con las herramientas
+convencionales (principalmente \texttt{diff}).
 
 \subsection{phpWiki}
 
