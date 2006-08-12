@@ -68,9 +68,8 @@
      This project still is on phase of planning , not to be used without careful considerations.
    </p>
 
-   <h2>
-    <a href="#news"></a>News &nbsp; 
-    <a href="/rss/news" type="application/rss+xml"><img src="images/xml.png" width="36" height="14" alt="XML"/></a>
+   <h2 id ="news">
+     News &nbsp; <a href="/rss/news" type="application/rss+xml"><img src="images/xml.png" width="36" height="14" alt="XML"/></a>
    </h2>
    <div class="wikitext">
     <?php
@@ -80,7 +79,7 @@
     ?>
    </div>
 
-   <h2><a href="#doc"></a>Documentation</h2>
+   <h2 id="doc">Documentation</h2>
    <div class="wikitext">
     <dl>
      <dt><a href="http://download.berlios.de/swaml/propuesta.pdf">propuesta.pdf</a>:</dt>
@@ -88,13 +87,13 @@
     </dl>  
    </div>
 
-   <h2><a href="#files"></a>Files</h2>
+   <h2 id="files">Files</h2>
    <div class="wikitext">
     <p>There are not files until the moment. While you can visit the <a href="/files">files section</a> 
     or <a href="/wsvn">subversion repository web interface</a>.</p>
    </div>
 
-   <h2><a href="#contact"></a>Contact</h2>
+   <h2 id="contact">Contact</h2>
    <div class="wikitext">
     <p>You can contact any <a href="/members-list"> members of project</a>. Also you have a several 
     <a href="/lists">mailing lists</a>:</p>
