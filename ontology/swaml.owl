@@ -1,23 +1,26 @@
 <?xml version="1.0"?>
+
 <!DOCTYPE owl [
-<!ENTITY foaf "http://xmlns.com/foaf/0.1/">
-<!ENTITY dc "http://purl.org/dc/elements/1.1/">
-<!ENTITY xsd "http://www.w3.org/2001/XMLSchema#">
-<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-<!ENTITY owl "http://www.w3.org/2002/07/owl#">
-<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
-<!ENTITY swaml "http://swaml.berlios.de/ns/swaml.owl#">
+	<!ENTITY foaf "http://xmlns.com/foaf/0.1/">
+	<!ENTITY dc "http://purl.org/dc/elements/1.1/">
+	<!ENTITY xsd "http://www.w3.org/2001/XMLSchema#">
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY swaml "http://swaml.berlios.de/ns/swaml.owl#">
 ]>
+
 <rdf:RDF
- xmlns:foaf="http://xmlns.com/foaf/0.1/"
- xmlns:dc="http://purl.org/dc/elements/1.1/"
- xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
- xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
- xmlns:owl="http://www.w3.org/2002/07/owl#"
- xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
- xmlns:swaml="http://swaml.berlios.de/ns/swaml.owl#"
- xml:base="http://swaml.berlios.de/ns/swaml.owl"
+	xmlns:foaf="http://xmlns.com/foaf/0.1/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:owl="http://www.w3.org/2002/07/owl#"
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	xmlns:swaml="http://swaml.berlios.de/ns/swaml.owl#"
+	xml:base="http://swaml.berlios.de/ns/swaml.owl"
 >
+
 <owl:Ontology rdf:about="http://swaml.berlios.de/ns/swaml.owl">
   <rdfs:comment>Ontology to describe mail lists</rdfs:comment>
   <owl:versionInfo>0.1</owl:versionInfo>
@@ -38,7 +41,7 @@
 </owl:Class>
 <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Message">
   <rdfs:label>Message</rdfs:label>
-  <rdfs:comment xml:lang="en">A mailing list message</rdfs:comment>
+  <rdfs:comment>A mailing list message</rdfs:comment>
 </owl:Class>
 <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Suscriptor">
   <rdfs:subClassOf>
@@ -106,7 +109,7 @@
     </owl:Class>
   </rdfs:range>
   <owl:inverseOf rdf:resource="http://swaml.berlios.de/ns/swaml.owl#previousByDate" />
-  <rdfs:comment xml:lang="en">Next message sent in mailing list</rdfs:comment>
+  <rdfs:comment>Next message sent in mailing list</rdfs:comment>
 </owl:ObjectProperty>
 <owl:ObjectProperty rdf:about="http://swaml.berlios.de/ns/swaml.owl#previousByDate">
   <rdfs:domain>
