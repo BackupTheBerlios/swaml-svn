@@ -46,7 +46,7 @@ class SWAML {
 	    		$num_items = 10;
 	    		$items = array_slice($rss->items, 0, $num_items);
 	    		
-			$ret = "<dl>\n";
+			$ret = '<dl>';
 
 	    		foreach ($items as $item) {
 	      			$title = $item[title];
@@ -54,15 +54,15 @@ class SWAML {
 	      			$description = $this->make_clickable($item[description]);
 	      			$pubDate  = $item[pubdate];
 	      			$date = explode(" ", $pubDate);
-	      			$ret .= "      <dt>[" . $date[1] . "-" . $months[$date[2]] . "-" . $date[3] . "]";
-              			$ret .= " <a href=\"" . $link . "\"><strong>" . $title . "</strong></a></dt>\n";
-	      			$ret .= "      <dd>" . $description . "</dd>\n";
+	      			$ret .= '<dt>['.$date[1].'-'.$months[$date[2]].'-'.$date[3].'] ';
+              			$ret .= '<a href="'.$link.'"><strong>'.$title.'</strong></a></dt>';
+	      			$ret .= '<dd>'.$description.'</dd>';
 	    		}
 
-	    		$ret .= "    </dl>\n\n";
+	    		$ret .= '</dl>';
 
           	} else { 
-			$ret = "Error: " . $rss->ERROR; 
+			$ret = 'Error: ' . $rss->ERROR; 
 		}
 
 		return $ret;
