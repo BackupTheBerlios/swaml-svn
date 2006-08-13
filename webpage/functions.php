@@ -55,7 +55,7 @@ class SWAML {
 	      			$pubDate  = $item[pubdate];
 	      			$date = explode(" ", $pubDate);
 	      			$ret .= "      <dt>[" . $date[1] . "-" . $months[$date[2]] . "-" . $date[3] . "]";
-              			$ret .= " <a href=\"" . $link . "\">" . $title . "</a></dt>\n";
+              			$ret .= " <a href=\"" . $link . "\"><strong>" . $title . "</strong></a></dt>\n";
 	      			$ret .= "      <dd>" . $description . "</dd>\n";
 	    		}
 
