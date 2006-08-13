@@ -308,3 +308,7 @@ input, textarea {
 	font-size: 1em;
 }
 
+#feed-icon {
+	float: right;
+	margin: 0 0 0 10em;
+}

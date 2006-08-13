@@ -11,6 +11,7 @@
   <link rel="stylesheet" type="text/css" charset="iso-8859-1" href="style.css" />
   <link rel="shortcut icon" href="favicon.ico" />
   <link rel="meta" title="DOAP" type="application/rdf+xml" href="doap.rdf" />
+  <link rel="alternate" type="application/rss+xml" title="SWAML RSS" href="/rss/news" />
  </head>
 
  <body>
@@ -69,7 +70,8 @@
    </p>
 
    <h2 id ="news">
-     News &nbsp; <a href="/rss/news" type="application/rss+xml"><img src="images/xml.png" width="36" height="14" alt="XML"/></a>
+     <a href="/rss/news" type="application/rss+xml" title="read SWAML's news in your favourite feed reader"><img src="images/rss.png" width="28" height="28" alt="RSS" id="feed-icon" /></a>
+     News
    </h2>
    <div class="wikitext">
     <?php
