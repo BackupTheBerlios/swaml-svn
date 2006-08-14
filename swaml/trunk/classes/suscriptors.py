@@ -218,9 +218,9 @@ class Suscriptors:
                         store.bind('geo', GEO)                       
                         geo = BNode()
                         store.add((person, FOAF['based_near'], geo))
+                        store.add((geo, RDF.type, GEO['Point']))		
                         store.add((geo, GEO['lat'], Literal(lat)))
                         store.add((geo, GEO['long'], Literal(lon)))
-                        #TODO: we want something like <foaf:based_near geo:lat="" geo:long="" />
                         
                     #depiction
                     pic = suscriptor.getPic()
