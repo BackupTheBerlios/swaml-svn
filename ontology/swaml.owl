@@ -42,6 +42,10 @@
 <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Message">
   <rdfs:label>Message</rdfs:label>
   <rdfs:comment>A mailing list message</rdfs:comment>
+  <owl:disjointWith>
+    <owl:Class rdf:about="http://xmlns.com/foaf/0.1/Person">
+    </owl:Class>
+  </owl:disjointWith>
 </owl:Class>
 <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Suscriptor">
   <rdfs:subClassOf>
@@ -54,10 +58,6 @@
 <owl:Class rdf:about="http://www.w3.org/2002/07/owl#Thing">
 </owl:Class>
 <owl:Class rdf:about="http://xmlns.com/foaf/0.1/Person">
-  <owl:disjointWith>
-    <owl:Class rdf:about="http://swaml.berlios.de/ns/swaml.owl#Message">
-    </owl:Class>
-  </owl:disjointWith>
 </owl:Class>
 
 <owl:ObjectProperty rdf:about="http://swaml.berlios.de/ns/swaml.owl#author">
