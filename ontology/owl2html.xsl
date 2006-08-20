@@ -114,6 +114,7 @@
 		background-color: #f2f2f2;
 		border: 1px #000000 solid;
 		padding: 0 0 3em 3em;
+		margin: 2em 0 2em 0;
 	}
 
   </style>
@@ -124,11 +125,10 @@
 <h2>SWAML Ontology</h2>
 
 <p id="submenu">
+	<a href="/">SWAML</a>: 
 	<a href="#Ontology">Ontology Description</a> | 
 	<a href="#Classes">Classes</a> | 
-	<a href="#Properties">Properties</a> | 
-	<a href="#Individuals">Individuals</a> | 
-	<a href="#References">References</a>
+	<a href="#Properties">Properties</a>
 </p>
 
 <div id="content">
@@ -158,50 +158,14 @@
         </ol>
         </xsl:if>
 
-<p></p>
-<h3 id="Individuals">Individuals (<xsl:value-of select="count($nodeset-individual)"/>):</h3>
-        <xsl:if test="count($nodeset-individual)>0">
-        <ol>
-           <xsl:apply-templates select="$nodeset-individual" mode="details">  
-          </xsl:apply-templates>
-        </ol>
-        </xsl:if>
-
-<p></p>
-
 </div>
 
-
-<h3 id="References">References:</h3>
-<ul>
-  <li>
-	<a href="http://swaml.berlios.de/">SWAML Project</a>  
-  </li>
-  <li>
-	<a href="http://www.w3.org/TR/REC-rdf-syntax/">RDF Syntax and Model</a>  
-  </li>
-  <li>
-	<a href="http://www.w3.org/TR/rdf-schema/">RDF Schemas</a>
-  </li>
-  <li>
-	<a href="http://www.w3.org/TR/owl-ref/">OWL Web Ontology Language Reference</a> 
-  </li>
-  <li>
-	<a href="http://www.w3.org/TR/owl-semantics/">OWL Web Ontology Language Semantics and Abstract Syntax </a>
-  </li>
-  <li>
-	<a href="http://www.w3.org/TR/xslt">XSL Transformations (XSLT) Version 1.0</a>
-  </li>
-  <li>
-	<a href="http://www.wasab.dk/morten/2004/05/owl2html.xsl">OWL2HTML XSLT</a> (We made some changes based on this application)
-  </li>   
-  <li>
-	<a href="http://www.w3.org/2002/06/rdfs2html.xsl">RDF2HTML XSLT</a> (We learned many good ideas from this application)
-  </li>
-</ul>
-
 <hr/>
-$Author: Wikier $ - $Id: owl2html.xsl,v 1.3.1 2006/08/20 18:46:57 Wikier Exp $
+<p>
+	$Author: Wikier $ - $Id: 
+	<a href="http://www.wasab.dk/morten/2004/05/owl2html.xsl">owl2html.xsl</a>,
+	v 1.3.1 2006/08/20 18:58:57 Wikier Exp $
+</p>
 
 </body>
 
