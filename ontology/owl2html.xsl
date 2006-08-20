@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--COPYRIGHT (C) 2004-2006 
 	Laboratory of Advanced Information Technology and Ebiquity Group
 	Department of Computer Science and Electronic Engineering
@@ -7,9 +8,10 @@
 	Baltimore, MD 21250
 	ALL RIGHTS RESERVED.
 	
-	Author:  		Li Ding  ( http://www.cs.umbc.edu/~dingli1)
-	Version:		1.3
-	Last Update:	2005/01/28
+	Author:  		Li Ding  (http://www.cs.umbc.edu/~dingli1)
+				Sergio Fdez (http://www.wikier.org/) 
+	Version:		1.3.1
+	Last Update:		2006/08/20
 -->
 
 <!-- Transforms an OWL ontology into a java file for jena inference  -->
@@ -91,7 +93,7 @@
 		font-family: Helvetica, Verdana, Arial, sans-serif;
 		font-size: 12px;
 		line-height: 14px;
-		margin: 2em;
+		margin: 0 5em 2em 5em;
 	}
 
 	h2 {	
@@ -100,12 +102,18 @@
 		font-size: 3em;
 	}
 
-	.submenu {
+	h3 {
+		margin-top: 3em; 
+	}
+
+	#submenu {
 		text-align: center;
 	}
 
-	td {
-		padding: 2em;
+	#content {
+		background-color: #f2f2f2;
+		border: 1px #000000 solid;
+		padding: 0 0 3em 3em;
 	}
 
   </style>
@@ -115,27 +123,25 @@
 
 <h2>SWAML Ontology</h2>
 
-<p class="submenu">
+<p id="submenu">
 	<a href="#Ontology">Ontology Description</a> | 
 	<a href="#Classes">Classes</a> | 
 	<a href="#Properties">Properties</a> | 
 	<a href="#Individuals">Individuals</a> | 
-	<a href="#Undetermined "> Undetermined </a>
+	<a href="#References">References</a>
 </p>
 
-<table border="1" cellspacing="0" width="100%" id="AutoNumber2" bgcolor="#f2f2f2" bordercolor="#000000" cellpadding="0">
-<tr>
-<td>
+<div id="content">
 
-<h3><a name="Ontology">Ontology Description</a></h3>
+<h3 id="Ontology">Ontology Description</h3>
         <xsl:if test="count($nodeset-ontology)>0">
         <ol>
            <xsl:apply-templates select="$nodeset-ontology" mode="details">  
           </xsl:apply-templates>
         </ol>
         </xsl:if>
-<p></p>
-<h3><a name="Classes">Classes</a> (<xsl:value-of select="count($nodeset-class)"/>):</h3>
+
+<h3 id="Classes">Classes (<xsl:value-of select="count($nodeset-class)"/>):</h3>
 
         <xsl:if test="count($nodeset-class)>0">
         <ol>
@@ -144,9 +150,7 @@
         </ol>
         </xsl:if>
 
-
-<p></p>
-<h3><a name="Properties">Properties</a> (<xsl:value-of select="count($nodeset-property)"/>):</h3>
+<h3 id="Properties">Properties (<xsl:value-of select="count($nodeset-property)"/>):</h3>
         <xsl:if test="count($nodeset-property)>0">
         <ol>
            <xsl:apply-templates select="$nodeset-property" mode="details">  
@@ -155,7 +159,7 @@
         </xsl:if>
 
 <p></p>
-<h3><a name="Individuals">Individuals</a> (<xsl:value-of select="count($nodeset-individual)"/>):</h3>
+<h3 id="Individuals">Individuals (<xsl:value-of select="count($nodeset-individual)"/>):</h3>
         <xsl:if test="count($nodeset-individual)>0">
         <ol>
            <xsl:apply-templates select="$nodeset-individual" mode="details">  
@@ -164,15 +168,11 @@
         </xsl:if>
 
 <p></p>
-<h3><a name="Undetermined ">Undetermined (N/A)</a> </h3>
-<p></p>
 
-</td>
-</tr>
-</table>
+</div>
 
 
-<h3>References:</h3>
+<h3 id="References">References:</h3>
 <ul>
   <li>
 	<a href="http://swaml.berlios.de/">SWAML Project</a>  
@@ -201,7 +201,7 @@
 </ul>
 
 <hr/>
-$Author: Wikier $ - $Id: owl2html.xsl,v 1.3.1 2006/08/10 9:26:57 Wikier Exp $
+$Author: Wikier $ - $Id: owl2html.xsl,v 1.3.1 2006/08/20 18:46:57 Wikier Exp $
 
 </body>
 
