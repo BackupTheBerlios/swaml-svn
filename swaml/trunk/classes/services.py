@@ -54,6 +54,8 @@ class FoafUtils:
         #                      data = google.doGoogleSearch('119222cf3a2893a375cc4f884a0138155c771415 filetype:rdf')
         #
         #                - Swoogle <http://swoogle.umbc.edu/>
+        #
+        #                -  Ping the Semantic Web.com <http://pingthesemanticweb.com/>
         
         foafs = {    '119222cf3a2893a375cc4f884a0138155c771415' : 'http://www.wikier.org/foaf.rdf',
                      '98a99390f2fe9395041bddc41e933f50e59a5ecb' : 'http://www.asturlinux.org/~berrueta/foaf.rdf',
