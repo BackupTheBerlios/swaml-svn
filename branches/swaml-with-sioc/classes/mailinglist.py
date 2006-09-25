@@ -15,7 +15,7 @@
 
 import sys, os, mailbox, rfc822, string, email, email.Errors, datetime, sha
 from mbox import Mbox
-from suscriptors import Suscriptors
+from subscribers import Subscribers
 from message import Message
 from index import Index
 from rdflib import Graph, URIRef, Literal, BNode, RDF
@@ -30,7 +30,7 @@ class MailingList:
         
         self.config = config
         self.lang = lang
-        self.suscriptors = Suscriptors(config)
+        self.subscribers = Subscribers(config)
         self.index = Index(self.config)
         
     def __createDir(self):
@@ -56,9 +56,9 @@ class MailingList:
             
             #index it
             self.index.add(msg)
-            self.suscriptors.add(msg)
-            suscriptor = self.suscriptors.get(msg.getFromMail())
-            msg.setSender(suscriptor)
+            self.subscribers.add(msg)
+            subscriber = self.subscribers.get(msg.getFromMail())
+            msg.setSender(subscriber)
             
             #parent message (refactor)
             inReplyTo = msg.getInReplyTo()
@@ -115,8 +115,8 @@ class MailingList:
                 
             self.__toRDF()
     
-            self.suscriptors.process()
-            self.suscriptors.export()
+            self.subscribers.process()
+            self.subscribers.export()
             
         except Exception, detail:
             print str(detail)
@@ -153,10 +153,9 @@ class MailingList:
         if (self.lang != None):
             store.add((list, DC['language'], Literal(self.lang)))
 
-        #suscriptors
-        #store.add((list, SWAML['suscriptors'], URIRef(self.config.get('url')+'suscriptors.rdf')))
-        suscriptors = self.suscriptors.getSuscriptorsUris()
-        for uri in suscriptors:
+        #subscribers
+        subscribers = self.subscribers.getSubscribersUris()
+        for uri in subscribers:
             store.add((list, SIOC['has_subscriber'], URIRef(uri)))
                   
         #and all messages uris
