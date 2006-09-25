@@ -17,7 +17,7 @@ import sys, os, string, sha
 import rdflib
 from rdflib.sparql import sparqlGraph, GraphPattern
 from rdflib import Namespace, Literal
-from namespaces import SWAML, RDF, RDFS, FOAF, GEO
+from namespaces import SWAML, SIOC, RDF, RDFS, FOAF, GEO
 from email.Header import decode_header
 import email.Utils
 

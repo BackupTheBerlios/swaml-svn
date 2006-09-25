@@ -191,8 +191,9 @@ class Message:
         store = Graph()
         
         #namespaces
-        from namespaces import SWAML, RDFS, FOAF
+        from namespaces import SWAML, SIOC, RDFS, FOAF
         store.bind('swaml', SWAML)
+        store.bind('sioc', SIOC)
         store.bind('foaf', FOAF)
         store.bind('rdfs', RDFS)
         

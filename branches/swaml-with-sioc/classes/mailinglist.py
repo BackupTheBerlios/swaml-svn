@@ -134,15 +134,16 @@ class MailingList:
         store = Graph()
         
         #namespaces
-        from namespaces import SWAML, RDFS, FOAF, DC
+        from namespaces import SWAML, SIOC, RDFS, FOAF, DC
         store.bind('swaml', SWAML)
+        store.bind('sioc', SIOC)
         store.bind('foaf', FOAF)
         store.bind('rdfs', RDFS)
         store.bind('dc', DC)
 
         #root node
         list = URIRef(self.config.get('url')+'index.rdf')
-        store.add((list, RDF.type, SWAML['MailingList']))
+        store.add((list, RDF.type, SIOC['Forum']))
 
         #list information
         store.add((list, DC['title'], Literal(u'title (FIXME)')))
@@ -156,12 +157,12 @@ class MailingList:
         #store.add((list, SWAML['suscriptors'], URIRef(self.config.get('url')+'suscriptors.rdf')))
         suscriptors = self.suscriptors.getSuscriptorsUris()
         for uri in suscriptors:
-            store.add((list, SWAML['hasSuscriptor'], URIRef(uri)))
+            store.add((list, SIOC['has_subscriber'], URIRef(uri)))
                   
         #and all messages uris
         uris = self.index.getMessagesUri()                        
         for uri in uris:
-            store.add((list, SWAML['sentMail'], URIRef(uri)))
+            store.add((list, SIOC['container_of'], URIRef(uri)))
                     
         #and dump to disk
         try:

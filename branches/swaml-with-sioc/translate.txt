@@ -1,0 +1,19 @@
+
+		SWAML		SIOC
+		---------------	---------------
+classes		MailingList	Forum
+		Message		Post
+		Suscriptor	User
+		
+properties	subject		
+		body		content
+		author		creator_of
+		from		has_creator
+		sentMail	container_of 
+		sentIn		has_container
+		reply		has_reply
+		hasSuscriptor	has_subscriber
+		id		id
+		url		link
+
+		

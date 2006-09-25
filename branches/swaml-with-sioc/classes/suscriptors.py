@@ -22,7 +22,7 @@ from rdflib import URIRef, Literal, Variable, BNode
 from rdflib import RDF
 from rdflib import plugin
 from rdflib.sparql import sparqlGraph, GraphPattern
-from namespaces import SWAML, RDF, RDFS, FOAF, GEO
+from namespaces import SWAML, SIOC, RDF, RDFS, FOAF, GEO
 
 
 class Suscriptor:
@@ -195,22 +195,23 @@ class Suscriptors:
         
         #namespaces
         store.bind('swaml', SWAML)
+        store.bind('sioc', SIOC)
         store.bind('foaf', FOAF)
         store.bind('rdfs', RDFS)
 
         #a Node for each subcriber
         for mail, suscriptor in self.suscriptors.items():
             person = URIRef(suscriptor.getStringId())
-            store.add((person, RDF.type, FOAF["Suscriptor"]))
+            store.add((person, RDF.type, SIOC['User']))
             
             try:
                 name = suscriptor.getName()
                 if (len(name) > 0):
-                    store.add((person, FOAF["name"], Literal(name) ))            
-                store.add((person, FOAF["mbox_sha1sum"], Literal(suscriptor.getShaMail())))
+                    store.add((person, SIOC['name'], Literal(name) ))            
+                store.add((person, SIOC['email_sha1sum'], Literal(suscriptor.getShaMail())))
                 foafResource = suscriptor.getFoaf()
                 if (foafResource != None):
-                    store.add((person, RDFS["seeAlso"], URIRef(foafResource)))
+                    store.add((person, RDFS['seeAlso'], URIRef(foafResource)))
                     
                     #coordinates
                     lat, lon = suscriptor.getGeo()
@@ -233,7 +234,7 @@ class Suscriptors:
             sentMails = suscriptor.getSentMails()
             if (len(sentMails)>0):
                 for uri in sentMails:
-                    store.add((person, SWAML['author'], URIRef(uri)))
+                    store.add((person, SIOC['creator_of'], URIRef(uri)))
                     
         #and dump to disk
         try:
