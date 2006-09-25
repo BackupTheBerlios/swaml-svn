@@ -5,7 +5,7 @@ classes		MailingList	Forum
 		Message		Post
 		Suscriptor	User
 		
-properties	subject		
+properties	subject		title
 		body		content
 		author		creator_of
 		from		has_creator
