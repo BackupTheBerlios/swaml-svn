@@ -127,7 +127,7 @@ class Subscriber:
         
     def setFoaf(self, foaf):
         """
-        Set suubscriber's FOAF
+        Set subscriber's FOAF
         """
         self.foaf = foaf     
         

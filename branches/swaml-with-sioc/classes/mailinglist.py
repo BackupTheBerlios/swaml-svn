@@ -20,6 +20,7 @@ from message import Message
 from index import Index
 from rdflib import Graph, URIRef, Literal, BNode, RDF
 import datetime
+from dateutils import FileDate
 
 class MailingList:
     
@@ -134,22 +135,23 @@ class MailingList:
         store = Graph()
         
         #namespaces
-        from namespaces import SWAML, SIOC, RDFS, FOAF, DC
+        from namespaces import SWAML, SIOC, RDFS, FOAF, DC, MVCB
         store.bind('swaml', SWAML)
         store.bind('sioc', SIOC)
         store.bind('foaf', FOAF)
         store.bind('rdfs', RDFS)
         store.bind('dc', DC)
+        store.bind('mvcb', MVCB)
 
         #root node
         list = URIRef(self.config.get('url')+'index.rdf')
         store.add((list, RDF.type, SIOC['Forum']))
 
         #list information
-        store.add((list, DC['title'], Literal(u'title (FIXME)')))
-        store.add((list, DC['publisher'], Literal(u'SWAML')))
+        store.add((list, DC['title'], Literal(u'FIXME')))
         store.add((list, DC['description'], Literal(u'RDF files of a mailing list')))
-        store.add((list, DC['date'], Literal(str(datetime.date.today()))))
+        store.add((list, DC['date'], Literal(FileDate(self.config.get('mbox')).getStringFormat())))
+        store.add((list, MVCB['generatorAgent'], URIRef(self.config.getAgent())))
         if (self.lang != None):
             store.add((list, DC['language'], Literal(self.lang)))
 

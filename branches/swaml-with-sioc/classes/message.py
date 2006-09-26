@@ -18,7 +18,8 @@ import datetime, email, email.Errors
 from rdflib import Graph
 from rdflib import URIRef, Literal, Variable, BNode
 from rdflib import RDF
-from services import FoafUtils, Charset, DateUtils
+from services import FoafUtils, Charset
+from dateutils import MailDate, FileDate
 
 class Message:
     """Mail message abstraction"""
@@ -97,7 +98,7 @@ class Message:
         index = self.config.get('format')
         
         #message date
-        date = DateUtils(self.date)   
+        date = MailDate(self.date)   
              
          #replace vars
         index = index.replace('DD', date.getStringDay()) #day
