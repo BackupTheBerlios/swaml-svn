@@ -11,7 +11,6 @@ install:
 	chmod 755 $(DESTDIR)/usr/bin/buxon
 	mkdir -p $(DESTDIR)/usr/share/swaml/
 	cp -r __init__.py swaml.py buxon.py foaf.py kml.py configWizard.py classes includes $(DESTDIR)/usr/share/swaml/
-	mkdir -p $(DESTDIR)/etc/swaml
 	mkdir -p $(DESTDIR)/usr/share/doc/swaml/examples
 	cp -r config $(DESTDIR)/usr/share/doc/swaml/examples
 
