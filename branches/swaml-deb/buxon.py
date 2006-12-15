@@ -18,6 +18,7 @@
 
 """Buxon, a sioc:Forum visor"""
 
+import __init__
 import sys
 import pygtk
 pygtk.require('2.0')
@@ -448,13 +449,12 @@ class BuxonMain:
 		All operation that Buxon need to run
 		"""
 		
-		try:
-			path = __file__.split('/')
-			base = '/'.join(path[:-1]) + '/'
-			
+		try:			
 			global widgets
 			global callbacks
 			global buxon
+			
+			base = __init__.__base__
 			
 			widgets = ObjectBuilder(base + 'includes/ui/graphical/buxon.glade')
 			callbacks = Callbacks()

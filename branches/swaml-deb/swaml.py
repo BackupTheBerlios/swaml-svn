@@ -18,8 +18,8 @@
 
 """Semantic Web Archive of Mailing Lists"""
 
-import sys, string
 import __init__
+import sys, string
 from classes.ui import CommandLineUI
 from classes.configuration import Configuration
 from classes.mailinglist import MailingList
@@ -54,9 +54,7 @@ class SWAML(CommandLineUI):
         @param argv: values of inline arguments
         """
         
-        path = __file__.split('/')
-        base = '/'.join(path[:-1]) + '/'
-        CommandLineUI.__init__(self, 'swaml', base)
+        CommandLineUI.__init__(self, 'swaml', __init__.__base__)
         
         self.config = Configuration()        
         

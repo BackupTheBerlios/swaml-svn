@@ -18,6 +18,7 @@
 
 """Software to enrich SWAML's subscribers using FOAF"""
 
+import __init__
 import sys, os, string
 from classes.ui import CommandLineUI
 import rdflib
@@ -135,7 +136,7 @@ class SwamlFoafEnricher(CommandLineUI):
         @param argv: values of inline arguments
         """       
         
-        CommandLineUI.__init__(self, 'foaf')
+        CommandLineUI.__init__(self, 'foaf', __init__.__base__)
         
         for arg in argv:
             if arg == "-h" or arg == "--help":

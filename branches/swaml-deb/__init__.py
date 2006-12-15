@@ -13,6 +13,8 @@
 # or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 # for more details.
 
+import os, sys
+
 __author__       = 'Sergio Fdez <http://www.wikier.org/>'
 __contributors__ = ['Diego Berrueta <http://www.berrueta.net/>',
                     'Jose Emilio Labra <http://www.di.uniovi.es/~labra/>']
@@ -21,3 +23,8 @@ __license__      = 'GNU General Public License'
 __version__      = '0.0.5'
 __url__          = 'http://swaml.berlios.de/'
 __agent__        = 'http://swaml.berlios.de/doap.rdf'
+__base__         = os.getcwd() + '/'
+
+sys.path.append(__base__)
+
+del os, sys

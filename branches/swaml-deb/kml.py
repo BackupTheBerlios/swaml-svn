@@ -18,6 +18,7 @@
 
 """Software to export SWAML's subscribers into KML"""
 
+import __init__
 import sys, os, string
 from classes.ui import CommandLineUI
 import rdflib
@@ -96,7 +97,7 @@ class SwamlKmlExporter(CommandLineUI):
         @param argv: values of inline arguments
         """       
         
-        CommandLineUI.__init__(self, 'kml')
+        CommandLineUI.__init__(self, 'kml', __init__.__base__)
         
         for arg in argv:
             if arg == "-h" or arg == "--help":
