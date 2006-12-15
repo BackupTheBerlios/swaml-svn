@@ -66,7 +66,7 @@ class SWAML(CommandLineUI):
             elif arg == "-V" or arg == "--version":
                 self.version()
                 
-        self.config.setAgent('http://swaml.berlios.de/doap.rdf')
+        self.config.setAgent(__init__.__agent__)
         self.parseArgs(argv)
         self.list = MailingList(self.config)
         messages = self.list.publish()
