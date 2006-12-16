@@ -45,7 +45,7 @@ class SWAML(CommandLineUI):
         #self.config.show()
         
     def version(self):
-        print "SWAML", __init__.__version__
+        print "SWAML 0.0.5", #TODO: __init__.__version__
         sys.exit()
 
     def __init__(self, argv):
