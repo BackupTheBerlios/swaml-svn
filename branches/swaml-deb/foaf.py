@@ -136,7 +136,7 @@ class SwamlFoafEnricher(CommandLineUI):
         @param argv: values of inline arguments
         """       
         
-        CommandLineUI.__init__(self, 'foaf', __init__.__base__)
+        CommandLineUI.__init__(self, 'foaf', os.getcwd() + '/')
         
         for arg in argv:
             if arg == "-h" or arg == "--help":

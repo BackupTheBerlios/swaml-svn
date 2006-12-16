@@ -97,7 +97,7 @@ class SwamlKmlExporter(CommandLineUI):
         @param argv: values of inline arguments
         """       
         
-        CommandLineUI.__init__(self, 'kml', __init__.__base__)
+        CommandLineUI.__init__(self, 'kml', os.getcwd() + '/')
         
         for arg in argv:
             if arg == "-h" or arg == "--help":

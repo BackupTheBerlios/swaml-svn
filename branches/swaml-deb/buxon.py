@@ -19,7 +19,7 @@
 """Buxon, a sioc:Forum visor"""
 
 import __init__
-import sys
+import sys, os
 import pygtk
 pygtk.require('2.0')
 import gtk, pango
@@ -454,7 +454,7 @@ class BuxonMain:
 			global callbacks
 			global buxon
 			
-			base = __init__.__base__
+			base = os.getcwd() + '/'
 			
 			widgets = ObjectBuilder(base + 'includes/ui/graphical/buxon.glade')
 			callbacks = Callbacks()
