@@ -70,5 +70,5 @@ class CommandLineUI(UI):
         @param base: base directory
         """
                 
-        UI.__init__(self, id, base+'includes/ui/line/')
+        UI.__init__(self, id, base+'includes/ui/text/')
 

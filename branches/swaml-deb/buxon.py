@@ -143,7 +143,7 @@ class GtkUI(UI):
         """
                 
         UI.__init__(self, id, base)
-        self.lineBase = self.base + 'includes/ui/line/'
+        self.lineBase = self.base + 'includes/ui/text/'
         self.graphicalBase = self.base + 'includes/ui/graphical/'
     
 
