@@ -61,7 +61,7 @@ class SWAML(CommandLineUI):
         for arg in argv:
             if arg == "-h" or arg == "--help":
                 self.usage()
-            elif arg == "-V" or arg == "--version":
+            elif arg == "-v" or arg == "--version":
                 self.version()
                 
         self.config.setAgent('http://swaml.berlios.de/doap.rdf') #TODO: how __init__.__agent__?
