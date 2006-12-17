@@ -455,7 +455,7 @@ class BuxonMain:
 			
 			if (base == None):
 				path = __file__.split('/')
-        		base = '/'.join(path[:-1]) + '/'
+				base = '/'.join(path[:-1]) + '/'
 			
 			widgets = ObjectBuilder(base + 'includes/ui/graphical/buxon.glade')
 			callbacks = Callbacks()
