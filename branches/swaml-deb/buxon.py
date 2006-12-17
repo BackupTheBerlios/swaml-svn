@@ -18,7 +18,6 @@
 
 """Buxon, a sioc:Forum visor"""
 
-import __init__
 import sys, os
 import pygtk
 pygtk.require('2.0')

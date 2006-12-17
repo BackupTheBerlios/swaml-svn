@@ -17,8 +17,7 @@
 # for more details.
 
 """Software to enrich SWAML's subscribers using FOAF"""
-
-import __init__
+_
 import sys, os, string
 from classes.ui import CommandLineUI
 import rdflib

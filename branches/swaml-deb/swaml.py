@@ -18,7 +18,6 @@
 
 """Semantic Web Archive of Mailing Lists"""
 
-import __init__
 import sys, os, string
 from classes.ui import CommandLineUI
 from classes.configuration import Configuration

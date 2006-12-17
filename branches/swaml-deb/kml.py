@@ -18,7 +18,6 @@
 
 """Software to export SWAML's subscribers into KML"""
 
-import __init__
 import sys, os, string
 from classes.ui import CommandLineUI
 import rdflib
