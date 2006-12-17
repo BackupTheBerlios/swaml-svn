@@ -22,7 +22,9 @@ import __init__
 import sys, os, string
 from classes.ui import CommandLineUI
 import rdflib
-from rdflib import sparql, BNode, Literal, URIRef
+from rdflib import BNode, Literal, URIRef
+from rdflib.sparql import sparqlGraph
+from rdflib.sparql.graphPattern import GraphPattern
 from classes.namespaces import SWAML, SIOC, RDF, FOAF, GEO, RDFS
 from classes.foaf import FOAFS
 
@@ -53,9 +55,9 @@ class SwamlFoafEnricher(CommandLineUI):
         @return: graph enriched (True/False)
         """
         
-        sparqlGr = sparql.sparqlGraph.SPARQLGraph(graph)
+        sparqlGr = sparqlGraph.SPARQLGraph(graph)
         select = ('?foaf')
-        where = sparql.GraphPattern(
+        where = GraphPattern(
                                      [('?user', RDF['type'], SIOC['User']),
                                       ('?user', RDFS['seeAlso'], '?foaf')])
         foafs = sparqlGr.query(select, where)
@@ -78,9 +80,9 @@ class SwamlFoafEnricher(CommandLineUI):
                 output = '.'.join(input.split('.')[:-1]) + '.foaf.enrichment.rdf'
             
             #sparql query
-            sparqlGr = sparql.sparqlGraph.SPARQLGraph(graph)
+            sparqlGr = sparqlGraph.SPARQLGraph(graph)
             select = ('?user', '?email_sha1sum')
-            where = sparql.GraphPattern(
+            where = GraphPattern(
                 [('?user', RDF['type'], SIOC['User']),
                  ('?user', SIOC['email_sha1sum'], '?email_sha1sum')])
             users = sparqlGr.query(select, where)
