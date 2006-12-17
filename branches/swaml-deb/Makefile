@@ -16,7 +16,7 @@ install:
 	cp -r config $(DESTDIR)/usr/share/doc/swaml/examples
 	mkdir tmp
 	$(ZIP) -9 -c manpages/swaml.1 > tmp/swaml.1.gz
-	$(ZIP) -9 -c manpages/swaml.1 > tmp/buxon.1.gz
+	$(ZIP) -9 -c manpages/buxon.1 > tmp/buxon.1.gz
 	mv tmp/swaml.1.gz tmp/buxon.1.gz $(DESTDIR)/usr/share/man/man1/
 	rm -r tmp
 
@@ -52,3 +52,4 @@ clean:
 	rm -rf $(DOCDIR)
 	rm -f `find . -name "*~"`
 	rm -f `find . -name "*.pyc"`
+
