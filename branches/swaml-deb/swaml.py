@@ -47,13 +47,17 @@ class SWAML(CommandLineUI):
         print "SWAML 0.0.5", #TODO: __init__.__version__
         sys.exit()
 
-    def __init__(self, argv):
+    def __init__(self, argv, base=None):
         """
         main method
         @param argv: values of inline arguments
         """
         
-        CommandLineUI.__init__(self, 'swaml', os.getcwd() + '/')
+        if (base == None):
+            path = __file__.split('/')
+            base = '/'.join(path[:-1]) + '/'
+        
+        CommandLineUI.__init__(self, 'swaml', base)
         
         self.config = Configuration()        
         

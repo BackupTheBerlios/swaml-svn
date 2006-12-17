@@ -443,7 +443,7 @@ buxon = None
 
 class BuxonMain:
 	
-	def __init__(self, argv):
+	def __init__(self, argv, base=None):
 		"""
 		All operation that Buxon need to run
 		"""
@@ -453,7 +453,9 @@ class BuxonMain:
 			global callbacks
 			global buxon
 			
-			base = os.getcwd() + '/'
+			if (base == None):
+				path = __file__.split('/')
+        		base = '/'.join(path[:-1]) + '/'
 			
 			widgets = ObjectBuilder(base + 'includes/ui/graphical/buxon.glade')
 			callbacks = Callbacks()
