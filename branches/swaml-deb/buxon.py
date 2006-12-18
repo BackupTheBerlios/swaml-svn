@@ -429,7 +429,7 @@ class Buxon(GtkUI):
 		@param base: base directory
 		"""
 		
-		GtkUI.__init__(self, 'buxon')
+		GtkUI.__init__(self, 'buxon', base)
 		
 		self.base = base
 		self.cache = None
