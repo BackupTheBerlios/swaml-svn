@@ -1,0 +1,14 @@
+
+Usage: swaml configfile [options]
+        
+'swaml' transform the archives of a mailing list (in mbox format) into a 
+semantic web friendly format (RDF in XML).
+
+   'configfile'      : path to a configuration file compatible with RFC822.
+
+Options:
+   -v, --version     : show version.
+   -h, --help        : print this help message and exit.
+
+Report bugs to: <http://swaml.berlios.de/bugs>
+

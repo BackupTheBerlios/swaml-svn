@@ -1,0 +1,28 @@
+Installing SWAML
+****************
+
+Short Answer:
+-------------
+
+	make install
+
+
+Long Answer:
+------------
+
+Dependencies:
+
+	- python >= 2.4.0
+	- rdflib >= 2.3.1
+        
+As root user you may run:
+
+	make install
+	
+This command will install SWAML at common directories. Then it'll be available
+a new command: 'swaml'.
+
+To uninstall it's also easy:
+
+	make uninstall
+
