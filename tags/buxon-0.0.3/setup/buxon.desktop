@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Exec=/usr/bin/buxon %u
+Terminal=false
+Name=Buxon
+Comment=sioc:Forum visor
+Icon=buxon
+MimeType=application/rdf+xml
+Categories=Utility;Viewer;
