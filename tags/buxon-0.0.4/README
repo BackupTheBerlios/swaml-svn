@@ -1,0 +1,21 @@
+
+Buxon, a sioc:Forum browser
+***************************
+
+Buxon is a browser of instances of Forums represented in
+SIOC ontology in RDF.
+
+Buxon is part of the SWAML project:
+
+	http://swaml.berlios.de
+
+
+REQUIREMENTS:
+-------------
+
+    - python >= 2.4.0
+    - rdflib >= 2.4.0
+    - gtk+ >= 2.6.0
+    - pygtk >= 2.6.0
+    - gazpacho >= 0.6.6
+
