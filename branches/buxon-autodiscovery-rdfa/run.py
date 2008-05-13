@@ -94,6 +94,7 @@ class BuxonMain:
         self.logger.info('Starting up Buxon')
 
         sys.path.append(base + 'src')
+        sys.path.append(base + 'lib')
         
         from buxon.ui.buxonwindow import BuxonWindow
 

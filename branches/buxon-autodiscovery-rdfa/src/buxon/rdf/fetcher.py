@@ -17,8 +17,9 @@
 # or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 # for more details.
 
-"""a cache service for sioc:Forum"""
+"""a fetcher for sioc:Forums"""
 
+import sys
 from rdflib import URIRef
 from rdflib.Graph import ConjunctiveGraph
 from rdflib.sparql.sparqlGraph import SPARQLGraph
@@ -29,8 +30,68 @@ from buxon.rdf.namespaces import SIOC, RDF, RDFS, DC, DCTERMS
 from buxon.rdf.ptsw import PTSW
 import socket
 import gtk
+import urllib2
+from xml.dom import minidom
+from pyRdfa import parseRDFa, RDFaError
 
 class Fetcher:
+
+    def __request(self, url):
+        """
+        Request a URL
+        """
+        
+        request = urllib2.Request(url)
+        request.add_header("'User-Agent", "buxon (http://swaml.berlios.de/)")
+        request.add_header("Accept", "application/rdf+xml")
+        try:
+            response = urllib2.urlopen(request)
+            return self.__parse(response, url)
+        except urllib2.HTTPError, e:
+            print "Error requesting %s: %s" % (url, str(e))
+            return False
+
+    def __parse(self, response, base=None):
+        """
+        Parse response
+        """
+        
+        rdfxml = "application/rdf+xml"
+        xhtml = "application/xhtml+xml"
+        html = "text/html"
+    
+        if (base == None):
+            base = response.url
+
+        if (response.code == 200):
+
+            ct = response.info()["content-type"]
+            if (len(ct.split(";"))>1):
+                ct = ct.split(";")[0]
+        
+            if (ct == rdfxml):
+                try:
+                    self.graph.load(response, publicID=' ')
+                    return True
+                except Exception, e:
+                    print "Error parsing RDF/XML:", str(e)
+                    return False
+            elif (ct == xhtml or ct == html):
+                #FIXME: autodiscovery (XPath)
+                try:
+                    dom = minidom.parse(response)
+                    parseRDFa(dom, response.url, self.graph)
+                    return True
+                except RDFaError, e:
+                    print "Error parsing RDFa:", str(e)
+                    return False
+            else:
+                print "Unknow format:", ct
+                return False
+
+        else:
+            return False
+            
 
     def __listPosts(self):
         """
@@ -58,32 +119,34 @@ class Fetcher:
             return None
 
 
-    def loadMailingList(self, uri):
+    def loadForum(self, uri):
         """
-        Load a mailing list into a graph memory
+        Load a forum into a memory graph
 
         @param uri: mailing list's uri
         """
 
-        graph = ConjunctiveGraph()
-        print 'Getting mailing list data (', uri, ')...',
-        graph.parse(uri)
-        print 'OK, loaded', len(graph), 'triples'
+        print 'Getting forum data (', uri, ')...',
+        if self.__request(uri):
+            self.loaded.append(uri)
+            print 'OK, loaded', len(self.graph), 'triples'
 
-        forums = self.__getForums(graph)
-        if forums.__len__() < 1:
-            return None
+            forums = self.__getForums(self.graph)
+            if forums.__len__() < 1:
+                return False
         
-        self.uri = forums[0]
-        print 'Using ' + self.uri + ' sioc:Forum'
+            self.uri = forums[0]
+            print 'Using ' + self.uri + ' sioc:Forum'
 
-        if (self.pb != None):
-            self.pb.progress()
+            if (self.pb != None):
+                self.pb.progress()
 
-        if (self.ptsw != None):
-            self.ptsw.ping(uri)
+            if (self.ptsw != None):
+                self.ptsw.ping(uri)
 
-        return graph
+            return True
+        else:
+            return False
 
     def __loadData(self, uri):
         """
@@ -92,22 +155,20 @@ class Fetcher:
         @param uri: uri to load
         """
 
-        print 'Resolving reference to get additional data (', uri, ')...',
-        try:
-            self.graph.parse(uri)
-        except:
-            print '\nAn exception ocurred parsing ' + uri
-            return
+        if (not uri in self.loaded):
+            print 'Resolving reference to get additional data (', uri, ')...',
+            if self.__request(uri):
+                self.loaded.append(uri)
 
-        if (self.pb != None):
-            self.pb.progress()
-            while gtk.events_pending():
-                gtk.main_iteration()
+                if (self.pb != None):
+                    self.pb.progress()
+                    while gtk.events_pending():
+                        gtk.main_iteration()
 
-        if (self.ptsw != None):
-            self.ptsw.ping(uri)
+                if (self.ptsw != None):
+                    self.ptsw.ping(uri)
 
-        print 'OK, now', len(self.graph), 'triples'
+                print 'OK, now', len(self.graph), 'triples'
 
     def __getForums(self, graph):
         """
@@ -164,8 +225,9 @@ class Fetcher:
 
     def getData(self):
 
+        self.graph = ConjunctiveGraph()
         try:
-            self.graph = self.loadMailingList(self.uri)
+             self.bad = self.loadForum(self.uri)
         except Exception, details:
             print '\nAn exception ocurred parsing ' + self.uri + ': ' + str(details)
             self.bad = True
@@ -201,6 +263,7 @@ class Fetcher:
         self.uri = base
         self.graph = None
         self.bad = False
+        self.loaded = []
         self.pb = pb
         self.ptsw = None
         if ping:
